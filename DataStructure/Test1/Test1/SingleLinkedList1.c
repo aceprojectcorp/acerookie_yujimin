@@ -45,7 +45,7 @@ int AddNode( int inputData )
     
     printf("\n");
     
-    //nodePtr값이 0인 노드가 발견되면 (마지막노드가 발견!!!!)
+    // nodePtr값이 0인 노드(=마지막노드)가 발견되면
     searchPtr->nodePtr = node;
     printf("[%d / %p] ", searchPtr->iNodeData, searchPtr->nodePtr);
     printf("[%d / %p]\n", node->iNodeData, node->nodePtr);
