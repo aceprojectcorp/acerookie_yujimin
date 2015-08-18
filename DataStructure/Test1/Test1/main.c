@@ -8,6 +8,7 @@
 
 //#include <stdio.h>
 #include "SingleLinkedList1.h"
+#include "DoubleLinkedList1.h"
 
 
 int main(int argc, const char * argv[]) {
@@ -52,6 +53,16 @@ int main(int argc, const char * argv[]) {
     ShowAllNode();
     printf("--------------------------------------------\n\n");
     
+    CreateDbList();
+    
+    AddDbNodeNoSort( 1, HEAD );
+    ShowAllDbNode();
+    
+    AddDbNodeNoSort( 2, HEAD );
+    ShowAllDbNode();
+    
+    AddDbNodeNoSort( 3, TAIL );
+    ShowAllDbNode();
     
     return 0;
 }

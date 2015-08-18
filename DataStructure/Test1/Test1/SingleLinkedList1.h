@@ -37,7 +37,6 @@ int AddNode( int inputData );
 
 // 노드삭제
 int DelNode( int delData );
-    // 노드 갯수가 0이면 iHeadPtr에 NULL값 주기
 
 // 모든 노드 보여주기
 int ShowAllNode();

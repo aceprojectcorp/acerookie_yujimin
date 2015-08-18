@@ -15,7 +15,6 @@ void CreateSList()
 {
     printf("* 리스트 생성(head생성)\n\n");
     nHeadPtr = (Node*)malloc(sizeof(Node));
-    nHeadPtr->nodePtr = NULL;
 }
 
 
@@ -27,7 +26,7 @@ int AddNode( int inputData )
     
     // 노드 생성
     Node * node ;
-    node = (Node*)malloc(sizeof(Node));      // 동적 할당...해야 할 것 같은데.. 음....
+    node = (Node*)malloc(sizeof(Node));
     node->iNodeData = inputData;
     node->nodePtr = NULL;
     
@@ -62,7 +61,8 @@ int DelNode( int delData )
     printf("* 노드 삭제 : 데이터가 %d인 노드 모두 삭제 \n", delData );
     
     // 삭제할 노드가 있는지 확인
-    if ( nHeadPtr == NULL || nHeadPtr->nodePtr == NULL ) {
+    if ( nHeadPtr == NULL || nHeadPtr->nodePtr == NULL )
+    {
         printf(" ~ 삭제할 노드가 없습니다\n\n");
         
         return TRUE;
