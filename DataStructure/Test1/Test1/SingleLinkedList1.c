@@ -9,10 +9,11 @@
 #include "SingleLinkedList1.h"
 
 // 맨처음 시작 노드 가리키는(주소 저장한) 포인터
-Node * nHeadPtr;
+Node * nHeadPtr = NULL;
 
 void CreateSList()
 {
+    printf("* 리스트 생성(head생성)\n\n");
     nHeadPtr = (Node*)malloc(sizeof(Node));
     nHeadPtr->nodePtr = NULL;
 }
@@ -21,37 +22,36 @@ void CreateSList()
 // 노드추가
 int AddNode( int inputData )
 {
+    
+    printf("* 노드 생성 : 데이터가 %d인 노드 \n", inputData );
+    
     // 노드 생성
     Node * node ;
     node = (Node*)malloc(sizeof(Node));      // 동적 할당...해야 할 것 같은데.. 음....
     node->iNodeData = inputData;
     node->nodePtr = NULL;
     
-    printf("추가된 Node의 주소값 : %d\n", node);
-//    printf("추가된 &Node의 주소값 : %d\n", &node); // &node가 왜 node랑 값이 다를까? ㅜㅜ <- node라는 포인터가 사용되기 위해?호출되기 위해 ?node사용시 불러오기 위해 저장된 값인감
-//    printf("추가된 node->iNodeData의 주소값 : %d\n", &(node->iNodeData) );
-//    printf("추가된 iNodePtr의 주소값 : %d\n", &(node->nodePtr));
-//    printf("추가된 iNodePtr의 값 : %d\n", node->nodePtr);
-//    
+    printf(" 추가된 Node의 주소값 : %p\n", node);
 
     
     // 마지막 노드 찾기. 마지막 노드의 nodePtr값이 NULL이면 마지막 노드.
     Node * searchPtr = nHeadPtr;
     
-    printf("[%d] ", searchPtr->nodePtr);
+    printf("[%d / %p]((H)) ", searchPtr->iNodeData, searchPtr->nodePtr);
     while( searchPtr->nodePtr != NULL )
     {
         searchPtr = searchPtr->nodePtr;
-        printf("[%d] ", searchPtr->nodePtr);
+        printf("[%d / %p] ", searchPtr->iNodeData, searchPtr->nodePtr);
     }
     
     printf("\n");
     
     //nodePtr값이 0인 노드가 발견되면 (마지막노드가 발견!!!!)
     searchPtr->nodePtr = node;
-    printf("[%d]\n ", searchPtr->nodePtr);
+    printf("[%d / %p] ", searchPtr->iNodeData, searchPtr->nodePtr);
+    printf("[%d / %p]\n", node->iNodeData, node->nodePtr);
     
-    printf("%d 추가\n\n", inputData );
+    printf(" ~ %d 추가완료\n\n", inputData );
     
     return TRUE;
 }
@@ -59,11 +59,19 @@ int AddNode( int inputData )
 int DelNode( int delData )
 {
     
-    Node * selectNode = nHeadPtr;   // 검색시 선택된 노드 (delData와 노드의 iNodeData값을 비교함)
-    Node * tmpNode = NULL;                 // 검색시 선택된 노드를 임시 저장할 변수
-    Node * frontNode = NULL;        // 검색시 선택된 노드의 이전 노드를 임시 저장할 변수
-                                    // 이중포인터...쓰면 안써도되지만
-    int delNodeCount = 0;           // 삭제된 노드 갯수 카운트
+    printf("* 노드 삭제 : 데이터가 %d인 노드 모두 삭제 \n", delData );
+    
+    // 삭제할 노드가 있는지 확인
+    if ( nHeadPtr == NULL || nHeadPtr->nodePtr == NULL ) {
+        printf(" ~ 삭제할 노드가 없습니다\n\n");
+        
+        return TRUE;
+    }
+    
+    Node * selectNode = nHeadPtr;   // 선택된 노드. 노드 주소를 이동 할때만 사용.
+    Node * frontNode = NULL;        // 선택된 노드의 이전 노드를 저장할 변수.
+                                    // ex) [이전노드]-[삭제노드]-[삭제다음노드] : 이전노드에서 삭제다음노드로 이어주기 위해 이전노드를 저장.
+    int iDelNodeCount = 0;           // 삭제된 노드 갯수 카운트
 
     
     // 처음부터 끝까지 검색
@@ -71,15 +79,12 @@ int DelNode( int delData )
     {
         if( selectNode->iNodeData == delData )
         {
-            tmpNode = selectNode;
-            
             frontNode->nodePtr = selectNode->nodePtr;
+  
+            free(selectNode);
             
             selectNode = selectNode->nodePtr;
-            
-            free(tmpNode);                      // 이것도 안됨
-            
-            delNodeCount++;
+            iDelNodeCount++;
         }
         else
         {
@@ -87,8 +92,7 @@ int DelNode( int delData )
             selectNode = selectNode->nodePtr;
         }
     }
-    
-    printf("\n* 삭제된 노드의 갯수 : %d \n",delNodeCount);
+    printf(" ~ 삭제된 노드의 갯수 : %d \n\n",iDelNodeCount);
     
     return TRUE;
     
@@ -96,8 +100,17 @@ int DelNode( int delData )
 
 int ShowAllNode()
 {
+    
+    printf("* 모든 노드 리스트 출력\n");
+    
+    // 보여줄 노드가 있는지 확인
+    if ( nHeadPtr==NULL || nHeadPtr->nodePtr == NULL ) {
+        printf(" ~ 출력할 노드가 없습니다\n\n");
+        
+        return TRUE;
+    }
+    
     int iNodeCnt = 0 ; // 노드 갯수 카운트
-    printf("\n\n* 모든 노드 출력\n");
     Node * searchPtr = nHeadPtr;
     while( searchPtr->nodePtr != NULL )
     {
@@ -105,8 +118,7 @@ int ShowAllNode()
         iNodeCnt++;
         printf("<%d> ", searchPtr->iNodeData);
     }
-    printf("\n - 전체 노드 갯수 : %d\n",iNodeCnt );
-    printf("\n");
+    printf("\n ~ 전체 노드 갯수 : %d\n\n",iNodeCnt );
     return TRUE;
 }
 
