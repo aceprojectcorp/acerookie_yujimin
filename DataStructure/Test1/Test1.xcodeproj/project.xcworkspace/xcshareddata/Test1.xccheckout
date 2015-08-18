@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>37BC038E-223C-4027-85F3-072E9665C0BE</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Test1</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>A175DAED98FBB8B66FBFB619814CE6BAC3649DAD</key>
+		<string>https://github.com/aceprojectcorp/acerookie_yujimin.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>DataStructure/Test1/Test1.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>A175DAED98FBB8B66FBFB619814CE6BAC3649DAD</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/aceprojectcorp/acerookie_yujimin.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>A175DAED98FBB8B66FBFB619814CE6BAC3649DAD</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>A175DAED98FBB8B66FBFB619814CE6BAC3649DAD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>acerookie_yujimin</string>
+		</dict>
+	</array>
+</dict>
+</plist>
