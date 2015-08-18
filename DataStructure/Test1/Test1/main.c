@@ -13,11 +13,24 @@
 int main(int argc, const char * argv[]) {
 // insert code here...
     
- //   CreateSList();
+    CreateSList();
     
- //   AddNode(1);
- //   AddNode(2);
- //   AddNode(3);
+    int i = 1;
+    while( i <= 3 )
+    {
+        AddNode(i);
+        i++;
+    }
+//    AddNode(2);
+//    AddNode(2);
+//    AddNode(2);
+    
+    ShowAllNode();
+    
+    DelNode(2);
+    
+    ShowAllNode();
+    
     
     
     printf("Hello, World!\n");
