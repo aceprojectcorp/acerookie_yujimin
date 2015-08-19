@@ -40,7 +40,6 @@ int ShowAllDbNode()
     DbNode * searchPtr = dbHeadPtr ;   // 검색용 노드형 변수
     int iNodeCnt = 0 ;                 // 전체 노드 갯수 카운트
     
-    // 아래 while문 때문에 첫번째 노드를 카운트 안함!!!!
     while ( searchPtr->dbNextNodePtr != NULL ) // && dbTailPtr->dbPreviousNodePtr != NULL )  // <- 만약 중간에 절단될 경우
     {
         searchPtr = searchPtr->dbNextNodePtr;

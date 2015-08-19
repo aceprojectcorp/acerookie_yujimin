@@ -16,7 +16,7 @@
 #define TRUE    1
 #define FALSE   0
 
-//노드 하나 구조
+//노드 구조
 typedef struct node
 {
     // 저장할 데이터

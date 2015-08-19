@@ -10,6 +10,8 @@
 		1D62A1E71B82B00800ECAF10 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 1D62A1E61B82B00800ECAF10 /* main.c */; };
 		1D62A1EF1B82B04B00ECAF10 /* SingleLinkedList1.c in Sources */ = {isa = PBXBuildFile; fileRef = 1D62A1ED1B82B04B00ECAF10 /* SingleLinkedList1.c */; };
 		1D62A1F21B83065400ECAF10 /* DoubleLinkedList1.c in Sources */ = {isa = PBXBuildFile; fileRef = 1D62A1F01B83065400ECAF10 /* DoubleLinkedList1.c */; };
+		1DDF16041B8458760032744B /* Stack.c in Sources */ = {isa = PBXBuildFile; fileRef = 1DDF16021B8458760032744B /* Stack.c */; };
+		1DDF16071B847F6B0032744B /* Queue.c in Sources */ = {isa = PBXBuildFile; fileRef = 1DDF16051B847F6B0032744B /* Queue.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +33,10 @@
 		1D62A1EE1B82B04B00ECAF10 /* SingleLinkedList1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleLinkedList1.h; sourceTree = "<group>"; };
 		1D62A1F01B83065400ECAF10 /* DoubleLinkedList1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DoubleLinkedList1.c; sourceTree = "<group>"; };
 		1D62A1F11B83065400ECAF10 /* DoubleLinkedList1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoubleLinkedList1.h; sourceTree = "<group>"; };
+		1DDF16021B8458760032744B /* Stack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Stack.c; sourceTree = "<group>"; };
+		1DDF16031B8458760032744B /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
+		1DDF16051B847F6B0032744B /* Queue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Queue.c; sourceTree = "<group>"; };
+		1DDF16061B847F6B0032744B /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +74,10 @@
 				1D62A1E61B82B00800ECAF10 /* main.c */,
 				1D62A1F01B83065400ECAF10 /* DoubleLinkedList1.c */,
 				1D62A1F11B83065400ECAF10 /* DoubleLinkedList1.h */,
+				1DDF16021B8458760032744B /* Stack.c */,
+				1DDF16031B8458760032744B /* Stack.h */,
+				1DDF16051B847F6B0032744B /* Queue.c */,
+				1DDF16061B847F6B0032744B /* Queue.h */,
 			);
 			path = Test1;
 			sourceTree = "<group>";
@@ -128,8 +138,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DDF16071B847F6B0032744B /* Queue.c in Sources */,
 				1D62A1EF1B82B04B00ECAF10 /* SingleLinkedList1.c in Sources */,
 				1D62A1F21B83065400ECAF10 /* DoubleLinkedList1.c in Sources */,
+				1DDF16041B8458760032744B /* Stack.c in Sources */,
 				1D62A1E71B82B00800ECAF10 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
