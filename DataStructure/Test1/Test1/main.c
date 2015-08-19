@@ -53,15 +53,31 @@ int main(int argc, const char * argv[]) {
     ShowAllNode();
     printf("--------------------------------------------\n\n");
     
+    
+    printf("\n\n *** 이중연결 리스트 테스트 시작 ***\n\n");
+    
     CreateDbList();
     
-    AddDbNodeNoSort( 1, HEAD );
+    DelDbNode(1, HEAD);
     ShowAllDbNode();
     
-    AddDbNodeNoSort( 2, HEAD );
+    
+    while ( i >= 1 ) {
+        AddDbNodeNoSort( i, HEAD );
+        i--;
+    }
+    
+    while (i <=3 ) {
+        AddDbNodeNoSort( i, TAIL );
+        i++;
+    }
+    ShowAllDbNode();
+
+    
+    DelDbNode(1, HEAD);
     ShowAllDbNode();
     
-    AddDbNodeNoSort( 3, TAIL );
+    DelDbNode(2, HEAD);
     ShowAllDbNode();
     
     return 0;
