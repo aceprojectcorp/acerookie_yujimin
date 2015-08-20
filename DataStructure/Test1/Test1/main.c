@@ -20,19 +20,22 @@ int main(int argc, const char * argv[]) {
     // 승훈님의 팁1: 요런식으로 전역변수 말고, main의 지역변수로 선언해서 사용하면 리스트 유실 없이 사용 가능.
     // 또는 Create 저 함수를 중복 사용하지 못하게 막기.
     
+    printf("\n\n *** 단일연결 리스트 테스트 시작 ************\n\n");
     
+    Node * sLList1 ;
     
     printf("1. CreateSList() 안하고(head생성 없이) 다른 함수 사용 -----\n");
-    DelNode(1);
+    DelNode( &sLList1, 1);
     printf("-------------------------------------------------\n\n");
     
     // 승훈님의 팁2 : 팁1과 같이 선언하고, head의 동적할당 없얘기.. <- 스택과 큐 부터 적용해주기.
-    CreateSList();
+
+    CreateSList( &sLList1 );
     
     
     printf("\n2. 노드가 1개도 없는 상태에서 노드가 필요한 함수 사용 -----\n");
-    DelNode(1);
-    ShowAllNode();
+    DelNode( &sLList1, 1);
+    ShowAllNode( &sLList1 );
     printf("-------------------------------------------------\n\n");
     
     // 승훈님의 팁2 : 노드 추가를 리스트의 맨앞에 추가하면 AddNode()함수가 좀 더 빠르고 효율적여짐. <- 스택과 큐 부터 적용해주기 
@@ -40,25 +43,25 @@ int main(int argc, const char * argv[]) {
     int i = 1;
     while( i <= 5 )
     {
-        AddNode(i);
+        AddNode( &sLList1, i);
         i++;
     }
-    AddNode(2);
-    AddNode(2);
-    ShowAllNode();
+    AddNode( &sLList1, 2);
+    AddNode( &sLList1, 2);
+    ShowAllNode( &sLList1 );
     printf("---------------------------------------------\n\n");
     
     
     printf("\n3. 노드 삭제 함수 사용 후 모든 노드 출력 -----\n");
-    DelNode(2);
-    DelNode(4);
-    ShowAllNode();
+    DelNode( &sLList1, 2);
+    DelNode( &sLList1, 4);
+    ShowAllNode( &sLList1 );
     printf("-----------------------------------------\n\n");
     
     
     printf("\n4. 리스트에 없는 데이터값을 입력한 삭제 함수 사용. -----\n");
-    DelNode(2);
-    ShowAllNode();
+    DelNode( &sLList1, 2);
+    ShowAllNode( &sLList1 );
     printf("--------------------------------------------\n\n");
     
     
@@ -66,29 +69,32 @@ int main(int argc, const char * argv[]) {
     
     printf("\n\n *** 이중연결 리스트 테스트 시작 ************\n\n");
     
-    CreateDbList();
+    DbNode * dbHead1;
+    DbNode * dbTail1;
     
-    DelDbNode(1, HEAD);
-    ShowAllDbNode();
+    CreateDbList( &dbHead1, &dbTail1 );
+    
+    DelDbNode(&dbHead1, &dbTail1, 1, HEAD);
+    ShowAllDbNode( &dbHead1, &dbTail1 );
     
     
     while ( i >= 1 ) {
-        AddDbNodeNoSort( i, HEAD );
+        AddDbNodeNoSort( &dbHead1, &dbTail1, i, HEAD );
         i--;
     }
     
     while (i <=3 ) {
-        AddDbNodeNoSort( i, TAIL );
+        AddDbNodeNoSort( &dbHead1, &dbTail1, i, TAIL );
         i++;
     }
-    ShowAllDbNode();
+    ShowAllDbNode( &dbHead1, &dbTail1 );
 
     
-    DelDbNode(1, HEAD);
-    ShowAllDbNode();
+    DelDbNode(&dbHead1, &dbTail1, 1, HEAD);
+    ShowAllDbNode( &dbHead1, &dbTail1 );
     
-    DelDbNode(2, HEAD);
-    ShowAllDbNode();
+    DelDbNode(&dbHead1, &dbTail1, 2, HEAD);
+    ShowAllDbNode( &dbHead1, &dbTail1 );
     
     
     

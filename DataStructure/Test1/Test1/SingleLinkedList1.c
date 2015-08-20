@@ -8,20 +8,16 @@
 
 #include "SingleLinkedList1.h"
 
-// 맨처음 시작 노드 가리키는(주소 저장한) 포인터
-Node * nHeadPtr = NULL;
-
-void CreateSList()
+void CreateSList( Node ** ptr )
 {
     printf("* 리스트 생성(head생성)\n\n");
-    nHeadPtr = (Node*)malloc(sizeof(Node));
+    *ptr = NULL;  //nHeadPtr;
 }
 
 
 // 노드추가
-int AddNode( int inputData )
+int AddNode( Node ** ptr, int inputData )
 {
-    
     printf("* 노드 생성 : 데이터가 %d인 노드 \n", inputData );
     
     // 노드 생성
@@ -32,47 +28,52 @@ int AddNode( int inputData )
     
     printf(" 추가된 Node의 주소값 : %p\n", node);
 
-    
     // 마지막 노드 찾기. 마지막 노드의 nodePtr값이 NULL이면 마지막 노드.
-    Node * searchPtr = nHeadPtr;
+    Node * searchPtr = *ptr ;
     
-    printf("[%d / %p]((H)) ", searchPtr->iNodeData, searchPtr->nodePtr);
-    while( searchPtr->nodePtr != NULL )
+    // 리스트가 비어 있을 경우
+    if ( *ptr == NULL ) {
+        printf("[NULL]\n");
+        *ptr = node;
+    }
+    else
     {
-        searchPtr = searchPtr->nodePtr;
+        printf("[%d / %p] ", searchPtr->iNodeData, searchPtr->nodePtr);
+        while( searchPtr->nodePtr != NULL )
+        {
+            searchPtr = searchPtr->nodePtr;
+            printf("[%d / %p] ", searchPtr->iNodeData, searchPtr->nodePtr);
+        }
+        printf("\n");
+        
+        // nodePtr값이 0인 노드(=마지막노드)가 발견되면
+        searchPtr->nodePtr = node;
+        
         printf("[%d / %p] ", searchPtr->iNodeData, searchPtr->nodePtr);
     }
-    
-    printf("\n");
-    
-    // nodePtr값이 0인 노드(=마지막노드)가 발견되면
-    searchPtr->nodePtr = node;
-    printf("[%d / %p] ", searchPtr->iNodeData, searchPtr->nodePtr);
+
     printf("[%d / %p]\n", node->iNodeData, node->nodePtr);
-    
     printf(" ~ %d 추가완료\n\n", inputData );
     
     return TRUE;
 }
 
-int DelNode( int delData )
+
+int DelNode( Node ** ptr, int delData )
 {
-    
     printf("* 노드 삭제 : 데이터가 %d인 노드 모두 삭제 \n", delData );
     
     // 삭제할 노드가 있는지 확인
-    if ( nHeadPtr == NULL || nHeadPtr->nodePtr == NULL )
+    if ( *ptr == NULL )
     {
         printf(" ~ 삭제할 노드가 없습니다\n\n");
-        
         return TRUE;
     }
     
-    Node * selectNode = nHeadPtr;   // 선택된 노드. 노드 주소를 이동 할때만 사용.
+    Node * selectNode = *ptr ;      // 선택된 노드. 노드 주소를 이동 할때만 사용.
     Node * frontNode = NULL;        // 선택된 노드의 이전 노드를 저장할 변수.
                                     // ex) [이전노드]-[삭제노드]-[삭제다음노드] : 이전노드에서 삭제다음노드로 이어주기 위해 이전노드를 저장.
-    int iDelNodeCount = 0;           // 삭제된 노드 갯수 카운트
-
+    int iDelNodeCount = 0;          // 삭제된 노드 갯수 카운트
     
     // 처음부터 끝까지 검색
     while( selectNode != NULL )
@@ -98,20 +99,19 @@ int DelNode( int delData )
     
 }
 
-int ShowAllNode()
+int ShowAllNode( Node ** ptr )
 {
-    
     printf("* 모든 노드 리스트 출력\n");
     
     // 보여줄 노드가 있는지 확인
-    if ( nHeadPtr==NULL || nHeadPtr->nodePtr == NULL ) {
+    if ( *ptr == NULL ) //NULL || nHeadPtr->nodePtr == NULL )
+    {
         printf(" ~ 출력할 노드가 없습니다\n\n");
-        
         return TRUE;
     }
     
     int iNodeCnt = 0 ; // 노드 갯수 카운트
-    Node * searchPtr = nHeadPtr;
+    Node * searchPtr = *ptr ; // nHeadPtr;
     while( searchPtr->nodePtr != NULL )
     {
         searchPtr = searchPtr->nodePtr;

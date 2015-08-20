@@ -19,7 +19,7 @@ void CreateQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr )
 
 void PushQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr, int inputData )
 {
-    printf("* 큐에 데이터 삽입 : %d인 데이터 삽입 \n", inputData );
+    printf("* 큐에 데이터 삽입 : %d인 데이터 삽입 \n\n", inputData );
     
     // 노드 생성
     QueueNode * node ;
@@ -43,7 +43,7 @@ void PushQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr, int inputD
         *queueHeadPtr = node;
     }
     
-    printf(" 추가된 Node의 주소값 : %p\n\n", node);
+//    printf(" 추가된 Node의 주소값 : %p\n\n", node);
 }
 
 

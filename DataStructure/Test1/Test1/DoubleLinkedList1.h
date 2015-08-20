@@ -26,15 +26,15 @@ typedef struct dbNode
 
 
 // 초기화
-void CreateDbList();
+void CreateDbList( DbNode ** dbHead, DbNode ** dbTail );
 
 // 노드추가 - 정렬X, 무조건 앞(headOrTail에 HEAD주기)이나, 뒤(headOrTail에 TAIL)에 붙이기
-int AddDbNodeNoSort( int inputData, int headOrTail );
+int AddDbNodeNoSort(  DbNode ** dbHead, DbNode ** dbTail, int inputData, int headOrTail );
 
 // 노드삭제 - 정렬X, delData와 같은 노드를 모두 삭제. headOrTail : 앞이나 뒤에서 해당 delData값 찾기(아직 구현x)
-int DelDbNode( int delData, int headOrTail );
+int DelDbNode(  DbNode ** dbHead, DbNode ** dbTail, int delData, int headOrTail );
 
 // 모든 노드 보여주기
-int ShowAllDbNode();
+int ShowAllDbNode( DbNode ** dbHead, DbNode ** dbTail );
 
 #endif /* defined(__Test1__DoubleLinkedList1__) */

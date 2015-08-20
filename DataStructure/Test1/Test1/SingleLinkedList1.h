@@ -29,17 +29,16 @@ typedef struct node
 
 
 // 초기화
-void CreateSList();
+void CreateSList( Node ** ptr );
 
 // 노드추가
-int AddNode( int inputData );
-
+int AddNode( Node ** ptr, int inputData );
 
 // 노드삭제
-int DelNode( int delData );
+int DelNode( Node ** ptr, int delData );
 
 // 모든 노드 보여주기
-int ShowAllNode();
+int ShowAllNode( Node ** ptr );
 
 
 #endif /* defined(__DataStr_test1__SingleLinkedList1__) */

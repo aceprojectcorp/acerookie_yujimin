@@ -26,7 +26,7 @@ void Push( StackNode ** stackPtr, int inputData )
     node->iNodeData = inputData;
     node->nodePtr = NULL;
     
-    printf(" ~ 추가된 데이터의 주소값 : %p\n", node);
+//    printf(" ~ 추가된 데이터의 주소값 : %p\n", node);
     
     // stack이 안 비어있을 경우(데이터가 1개이상 있는 상황)
     if( *stackPtr != NULL )
@@ -35,7 +35,7 @@ void Push( StackNode ** stackPtr, int inputData )
     }
     *stackPtr = node;
     
-    printf(" ~ %p 다음 주소값\n", node->nodePtr );
+//    printf(" ~ %p 다음 주소값\n", node->nodePtr );
     printf(" ~ %d 추가완료\n\n", inputData );
 }
 
