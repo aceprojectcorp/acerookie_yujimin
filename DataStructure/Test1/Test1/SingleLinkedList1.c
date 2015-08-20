@@ -73,6 +73,7 @@ int DelNode( Node ** ptr, int delData )
     Node * selectNode = *ptr ;      // 선택된 노드. 노드 주소를 이동 할때만 사용.
     Node * frontNode = NULL;        // 선택된 노드의 이전 노드를 저장할 변수.
                                     // ex) [이전노드]-[삭제노드]-[삭제다음노드] : 이전노드에서 삭제다음노드로 이어주기 위해 이전노드를 저장.
+    Node * delNode = NULL;          // 삭제할 노드 임시저장
     int iDelNodeCount = 0;          // 삭제된 노드 갯수 카운트
     
     // 처음부터 끝까지 검색
@@ -82,9 +83,12 @@ int DelNode( Node ** ptr, int delData )
         {
             frontNode->nodePtr = selectNode->nodePtr;
   
-            free(selectNode);
+            delNode = selectNode ;
             
             selectNode = selectNode->nodePtr;
+            
+            free( delNode );
+            
             iDelNodeCount++;
         }
         else
@@ -110,8 +114,10 @@ int ShowAllNode( Node ** ptr )
         return TRUE;
     }
     
-    int iNodeCnt = 0 ; // 노드 갯수 카운트
-    Node * searchPtr = *ptr ; // nHeadPtr;
+    int iNodeCnt = 1 ;          // 노드 갯수 카운트
+    Node * searchPtr = *ptr ;
+    
+    printf("<%d> ", searchPtr->iNodeData);
     while( searchPtr->nodePtr != NULL )
     {
         searchPtr = searchPtr->nodePtr;

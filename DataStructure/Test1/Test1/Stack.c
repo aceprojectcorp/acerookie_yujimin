@@ -54,7 +54,7 @@ void Pop( StackNode ** stackPtr )
     {
         printf(" ~ 삭제될 데이터 : %d\n", (*stackPtr)->iNodeData );
         
-        free( *stackPtr );
+        StackNode * delNode = *stackPtr ;
         
         // 딱 1개있던 데이터를 삭제하는 경우.
         if( (*stackPtr)->nodePtr == NULL )
@@ -65,6 +65,7 @@ void Pop( StackNode ** stackPtr )
         {
             *stackPtr = ((*stackPtr)->nodePtr) ;
         }
+        free( delNode );
     }
     
     printf("\n");

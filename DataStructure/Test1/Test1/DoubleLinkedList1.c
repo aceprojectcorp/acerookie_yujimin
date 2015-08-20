@@ -30,7 +30,7 @@ int ShowAllDbNode( DbNode ** dbHead, DbNode ** dbTail )
     }
     
     DbNode * searchPtr = *dbHead ;     // 검색용 노드형 변수
-    int iNodeCnt = 0 ;                 // 전체 노드 갯수 카운트
+    int iNodeCnt = 1 ;                 // 전체 노드 갯수 카운트
     
     printf("< %d / %p\t/ (%p)\t / %p >\n", searchPtr->iDbNodeData, searchPtr->dbPreviousNodePtr, searchPtr, searchPtr->dbNextNodePtr ); // 맨 앞 노드
     while ( searchPtr->dbNextNodePtr != NULL )
@@ -98,6 +98,7 @@ int DelDbNode(  DbNode ** dbHead, DbNode ** dbTail, int delData, int headOrTail 
     }
     
     DbNode * selectNode = *dbHead; //dbHeadPtr;   // 선택된 노드. 노드 주소를 이동 할때만 사용.
+    DbNode * delNode = NULL;
     int iDelNodeCount = 0;           // 삭제된 노드 갯수 카운트
     
     // 리스트를 처음부터 끝까지 검색
@@ -113,17 +114,19 @@ int DelDbNode(  DbNode ** dbHead, DbNode ** dbTail, int delData, int headOrTail 
             // 노드가 2개 이상 있을경우
             else
             {
+                delNode = selectNode ;
+                
                 // 선택 노드가 첫번째 노드일 경우  head -> [선택노드] <-> [다음노드] ...
                 if( selectNode->dbPreviousNodePtr == NULL ) // dbHeadPtr->dbNextNodePtr == selectNode 요것도 되겠네
                 {
-                    *dbHead = selectNode->dbNextNodePtr ;
+                    *dbHead = selectNode = selectNode->dbNextNodePtr ;
                     (*dbHead)->dbPreviousNodePtr = NULL;
                 }
                 // 선택 노드가 마지막 노드일 경우   ...[앞노드] <-> [선택노드] <- tail
                 else if ( selectNode->dbNextNodePtr == NULL )
                 {
                     *dbTail = selectNode->dbPreviousNodePtr ;
-                    (*dbTail)->dbNextNodePtr = NULL;
+                    selectNode = (*dbTail)->dbNextNodePtr = NULL;
                 }
                 // 선택 노드가 첫번째도 마지막도 아님.
                 else    // ...[이전노드]-[선택노드]-[다음노드]...
@@ -131,12 +134,17 @@ int DelDbNode(  DbNode ** dbHead, DbNode ** dbTail, int delData, int headOrTail 
                     // 앞노드의 dbNextNodePtr(다음노드주소값)을 뒷노드로 바꿈.
                     (selectNode->dbPreviousNodePtr)->dbNextNodePtr = selectNode->dbNextNodePtr ;
                     (selectNode->dbNextNodePtr)->dbPreviousNodePtr = selectNode->dbPreviousNodePtr;
+                    
+                    selectNode = selectNode->dbNextNodePtr ;
                 }
             }
-            free(selectNode);
+            free(delNode);
             iDelNodeCount++;
         }
-        selectNode = selectNode->dbNextNodePtr ;
+        else
+        {
+            selectNode = selectNode->dbNextNodePtr ;
+        }
     }
     printf(" ~ 삭제된 노드의 갯수 : %d \n\n",iDelNodeCount);
     

@@ -30,17 +30,17 @@ void PushQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr, int inputD
     
     // 노드를 리스트에 삽입
     // 노드가 1개도 없을 경우. head와 tail의 포인터가 null을 카르키는 상태.
-    if ( *queueHeadPtr == NULL )
+    if ( *queueTailPtr == NULL )
     {
-        *queueHeadPtr = *queueTailPtr = node;
+        *queueTailPtr = *queueHeadPtr = node;
     }
     else
     {
-        (*queueHeadPtr)->qPreviousPtr = node;
+        (*queueTailPtr)->qPreviousPtr = node;
         
-        node->qNextPtr = *queueHeadPtr;
+        node->qNextPtr = *queueTailPtr;
         
-        *queueHeadPtr = node;
+        *queueTailPtr = node;
     }
     
 //    printf(" 추가된 Node의 주소값 : %p\n\n", node);
@@ -52,29 +52,29 @@ void PopQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr )
     printf("* 큐의 데이터 삭제 : 제일 마지막에 삽입된 데이터 삭제 \n" );
     
     // 스택에 데이터가 한개도 없으면
-    if ( *queueHeadPtr == NULL )
+    if ( *queueTailPtr == NULL )
     {
         printf(" ~ 삭제할 데이터가 없습니다\n\n");
         return;
     }
     else
     {
-        printf(" ~ 삭제될 데이터 : %d\n", (*queueTailPtr)->iNodeData );
-        
-        free( *queueTailPtr );
+        printf(" ~ 삭제될 데이터 : %d\n", (*queueHeadPtr)->iNodeData );
+    
+        QueueNode * delNode = *queueHeadPtr ;
         
         // 딱 1개있던 데이터를 삭제하는 경우.
-        if( *queueTailPtr == *queueHeadPtr )
+        if( *queueHeadPtr == *queueTailPtr )
         {
-            *queueHeadPtr = *queueTailPtr = NULL ;
+            *queueTailPtr = *queueHeadPtr = NULL ;
         }
         else
         {
-            *queueTailPtr = (*queueTailPtr)->qPreviousPtr ;
-            (*queueTailPtr)->qNextPtr = NULL;
+            *queueHeadPtr = (*queueHeadPtr)->qPreviousPtr ;
+            (*queueHeadPtr)->qNextPtr = NULL;
         }
+        free( delNode );
     }
-    
     printf("\n");
 }
 
