@@ -126,7 +126,6 @@ int DelDbNode( int delData, int headOrTail )
             // 노드가 2개 이상 있을경우
             else
             {
-                
                 // 선택 노드가 첫번째 노드일 경우  head -> [선택노드] <-> [다음노드] ...
                 if( selectNode->dbPreviousNodePtr == NULL ) // dbHeadPtr->dbNextNodePtr == selectNode 요것도 되겠네
                 {

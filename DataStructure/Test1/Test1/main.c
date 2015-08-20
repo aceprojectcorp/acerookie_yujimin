@@ -16,7 +16,7 @@
 int main(int argc, const char * argv[]) {
 // insert code here...
     
-    Node * sNodeTest1;
+//    Node * sNodeTest1;
     // 승훈님의 팁1: 요런식으로 전역변수 말고, main의 지역변수로 선언해서 사용하면 리스트 유실 없이 사용 가능.
     // 또는 Create 저 함수를 중복 사용하지 못하게 막기.
     
@@ -131,10 +131,10 @@ int main(int argc, const char * argv[]) {
     
     CreateQueue( &queueHeadPtr, &queueTailPtr );
     
-    while( i < 4 )
+    while( i < 6 )
     {
         PushQueue( &queueHeadPtr, &queueTailPtr, i );
-        i++;
+        i += 2;
     }
     
     ShowAllQueue( &queueHeadPtr, &queueTailPtr );

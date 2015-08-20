@@ -8,17 +8,16 @@
 
 #include "Stack.h"
 
-// 초기화
+
 void CreateStack( StackNode ** stackPtr )
 {
     printf("\n* 스택 생성(초기화)\n\n");
     *stackPtr = NULL;
 }
 
-// 데이터 삽입
+
 void Push( StackNode ** stackPtr, int inputData )
-{
-    
+{    
     printf("* 데이터 삽입 : %d인 데이터 삽입 \n", inputData );
     
     // 노드 생성
@@ -27,10 +26,9 @@ void Push( StackNode ** stackPtr, int inputData )
     node->iNodeData = inputData;
     node->nodePtr = NULL;
     
-    printf(" ~ 추가된 Node의 주소값 : %p\n", node);
+    printf(" ~ 추가된 데이터의 주소값 : %p\n", node);
     
-    
-    // stack이 안 비어있을 경우
+    // stack이 안 비어있을 경우(데이터가 1개이상 있는 상황)
     if( *stackPtr != NULL )
     {
         node->nodePtr = *stackPtr;
@@ -42,7 +40,6 @@ void Push( StackNode ** stackPtr, int inputData )
 }
 
 
-// 데이터 삭제
 void Pop( StackNode ** stackPtr )
 {
     printf("* 데이터 삭제 : 제일 최근에 삽입된 데이터 삭제 \n" );
@@ -68,13 +65,12 @@ void Pop( StackNode ** stackPtr )
         {
             *stackPtr = ((*stackPtr)->nodePtr) ;
         }
-        
     }
     
     printf("\n");
 }
 
-// 모든 노드 보여주기
+
 void ShowAllStack( StackNode ** stackPtr )
 {
     printf("* 스택안에 모든 데이터 출력\n");
@@ -92,5 +88,4 @@ void ShowAllStack( StackNode ** stackPtr )
     }
     
     printf("\n");
-    
 }

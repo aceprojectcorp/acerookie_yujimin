@@ -8,15 +8,15 @@
 
 #include "Queue.h"
 
+
 void CreateQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr )
 {
     printf("\n* 큐 생성(초기화)\n\n");
     *queueHeadPtr = NULL;
     *queueTailPtr = NULL;
-    
 }
 
-// 데이터 삽입
+
 void PushQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr, int inputData )
 {
     printf("* 큐에 데이터 삽입 : %d인 데이터 삽입 \n", inputData );
@@ -29,11 +29,10 @@ void PushQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr, int inputD
     node->qPreviousPtr = NULL;
     
     // 노드를 리스트에 삽입
-    // 노드가 1개도 없을 경우. head와 tail의 포인터가 null을 카르킴.
+    // 노드가 1개도 없을 경우. head와 tail의 포인터가 null을 카르키는 상태.
     if ( *queueHeadPtr == NULL )
     {
-        *queueHeadPtr = node;
-        *queueTailPtr = node;
+        *queueHeadPtr = *queueTailPtr = node;
     }
     else
     {
@@ -45,10 +44,9 @@ void PushQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr, int inputD
     }
     
     printf(" 추가된 Node의 주소값 : %p\n\n", node);
-    
 }
 
-// 데이터 삭제
+
 void PopQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr )
 {
     printf("* 큐의 데이터 삭제 : 제일 마지막에 삽입된 데이터 삭제 \n" );
@@ -72,18 +70,15 @@ void PopQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr )
         }
         else
         {
-            *queueTailPtr = ((*queueTailPtr)->qPreviousPtr) ;
+            *queueTailPtr = (*queueTailPtr)->qPreviousPtr ;
             (*queueTailPtr)->qNextPtr = NULL;
         }
-        
     }
     
     printf("\n");
-    
-    
 }
 
-// 모든 노드 보여주기
+
 void ShowAllQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr )
 {
     printf("* 큐 출력\n");
@@ -91,7 +86,7 @@ void ShowAllQueue( QueueNode ** queueHeadPtr, QueueNode ** queueTailPtr )
     // 보여줄 노드가 있는지 확인
     if ( *queueHeadPtr == NULL )
     {
-        printf(" ~ 출력할 노드가 없습니다\n\n");
+        printf(" ~ 출력할 데이터가 없습니다\n\n");
         return;
     }
     else
