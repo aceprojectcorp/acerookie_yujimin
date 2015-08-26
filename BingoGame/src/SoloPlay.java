@@ -141,24 +141,44 @@ class Bingo
 	}
 	
 	
-	// 입력값이 유효한 값인지 확인하는 메소드.
+	// 입력값(선택할 빙고 번호)이 유효한 값인지 확인하는 메소드.
 	int isValidNum()
 	{
 
 		System.out.print("* 선택할 번호 : ");		 
 		
 		while( true )
-		{			
-			// 입력값 자체가 잘못 되었을 경우 ( 문자, 특문, 실수 )
-			if( !sc.hasNextInt() )
+		{	
+			// 입력값 자체가 잘못 되었을 경우 ( 문자, 특문, 실수등이 입력될 경우)
+			if( !sc.hasNextInt() )		// 여기서 실질적으로 입력 받음 
 			{		
-				sc.next();
+				sc.nextLine();				// 잘못된 입력값을 비움. _ hasNext에 남아있던 개행문자를 이용해서 스캐너 비움. 				
 				System.err.println(" ~ 숫자를 입력해 주세요.");
 				continue;
 			}
+			// 입력값이 일단 숫자. 
 			else
 			{
-				num = sc.nextInt();			
+				// 숫자+공백+숫자로 이루어졌는지 확인 -------------------
+				String tmpStr = sc.nextLine();
+				int tmp = 0 ;
+				// (공백찾기) 
+				for( int i = 0 ; i < tmpStr.length() ; i ++ )
+				{
+					if( tmpStr.charAt(i) == ' ')
+					{						
+						tmp++;
+						break;
+					}					
+				}
+				if( tmp > 0)
+				{
+					System.err.println(" ~ 공백없이 입력해 주세요. ");
+					continue;
+				}
+				//-----------------------------------------------
+				
+				num = Integer.parseInt( tmpStr );
 			}
 			
 			// 값의 범위 
@@ -178,10 +198,10 @@ class Bingo
 			// 빙고판에 체크된 숫자인지 확인 
 			else if( checkBingoFan1( num ) == true )
 			{
-				System.out.println(" ~ 이미 선택되어진 숫자입니다. 다른숫자를 선택해 주세요.");
+				System.err.println(" ~ 이미 선택되어진 숫자입니다. 다른숫자를 선택해 주세요.");
 			}
 			else
-			{
+			{				
 				break;
 			}		
 		}
@@ -237,6 +257,7 @@ class Bingo
 		return false;
 	}
 	
+	// 완성된 빙고 라인수 카운트 
 	int checkSuccLine()
 	{
 		int x = 0;						// 가로 빙고 갯수 카운트 
@@ -298,8 +319,6 @@ public class SoloPlay {
 		
 		Bingo bingo = new Bingo();
 		String inputSt = null;
-		
-		char inputChar;		// 입력값 받기 
 		
 		bingo.play();
 		
