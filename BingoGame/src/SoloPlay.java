@@ -1,7 +1,5 @@
 import java.util.*;
 import java.io.IOException;
-import java.lang.*;
-
 
 class Bingo
 {
@@ -11,8 +9,7 @@ class Bingo
 	int[][] myBingFan ;		// 내 빙고판 (숫자저장)
 	int[][] myBingFan2 ;	// 내 빙고판 (체크저장)	
 	int succLineNum;		// 성공한 빙고 라인 수 
-	int playTime;			// 플레이 횟수 
-	Random rd ;				// 난수값 생성 
+	int playTime;			// 플레이 횟수 			
 	Scanner sc ;			// 입력값 받아줄 스캐너.
 	
 	
@@ -30,7 +27,7 @@ class Bingo
 		num = 0 ; 
 		myBingFan = new int[BINGOSIZE][BINGOSIZE];
 		myBingFan2 = new int[BINGOSIZE][BINGOSIZE];
-		rd = new Random() ;
+		Random rd = new Random() ;
 		sc = new Scanner( System.in );
 		
 		// 빙고판1,2 초기화  
@@ -46,10 +43,7 @@ class Bingo
 		// 빙고판 만들기 
 		while( arrCnt < BINGOSIZE*BINGOSIZE )
 		{			
-			num = ((rd.nextInt()) % 100 ) + 1;  // 1~100 사이의 난수 저장.
-			
-			if( num < 0 )
-				num *= -1 ;
+			num = Math.abs(((rd.nextInt()) % 100 ) + 1);  // 1~100 사이의 난수 저장.
 			
 			// 기존 배열의 값들과 입력값이 같은지 확인. 같은 값이 없으면 false반환.  
 			if( isEqualNumOfArr( num ) == false )
@@ -204,19 +198,8 @@ class Bingo
 			{				
 				break;
 			}		
-		}
-		
-		return num;	
-		
-		// 입력값 자체가 잘못되었을경우 ( 문자....특수문자... )
-		// 숫자가 아닌 문자열등을 잘못 입력했을 때, 올바른 값을 입력할 때까지 루프를 돌리며 계속 다시 입력받음
-		// http://mwultong.blogspot.com/2007/03/java-input-float-number-loop.html
-//		while( !sc.hasNextInt() )
-//		{
-//			sc.next();	// 잘못된 입력값 버리기.
-//			System.err.println(" ~ 숫자를 입력해 주세요.");	
-//		}
-		
+		}		
+		return num;		
 	}
 	
 	// 빙고판1에 체크된 값을 빙고판2에 저장.
@@ -289,10 +272,11 @@ class Bingo
 						if( y[j] == 5 )			
 							tmpBingoNum++;	
 						
-						// 대각선 줄 빙고 라인수 확인 / 방
+						// 대각선 줄 빙고 라인수 확인 / 방향 
 						if( i+j == 4 && z[1] == 5 ) 
 							tmpBingoNum++;
 						
+						// 대각선 줄 빙고 라인수 확인 \ 방향 
 						if( i+j == 8 && z[0] == 5 ) 
 							tmpBingoNum++;
 					}
