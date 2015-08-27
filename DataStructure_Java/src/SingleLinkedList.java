@@ -1,26 +1,11 @@
-class SLLNode
+public class SingleLinkedList 
 {
-	int num ; 
-	SLLNode next;
-	
-	public SLLNode( int a )
-	{
-		num = a;
-		next = null;
-	}
-}
-
-
-class SList
-{
-	// 노드 추가는 항상 리스트의 맨 앞부분에 추가됨 (head가 가르키는 노드의 앞)
-	
-	// 노드 추가 
-	public void AddSLL( SLLNode head, int input )
+	// 노드 추가 // 항상 리스트의 맨 앞부분에 추가됨 (head가 가르키는 노드의 앞)	
+	public void AddSLL( NodeForSingleLinked head, int input )
 	{
 		System.out.println("* 데이터 추가 : "+input);
 		
-		SLLNode node = new SLLNode( input );
+		NodeForSingleLinked node = new NodeForSingleLinked( input );
 		
 		// 리스트에 노드가 존재  
 		if( head.next != null )
@@ -33,9 +18,9 @@ class SList
 	}
 	
 	// 모든 노드 출력 
-	public void ShowSLL( SLLNode head )
+	public void Show( NodeForSingleLinked head )
 	{
-		System.out.println("* 단일 연결 리스트의 모든 노드 출력");
+		System.out.println("* 모든 노드 출력");
 		
 		if( head.next == null )
 		{
@@ -43,7 +28,7 @@ class SList
 		}
 		else
 		{
-			SLLNode selectNode = head.next;
+			NodeForSingleLinked selectNode = head.next;
 			
 			while( selectNode != null )
 			{
@@ -56,7 +41,7 @@ class SList
 	}
 	
 	// 노드삭제 
-	public void DelSLL( SLLNode head, int input )
+	public void DelSLL( NodeForSingleLinked head, int input )
 	{
 		System.out.println("* 데이터 값이 " + input + "인 노드 모두 삭제");
 		
@@ -66,8 +51,8 @@ class SList
 		}
 		else
 		{
-			SLLNode selectNode = head.next;
-			SLLNode frontNode = null;
+			NodeForSingleLinked selectNode = head.next;
+			NodeForSingleLinked frontNode = null;
 			
 			while( selectNode != null )
 			{
@@ -101,34 +86,5 @@ class SList
 		}
 		
 		System.out.println();
-	}
-}
-public class SingleLinkedList {
-
-	public static void main(String[] args) {
-		
-		// head생성
-		SLLNode SLLhead = new SLLNode( 0 );
-		
-		// 리스트 생성 
-		SList sl = new SList();
-		
-		sl.AddSLL( SLLhead, 1 );
-		sl.AddSLL( SLLhead, 2 );
-		sl.AddSLL( SLLhead, 3 );
-		sl.AddSLL( SLLhead, 2 );
-		sl.ShowSLL( SLLhead );
-		
-		sl.DelSLL( SLLhead, 2 );
-		sl.ShowSLL( SLLhead );
-		
-		sl.DelSLL( SLLhead, 1 );
-		sl.ShowSLL( SLLhead );
-		
-		sl.DelSLL( SLLhead, 3 );
-		sl.DelSLL( SLLhead, 3 );
-		
-		sl.ShowSLL( SLLhead );
-		
 	}
 }

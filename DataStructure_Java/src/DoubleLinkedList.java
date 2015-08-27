@@ -1,53 +1,41 @@
-class DLLNode
-{
-	int num ; 
-	DLLNode pre;
-	DLLNode next;
-	
-	public DLLNode( int a )
-	{
-		num = a;
-		next = null;
-		pre = null;
-	}
-}
 
-class DLList
+public class DoubleLinkedList 
 {
 	// 노드 삽입 
-	public void DLLAdd( DLLNode head, DLLNode tail, int input )
+	public void DLLAdd( NodeForDoubleLinked head, NodeForDoubleLinked tail, int input )
 	{
 		System.out.println("* 데이터 추가 : "+input);
 		
-		DLLNode node = new DLLNode( input );
+		NodeForDoubleLinked node = new NodeForDoubleLinked( input );
 		
 		// 리스트에 노드가 존재  
-		if( head.next != null )
+		if( tail.next != null )
 		{
-			node.next = head.next ; 	// [새 노드] -> [첫번째노드] <= head
-			head.next.pre = node; 		// [새 노드] <- [첫번째노드] <= head 
+			node.next = tail.next ; 	// [새 노드] -> [첫번째노드] <= tail
+			tail.next.pre = node; 		// [새 노드] <- [첫번째노드] <= tail 
 		}
 		else
 		{
-			tail.pre = node;
+			head.pre = node;
 		}
-		head.next = node;
+		tail.next = node;
 		
 		System.out.println();
 	}
 	
 	// 리스트내 모든 노드 출력 
-	public void DLLShow( DLLNode head, DLLNode tail )
+	public void DLLShow( NodeForDoubleLinked head, NodeForDoubleLinked tail )
 	{
-		System.out.println("* 이중 연결 리스트의 모든 노드 출력");
+		System.out.println("* 모든 노드 출력");
 		
-		if( head.next == null )
+		if( tail.next == null )
 		{
 			System.out.println("리스트가 비어있음");
+			
 		}
 		else
 		{
-			DLLNode selectNode = head.next;
+			NodeForDoubleLinked selectNode = tail.next;
 			
 			while( selectNode != null )
 			{
@@ -61,17 +49,17 @@ class DLList
 	}
 	
 	// 노드 삭제 
-	public void DLLDel( DLLNode head, DLLNode tail, int input ) 
+	public void DLLDel( NodeForDoubleLinked head, NodeForDoubleLinked tail, int input ) 
 	{
 		System.out.println("* 데이터 값이 " + input + "인 노드 모두 삭제");
 		
-		if( head.next == null )
+		if( tail.next == null )
 		{
 			System.out.println(" ~ 삭제할 노드가 없습니다.");
 		}
 		else
 		{
-			DLLNode selectNode = head.next;
+			NodeForDoubleLinked selectNode = tail.next;
 
 			// 모든 노드 찾기 
 			while( selectNode != null )
@@ -79,20 +67,20 @@ class DLList
 				if( selectNode.num == input )
 				{
 					// 리스트에 노드가 단 하나 뿐일때
-					if( selectNode == null && selectNode == head.next )
+					if( selectNode == null && selectNode == tail.next )
 					{
-						head.next = tail.next = null ; 
+						tail.next = head.next = null ; 
 					}						
-					// 맨 앞 노드일 때
-					else if( selectNode == head.next )
+					// 맨 앞 노드일 때	// tail -> [선택노드] <-> [노드] <->...
+					else if( selectNode == tail.next )
 					{
-						head.next = head.next.next;
+						tail.next = tail.next.next;
 					}					
-					// 맨 뒤 노드일 때 
+					// 맨 뒤 노드일 때 	// ...[노드] <-> [선택노드] <- head
 					else if( selectNode.next == null )
 					{
-						selectNode.pre.next = null;
-						tail.next = selectNode.pre;
+						selectNode.pre.next = null;	
+						head.next = selectNode.pre;
 					}
 					else
 					{
@@ -103,42 +91,9 @@ class DLList
 				
 				// break; // 1개의 데이터만 지우고자 할 때
 				selectNode = selectNode.next;				
-			}
-			
+			}			
 		}
 		
 		System.out.println();
 	}
-}
-
-public class DoubleLinkedList {
-
-	public static void main(String[] args) {
-
-		// head생성
-		DLLNode DLLhead = new DLLNode( 0 );
-		// tail생성
-		DLLNode DLLtail = new DLLNode( 0 );
-		// 리스트 생성
-		DLList dlist = new DLList();
-		
-		dlist.DLLAdd( DLLhead, DLLtail, 1 );
-		dlist.DLLAdd( DLLhead, DLLtail, 2 );
-		dlist.DLLAdd( DLLhead, DLLtail, 3 );
-		dlist.DLLAdd( DLLhead, DLLtail, 2 );
-		dlist.DLLShow( DLLhead, DLLtail );
-		
-		dlist.DLLDel( DLLhead, DLLtail, 2 );
-		dlist.DLLShow( DLLhead, DLLtail );
-		
-		dlist.DLLDel( DLLhead, DLLtail, 1 );
-		dlist.DLLShow( DLLhead, DLLtail );
-		
-		dlist.DLLDel( DLLhead, DLLtail, 3 );
-		dlist.DLLDel( DLLhead, DLLtail, 3 );
-		
-		dlist.DLLShow( DLLhead, DLLtail );
-
-	}
-
 }
