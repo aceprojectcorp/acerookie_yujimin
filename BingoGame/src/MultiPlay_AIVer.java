@@ -54,22 +54,16 @@ public class MultiPlay_AIVer extends BingoMulti2{
 	void resetBingoFan3( int[][] arr )
 	{		
 		// 빙고판의 위치에 따른 우선순위값 설정.
-		// 성공가능한 빙고 라인 갯수에 따라 설정함.		
+		// 성공가능한 빙고 라인 갯수에 기초 하여 설정함.		
 
 		if( BINGOSIZE == 5 )
 		{
 			int tmpArr[][]
-
 				= { {3, 2, 2, 2, 3},
-
-					{3, 2, 2, 2, 3},
-
-					{3, 2, 4, 2, 3},
-
-					{3, 2, 2, 2, 3},
-
+					{2, 3, 2, 3, 2},
+					{2, 2, 4, 2, 2},
+					{2, 3, 2, 3, 2},
 					{3, 2, 2, 2, 3}
-
 					};	
 
 			for( int i= 0 ; i < BINGOSIZE ; i++ )
@@ -104,11 +98,10 @@ public class MultiPlay_AIVer extends BingoMulti2{
 		boolean myTurnGood = true;
 		boolean comTurnGood = true;
 		int inputNum = 0;				// 내가 입력한 숫자값 
-		int inputCom = 0;				// 컴퓨터가 입력한 숫자값   
-		Random rd = new Random() ;		
+		int inputCom = 0;				// 컴퓨터가 입력한 숫자값   	
 
 		// 난이도 입력 
-		System.out.println("* 난이도를 선택해 주세요. \n 1. 쉬움\n 2. 어려움 \n : " );
+		System.out.print("* 난이도를 선택해 주세요. \n 1. 쉬움\n 2. 어려움 \n : " );
 		gameLevel = levelCheck(); 		
 
 		// 컴퓨터가 입력한 숫자값  
@@ -171,8 +164,13 @@ public class MultiPlay_AIVer extends BingoMulti2{
 			inputNum = isValidNum();
 			checkBingoFan2( myBingFan, myBingFan2, inputNum );	
 			myTurnGood = checkBingoFan2( comBingFan, comBingFan2, inputNum );		
+			
+			// 상대가 시작 하기 전에 내 성공 여부 확인 
+			mySuccLineNum = checkSuccLine( myBingFan2 );
+			if( mySuccLineNum >= BINGOSIZE )
+				break;
 
-			// 플레이어의 빙고판3을 현재 상황에 맞게 리셋 - 컴퓨터가 참고하기 위해 - 난이도 2(어려움)에서 사용  
+			// 플레이어의 빙고판3을 현재 상황에 맞게 리셋 - 컴퓨터가 참고하기 위해 - 난이도 1(쉬움)에서 사용  
 			resetBingoFan3( myBingFan3 );
 			checkBingoFan3( myBingFan2, myBingFan3 );			
 
@@ -205,7 +203,7 @@ public class MultiPlay_AIVer extends BingoMulti2{
 			System.out.println("\n\n!!! --- 패 배 --- !!!\n\n");		
 	}	
 
-	// 레벨 입력 
+	// 레벨 입력값이 유효한지 검사 후 입력된 값 반환.  
 	int levelCheck()
 	{
 		int num = 0 ; 	 		
@@ -259,16 +257,27 @@ public class MultiPlay_AIVer extends BingoMulti2{
 		}		
 		return num;			
 	}
+	
 	// 빙고판3 만들기. 우선순위 설정.  
-
 	void checkBingoFan3( int[][] arr2, int[][] arr3 )
 	{	
+		/*  ***** 우선순위 매기기 *****
+		 * 기본적으로 자리에 따른 우선순위 기본 점수가 있음. resetBingoFan3() 메소드 참고 
+		 * 해당 줄에 빙고 하나 있는 줄 +10  ㅇ-ㅇ-X-ㅇ-ㅇ
+		 * 두개 크로스 +20		ㅇ-X-ㅇ-ㅇ-ㅇ 
+		 * 					X-ㅇ-ㅇ-ㅇ-ㅇ 
+		 * 세개 크로스 +30 	ㅇ-ㅇ-X-ㅇ-ㅇ 
+		 * 해당 줄에 빙고 두개 있는 줄 + 40  ㅇ-ㅇ-X-X-ㅇ 
+		 * 해당줄에 빙고 세개 + 60, 해당줄에 빙고 네개 +100 
+		 */
+		
 		boolean dL1 = false;	// 대각선 \ 방향을 확인해야 하는지 알려주는 변수 
 		boolean dL2 = false;	// 대각선 / 방향을 확인해야 하는지 알려주는 변수 
 		
-		int[] numCnt = { 0, 0, 0, 0 };							// 가로, 세로, 대각선\, 대각선/ 의 체크 갯수 
-		int[] plusForSameLineBingoCnt = { 0, 10, 15, 25, 35 };	// 같은 줄에 빙고가 몇개 있느냐에 따라 추가 점수를 줌. 실질적으로 2번째 값부터 사용. 
-																// ex) 같은 줄에 빙고가 2개 있으면 15*2=30 30의 우선순위값을 더해줌. 		
+		int[] numCnt = { 0, 0, 0, 0 };							// 가로, 세로, 대각선\, 대각선/ 의 빙고 갯수 
+		int[] plusForSameLineBingoCnt = { 0, 10, 15, 25, 45 };	// 같은 줄에 빙고가 몇개 있느냐에 따라 추가 점수를 줌. 실질적으로 2번째 값부터 사용. 
+																// ex) 같은 줄에 빙고가 2개 있으면 15*2=30 30의 우선순위값을 더해줌. 
+																// 		해당 줄에 빙고가 발견될 경우 한번 돌아가며 +10을 미리 줌. 미리 주면서 해당줄에 빙고 갯수가 있으면 카운트 함. 2개일 경우 30을 줘서 총 +40점이 됨. 
 
 		for( int i=0 ; i < BINGOSIZE ; i++ )
 		{
@@ -346,19 +355,19 @@ public class MultiPlay_AIVer extends BingoMulti2{
 	// 선택된 줄에 빙고가 존재하면 1을 반환.
 	int cntBingoOfLine( int [][] arr2, int i, int j )
 	{
-
 		if( arr2[i][j] == 1 )
 			return 1;		
 
 		return 0;
 	}	
 
-	// 빙고판3에서 제일 높은 우선순위를 가진 숫자 반환. 같은 우선순위를 가진 숫자가 여러개 있을 경우 랜덤으로 반환. 
+	// 빙고판3에서 제일 높은 우선순위를 가진 숫자 반환. 같은 우선순위를 가진 숫자가 여러개 있을 경우 상대가 가지지 않은 번호 -> 랜덤 순으로 반환. 
 	int goodBingoNum( int [][] arr1, int [][] arr3, int [][] vsArr1 )
 	{
-
 		int maxNum = 0 ;
-		ArrayList<Integer> maxNumList = new ArrayList<Integer>() ; 	// 가장 높은 우선순위를 갖는 숫자(빙고판1의 실제 숫자)를 저장. 	
+		ArrayList<Integer> maxNumList = new ArrayList<Integer>() ; 			// 가장 높은 우선순위를 갖는 숫자(빙고판1의 실제 숫자)를 저장. 	
+		ArrayList<Integer> playerGoodNumList = new ArrayList<Integer>() ; 	// maxNumList에 있는 숫자가 모두 플레이어의 빙고판에 있는 숫자일때, 
+																			// maxNumList에 있는 숫자에 해당하는 플레이어의 빙고판 우선순위를 저장  
 
 		// 제일 큰 우선순위를 가진 숫자 찾음 
 		for( int i=0 ; i < BINGOSIZE ; i++ )
@@ -381,12 +390,9 @@ public class MultiPlay_AIVer extends BingoMulti2{
 					}
 				}
 			}
-		}
-
-		
+		}		
 
 		// 리스트 갯수가 2개 이상이면
-
 		if( maxNumList.size() >= 2 )
 		{
 			// 상대의 빙고판에 없는 숫자면 바로 사용. 
@@ -396,17 +402,75 @@ public class MultiPlay_AIVer extends BingoMulti2{
 					return maxNumList.get(i);
 			}		
 
-			// 상대의 빙고판에 있는 숫자면 우선순위 제일 낮은 숫자 사용... 허허 
-			System.err.println(" goodBingoNum의 상대의 빙고판에 있는 숫자면 우선순위 제일 낮은 숫자 사용 부분...ㅋㅋ... 이거뜨면 구현하기..");
-
-			// 이거 안해도... 너무 센데... 
-			return maxNumList.get(0);		
-
+			// 상대의 빙고판에 있는 숫자면 우선순위 제일 낮은 숫자 사용. - 난이도 1(쉬움)에서만 사용. 
+			// 난이도 2에서는 선택되지 않은 빙고판 숫자를 못본다는 설정이니까!! 
+			if( gameLevel == 1 )
+			{
+				//
+				System.out.println( "플레이어 빙고판 우선순위 찾기 시작 ");
+				
+				int minNum = findPlayerGoodNum( myBingFan, myBingFan3, maxNumList.get(0)) ;
+				
+				//
+				for( int i = 0 ; i < maxNumList.size() ; i ++ )
+				{
+					System.out.print( maxNumList.get(i) + "\t");
+				}
+				System.out.println();
+				
+				// maxNumList에 해당하는 값이 플레이어의 빙고판에 모두 존재하니까, 플레이어의 숫자 중 우선순위가 가장 낮은 숫자 사용.
+				for( int i = 0 ; i < maxNumList.size() ; i ++ )
+				{
+					if( minNum > findPlayerGoodNum( myBingFan, myBingFan3, maxNumList.get(i)) )
+						minNum = findPlayerGoodNum( myBingFan, myBingFan3, maxNumList.get(i)) ; 
+					
+					// 플레이어의 빙고판 우선순위 숫자를 저장
+					playerGoodNumList.add( findPlayerGoodNum( myBingFan, myBingFan3, maxNumList.get(i)) );
+					
+					//
+					System.out.print( findPlayerGoodNum( myBingFan, myBingFan3, maxNumList.get(i)) + "\t");
+				}
+				
+				//
+				System.out.println( );
+				
+				for( int i = 0 ; i < maxNumList.size() ; i ++ )
+				{
+					if( playerGoodNumList.get(i) ==  minNum )
+						return maxNumList.get(i);					
+				}
+				
+				//
+				System.err.println("\n *** 플레이어 빙고판 우선순위 찾기 실패 *** ");
+				
+				return maxNumList.get(0);
+			}
+			else
+				return maxNumList.get(0);
+					
 		}
 		else
 		{
 			return maxNumList.get(0);
 		}
 	}
+	
+	// 빙고판1에 해당하는 값(실제숫자)을 넣으면 빙고판3(우선순위)의 값을 반환하는 함수.
+	int findPlayerGoodNum( int arr1[][], int arr3[][], int input )
+	{
+		for( int i=0 ; i < BINGOSIZE ; i++ )
+		{
+			for( int j=0 ; j < BINGOSIZE ; j++ )
+			{
+				if( arr1[i][j] == input )
+					return arr3[i][j];				
+			}			
+		}
+		
+		return 0;
+	}
+	
+	
+	
 }
 
