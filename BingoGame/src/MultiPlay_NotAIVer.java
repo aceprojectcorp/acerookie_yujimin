@@ -119,7 +119,10 @@ class BingoMulti2
 				}
 				else
 				{
-					System.out.print( arr[i][j] +"\t" );
+					if(  whosBingoFan == 0 || whosBingoFan == 1)
+						System.out.print( arr[i][j] +"\t" );
+					else // whosBingoFan == 2 // 난이도 어려움 설정. AI버전에서만 사용 가능. 
+						System.out.print( "*\t" );
 				}
 				
 			}	System.out.println();		
