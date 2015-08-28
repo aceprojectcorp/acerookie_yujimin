@@ -2,7 +2,7 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MultiPlay_AIVer extends BingoMulti2{
+public class MultiPlay_AIVer extends MultiPlay_NotAIVer{
 
 	int[][] myBingFan3 ;	// 내 빙고판 (우선순위 저장)
 	int[][] comBingFan3 ;	// 컴 빙고판 (우선순위 저장)
@@ -37,18 +37,6 @@ public class MultiPlay_AIVer extends BingoMulti2{
 
 		createBingoFan( myBingFan );
 		createBingoFan( comBingFan );
-	}	
-
-	// 빙고판 초기화 
-	void resetBingoFan( int[][] arr )
-	{
-		for( int i= 0 ; i < BINGOSIZE ; i++ )
-		{
-			for(int j = 0 ; j < BINGOSIZE ; j++)
-			{
-				arr[i][j] = 0;
-			}			
-		}		
 	}	
 
 	void resetBingoFan3( int[][] arr )
@@ -101,7 +89,7 @@ public class MultiPlay_AIVer extends BingoMulti2{
 		int inputCom = 0;				// 컴퓨터가 입력한 숫자값   	
 
 		// 난이도 입력 
-		System.out.print("* 난이도를 선택해 주세요. \n 1. 쉬움\n 2. 어려움 \n : " );
+		System.out.print("* 난이도를 선택해 주세요. \n 1. 난이도 중(상대 빙고판 보임)\n 2. 난이도 상(상대 빙고판 안보임) \n : " );
 		gameLevel = levelCheck(); 		
 
 		// 컴퓨터가 입력한 숫자값  
@@ -116,8 +104,9 @@ public class MultiPlay_AIVer extends BingoMulti2{
 			++playTime;			
 
 			// 우선순위 테스트 출력용. 
-//			checkBingoFan3( comBingFan2, comBingFan3 );
-//			printBingoFan( comBingFan3, comBingFan2, 1);			
+//			resetBingoFan3( myBingFan3 );
+//			checkBingoFan3( myBingFan2, myBingFan3 );
+//			printBingoFan( myBingFan3, myBingFan2, 1);			
 
 			// 출력 
 			printBingoFan( myBingFan, myBingFan2, 0 );			
@@ -187,6 +176,7 @@ public class MultiPlay_AIVer extends BingoMulti2{
 			comSuccLineNum = checkSuccLine( comBingFan2 ); 			
 
 		}		
+		
 		System.out.println("\n\n******************[끝]********************\n ~ 마지막에 내가 입력한 숫자 " + inputNum);
 		System.out.println(" ~ 마지막에 컴이 입력한 숫자 " + inputCom);
 
@@ -275,9 +265,10 @@ public class MultiPlay_AIVer extends BingoMulti2{
 		boolean dL2 = false;	// 대각선 / 방향을 확인해야 하는지 알려주는 변수 
 		
 		int[] numCnt = { 0, 0, 0, 0 };							// 가로, 세로, 대각선\, 대각선/ 의 빙고 갯수 
-		int[] plusForSameLineBingoCnt = { 0, 10, 15, 25, 45 };	// 같은 줄에 빙고가 몇개 있느냐에 따라 추가 점수를 줌. 실질적으로 2번째 값부터 사용. 
-																// ex) 같은 줄에 빙고가 2개 있으면 15*2=30 30의 우선순위값을 더해줌. 
-																// 		해당 줄에 빙고가 발견될 경우 한번 돌아가며 +10을 미리 줌. 미리 주면서 해당줄에 빙고 갯수가 있으면 카운트 함. 2개일 경우 30을 줘서 총 +40점이 됨. 
+		int[] plusForSameLineBingoCnt = { 0, 5, 10, 25, 45 };	// 같은 줄에 빙고가 몇개 있느냐에 따라 추가 점수를 줌. 실질적으로 2번째 값부터 사용. 
+																// ex) 1) 같은 줄에 빙고가 2개 있으면 10*2=20 20의 기본 우선순위값을 더해줌. ( 한줄에 빙고 1개 있으면 +10, 2개 있으면 2번 각각 돌아서 +20, 3개 있으면 3번 각각 돌아서 +30)  
+																// 		2) 해당 줄에 빙고가 발견될 경우 한번 돌아가며 +10을 미리 줌 ( 해당 줄에 빙고 갯수가 2개니까 각각 점마다 한번씩 총 두번 돌아서 기본 점수는 20이 되어있음)
+																//		3) 해당줄에 빙고 갯수가 있으면 카운트 함. 2개일 경우 20(10점씩 각각)을 줘서 총 +40점이 됨. 
 
 		for( int i=0 ; i < BINGOSIZE ; i++ )
 		{
@@ -315,10 +306,7 @@ public class MultiPlay_AIVer extends BingoMulti2{
 							arr3[ Math.abs( k - (BINGOSIZE-1)) ][k] += 10;
 							numCnt[3] += cntBingoOfLine( arr2, Math.abs( k - (BINGOSIZE-1)), k );
 						}
-					}					
-
-//					System.out.println("numCnt : " + numCnt[0]  + "\t" + numCnt[1]  + "\t" + numCnt[2]  + "\t" + numCnt[3])	;
-//					System.out.println("i : " + i  + "\tj : " + j )	;					
+					}									
 
 					// 선택된 숫자의 가로, 세로, 대각선(조건이 만족할 경우) 위치에 존재하는 빙고된 숫자 갯수 만큼 우선순위 값 높여줌. 
 					if(  numCnt[0] > 1 || numCnt[1] > 1 || numCnt[2] > 1 || numCnt[3] > 1 	)
@@ -398,7 +386,7 @@ public class MultiPlay_AIVer extends BingoMulti2{
 			// 상대의 빙고판에 없는 숫자면 바로 사용. 
 			for( int i = 0 ; i < maxNumList.size() ; i ++ )
 			{
-				if ( isEqualNumOfArr( vsArr1, maxNumList.get(i)) == false )
+				if ( hasEqualNumOfArr( vsArr1, maxNumList.get(i)) == false )
 					return maxNumList.get(i);
 			}		
 
@@ -470,7 +458,35 @@ public class MultiPlay_AIVer extends BingoMulti2{
 		return 0;
 	}
 	
-	
+	// 빙고판 출력 - 입력된 빙고 번호의 체크까지 함께 출력 
+	// arr 숫자값 저장한 배열 / arr2 체크값 저장한 배열 / whosBingoFan가 0이면 나, 아니면 컴퓨터 
+	void printBingoFan( int[][] arr, int[][] arr2, int whosBingoFan )
+	{		
+		 if( whosBingoFan == 0 ) 
+			System.out.println("\n============ << 내 빙고판 >> ==============");
+		 else
+			System.out.println( "\n============ << 상대 빙고판 >> =============");
+		 
+		for( int i= 0 ; i < BINGOSIZE ; i++ )
+		{
+			for(int j = 0 ; j < BINGOSIZE ; j++)
+			{
+				if( arr2[i][j] == 1 )
+				{
+					System.out.print( "(" + arr[i][j] + ")\t" );
+				}
+				else
+				{
+					if(  whosBingoFan == 0 || whosBingoFan == 1)
+						System.out.print( arr[i][j] +"\t" );
+					else // whosBingoFan == 2 // 난이도 어려움 설정. AI버전에서만 사용 가능. 
+						System.out.print( "*\t" );
+				}
+				
+			}	System.out.println();		
+		}
+		System.out.println("=========================================");		
+	}
 	
 }
 

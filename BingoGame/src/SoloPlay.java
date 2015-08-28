@@ -1,74 +1,83 @@
 import java.util.*;
 import java.io.IOException;
 
-class Bingo
+public class SoloPlay 
 {
 	public final static int BINGOSIZE = 5 ;
 	
-	int num ; 				// 난수를 만들어서 저장. 배열에 저장하기 유효한 값인지 확인.
 	int[][] myBingFan ;		// 내 빙고판 (숫자저장)
 	int[][] myBingFan2 ;	// 내 빙고판 (체크저장)	
-	int succLineNum;		// 성공한 빙고 라인 수 
-	int playTime;			// 플레이 횟수 			
-	Scanner sc ;			// 입력값 받아줄 스캐너.
+	int mySuccLineNum;		// 성공한 빙고 라인 수 
+	int playTime;			// 플레이 횟수 		
 	
-	
-	public Bingo()
+	public SoloPlay()
 	{
 		resetBingo();				
-	}	
+	}		
 	
 	
 	void resetBingo()
 	{
-		int arrCnt = 0 ;			// 만들어진 빙고 숫자 갯수 저장 
 		playTime = 0 ;
-		succLineNum = 0 ;
-		num = 0 ; 
+		mySuccLineNum = 0 ;		
 		myBingFan = new int[BINGOSIZE][BINGOSIZE];
 		myBingFan2 = new int[BINGOSIZE][BINGOSIZE];
-		Random rd = new Random() ;
-		sc = new Scanner( System.in );
 		
-		// 빙고판1,2 초기화  
-		for( int i= 0 ; i < BINGOSIZE ; i++ )
-		{
-			for(int j = 0 ; j < BINGOSIZE ; j++)
-			{
-				myBingFan[i][j] = 0;
-				myBingFan2[i][j] = 0;
-			}			
-		}
+		// 빙고판1 초기화   
+		resetBingoFan( myBingFan );
+		resetBingoFan( myBingFan2 );
 		
-		// 빙고판 만들기 
-		while( arrCnt < BINGOSIZE*BINGOSIZE )
-		{			
-			num = Math.abs(((rd.nextInt()) % 100 ) + 1);  // 1~100 사이의 난수 저장.
-			
-			// 기존 배열의 값들과 입력값이 같은지 확인. 같은 값이 없으면 false반환.  
-			if( isEqualNumOfArr( num ) == false )
-			{
-				initArr(myBingFan, num);
-				arrCnt++;				
-			}		
-		}
-		
-		num = 0 ;
+		// 빙고판 만들기  
+		createBingoFan( myBingFan );		
 	}
 	
 	
-	// num값이 배열에 저장되어 있는 값과 같은지 확인하는 메소드 
-	boolean isEqualNumOfArr( int input )
+	// 빙고판 초기화 
+	void resetBingoFan( int[][] arr )
 	{
 		for( int i= 0 ; i < BINGOSIZE ; i++ )
 		{
 			for(int j = 0 ; j < BINGOSIZE ; j++)
 			{
-				if( myBingFan[i][j] == input )
+				arr[i][j] = 0;
+			}			
+		}		
+	}		
+	
+	
+	// 빙고판에 중복되지 않는 1~100사이의 숫자들로 채워줌 
+	void createBingoFan( int[][] arr )
+	{
+		Random rd = new Random() ;	
+		int arrCnt = 0 ;			// 만들어진 빙고 숫자 갯수 저장 
+		int tmp = 0;				// 만들어진 난수값 저장.  
+		
+		// 빙고판 만들기 
+		while( arrCnt < BINGOSIZE*BINGOSIZE )
+		{			
+			tmp = Math.abs(((rd.nextInt()) % 100 ) + 1);  // 1~100 사이의 난수 저장.
+			
+			// 기존 배열의 값들과 입력값이 같은지 확인. 같은 값이 없으면 false반환.  
+			if( hasEqualNumOfArr( arr, tmp ) == false )
+			{
+				initArr( arr, tmp );
+				arrCnt++;				
+			}		
+		}		
+	}
+	
+	
+	// 입력값이 배열에 저장되어 있는 값과 같은지 확인하는 메소드. 존재하면 true반환  
+	boolean hasEqualNumOfArr( int[][] arr, int input )
+	{
+		for( int i= 0 ; i < BINGOSIZE ; i++ )
+		{
+			for(int j = 0 ; j < BINGOSIZE ; j++)
+			{
+				if( arr[i][j] == input )
 					return true;				
 			}			
-		}			
-		
+		}	
 		return false;
 	}
 	
@@ -115,7 +124,7 @@ class Bingo
 	// 실질적 게임 플레이 반복 함수. 완성된 빙고라인수가 4개 이하인 경우 계속 반복됨. 
 	void play()
 	{		
-		while( succLineNum < 5 ) // true )
+		while( mySuccLineNum < 5 ) // true )
 		{
 			++playTime;
 			
@@ -123,11 +132,11 @@ class Bingo
 			
 			if( playTime >= 2 )
 			{
-				System.out.println("* 완성된 빙고 라인수 : " + succLineNum ) ;
+				System.out.println("* 완성된 빙고 라인수 : " + mySuccLineNum ) ;
 			}		
 			
 			checkBingoFan2( isValidNum() );	
-			succLineNum = checkSuccLine();  
+			mySuccLineNum = checkSuccLine( myBingFan2 );  
 		}		
 		
 		printBingoFan();
@@ -135,16 +144,18 @@ class Bingo
 	}
 	
 	
-	// 입력값(선택할 빙고 번호)이 유효한 값인지 확인하는 메소드.
+	// 입력값(선택할 빙고 번호)이 유효한 값인지 확인하고 유효한 값이면 반환해주는 메소드.
 	int isValidNum()
 	{
-
-		System.out.print("* 선택할 번호 : ");		 
+		int num = 0 ; 
+		System.out.print("* 선택할 번호 : ");		 		
+		Scanner sc = new Scanner( System.in );
 		
+		String st = null ;
 		while( true )
-		{	
+		{					
 			// 입력값 자체가 잘못 되었을 경우 ( 문자, 특문, 실수등이 입력될 경우)
-			if( !sc.hasNextInt() )		// 여기서 실질적으로 입력 받음 
+			if( !sc.hasNextInt() )			// 여기서 실질적으로 입력 받음 
 			{		
 				sc.nextLine();				// 잘못된 입력값을 비움. _ hasNext에 남아있던 개행문자를 이용해서 스캐너 비움. 				
 				System.err.println(" ~ 숫자를 입력해 주세요.");
@@ -165,7 +176,7 @@ class Bingo
 						break;
 					}					
 				}
-				if( tmp > 0)
+				if( tmp > 0 )
 				{
 					System.err.println(" ~ 공백없이 입력해 주세요. ");
 					continue;
@@ -183,24 +194,25 @@ class Bingo
 				
 			}			
 			// 빙고판에 있는 값이면 false를 내보냄
-			else if( isEqualNumOfArr( num ) == false )
+			else if( hasEqualNumOfArr( myBingFan, num ) == false )
 			{
 				System.err.println(" ~ 빙고판에 없는 숫자입니다. 다시입력하세요. ");
 				continue;
 				
 			}
 			// 빙고판에 체크된 숫자인지 확인 
-			else if( checkBingoFan1( num ) == true )
-			{
+			else if( checkBingoFan1( myBingFan, myBingFan2, num ) == true )			
 				System.err.println(" ~ 이미 선택되어진 숫자입니다. 다른숫자를 선택해 주세요.");
-			}
+			
 			else
 			{				
 				break;
 			}		
-		}		
-		return num;		
+		}
+		
+		return num;			
 	}
+	
 	
 	// 빙고판1에 체크된 값을 빙고판2에 저장.
 	void checkBingoFan2( int input )
@@ -218,30 +230,31 @@ class Bingo
 		}		
 	}
 	
+	
 	// 빙고판1에 해당하는 값이 체크되어 있는지(빙고판2를 보고) 확인하는 함수.
-	boolean checkBingoFan1( int input )
+	boolean checkBingoFan1( int[][] arr, int[][] arr2, int input )
 	{
 		for( int i= 0 ; i < BINGOSIZE ; i++ )
 		{
 			for(int j = 0 ; j < BINGOSIZE ; j++)
 			{
 				// 해당값의 빙고판이, 
-				if( myBingFan[i][j] == input )
+				if( arr[i][j] == input )
 				{
 					// 체크 되어 있는 상태면 true반환.
-					if( myBingFan2[i][j] == 1 )					
-					{	return true; 	}					
+					if( arr2[i][j] == 1 )					
+						return true; 						
 					else					
-					{	return false;	}					
+						return false;						
 				}
 			}			
-		}
-		
+		}		
 		return false;
 	}
 	
+	
 	// 완성된 빙고 라인수 카운트 
-	int checkSuccLine()
+	int checkSuccLine( int[][] arr )
 	{
 		int x = 0;						// 가로 빙고 갯수 카운트 
 		int[] y = { 0, 0, 0, 0, 0 };	// 세로 빙고 갯수 카운트 
@@ -253,7 +266,7 @@ class Bingo
 			for(int j = 0 ; j < BINGOSIZE ; j++)
 			{
 				// 빙고판이 체크 되어있을 때,   
-				if( myBingFan2[i][j] == 1 )
+				if( arr[i][j] == 1 )
 				{
 					// 가로, 세로, 대각선 빙고 갯수 카운트 변수에 저장
 					x++;
@@ -262,85 +275,31 @@ class Bingo
 					if( i == j )
 						z[0]++;	
 					
-					if( i+j == 4 )
+					if( i+j == (BINGOSIZE-1) )
 						z[1]++;		
 					
 					// 5번째 줄(맨 아랫줄) 일때만 돌음.
-					if( i == 4 )
+					if( i == (BINGOSIZE-1) )
 					{
 						// 세로 줄 빙고 라인수 확인 
-						if( y[j] == 5 )			
+						if( y[j] == BINGOSIZE )			
 							tmpBingoNum++;	
 						
-						// 대각선 줄 빙고 라인수 확인 / 방향 
-						if( i+j == 4 && z[1] == 5 ) 
+						// 대각선 줄 빙고 라인수 확인 / 방
+						if( i+j == (BINGOSIZE-1) && z[1] == BINGOSIZE ) 
 							tmpBingoNum++;
 						
-						// 대각선 줄 빙고 라인수 확인 \ 방향 
-						if( i+j == 8 && z[0] == 5 ) 
+						if( i+j == (BINGOSIZE-1)*2 && z[0] == BINGOSIZE ) 
 							tmpBingoNum++;
 					}
 				}
 			}
 			
-			if( x == 5 )
+			if( x == BINGOSIZE )
 				tmpBingoNum++;
 			x=0;
-		}
-		
-		return tmpBingoNum;		
-	}
-	
-
-	
-	
-}
-
-
-public class SoloPlay {
-		
-	public static void main(String[] args) throws IOException {
-		
-		Bingo bingo = new Bingo();
-		String inputSt = null;
-		
-		bingo.play();
-		
-		// 승리 후
-		while( true )
-		{ 
-			System.out.print("\n\n* 다시 게임을 시작하시겠습니까? (y/n) : ");
-			
-			while( true )
-			{
-				Scanner sc = new Scanner(System.in);
-				
-				inputSt = sc.nextLine();
-
-				if( inputSt.compareTo("y") == 0 ||
-					inputSt.compareTo("Y") == 0 ||
-					inputSt.compareTo("n") == 0 ||
-					inputSt.compareTo("N") == 0
-				 )				
-				{
-					break;
-				}
-				else
-				{				
-					System.err.println(" ~ y 또는 n 값만 입력해 주세요.");
-				}
-			}
-			
-			if( inputSt.compareTo("n") == 0 || inputSt.compareTo("N") == 0  )
-			{
-				System.out.println(" ~ 게임종료 ");
-				break;
-			}
-			else if( inputSt.compareTo("y") == 0 || inputSt.compareTo("Y") == 0 )
-			{
-				bingo.resetBingo();
-				bingo.play();
-			}			
 		}		
-	}
+		return tmpBingoNum;		
+	}	
+	
 }
