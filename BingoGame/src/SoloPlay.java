@@ -151,7 +151,6 @@ public class SoloPlay
 		System.out.print("* 선택할 번호 : ");		 		
 		Scanner sc = new Scanner( System.in );
 		
-		String st = null ;
 		while( true )
 		{					
 			// 입력값 자체가 잘못 되었을 경우 ( 문자, 특문, 실수등이 입력될 경우)
