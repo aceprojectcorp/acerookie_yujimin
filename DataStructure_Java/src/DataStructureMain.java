@@ -91,23 +91,23 @@ public class DataStructureMain {
 		NodeForDoubleLinked QueueTail = new NodeForDoubleLinked();
 		Queue queue = new Queue();
 		
-		queue.DLLAdd( QueueHead, QueueTail, 1 );
-		queue.DLLAdd( QueueHead, QueueTail, 2 );
-		queue.DLLAdd( QueueHead, QueueTail, 3 );
+		queue.DLLAdd( QueueTail, QueueHead,  1 );
+		queue.DLLAdd( QueueTail, QueueHead, 2 );
+		queue.DLLAdd( QueueTail, QueueHead, 3 );
 		
-		queue.DLLShow(QueueHead, QueueTail);
-		
-		queue.PopFromQueue(QueueHead, QueueTail);
-		
-		queue.DLLShow(QueueHead, QueueTail);
+		queue.DLLShow(QueueTail, QueueHead);
 		
 		queue.PopFromQueue(QueueHead, QueueTail);
-		queue.DLLShow(QueueHead, QueueTail);
+		
+		queue.DLLShow(QueueTail, QueueHead);
+		
+		queue.PopFromQueue(QueueHead, QueueTail);
+		queue.DLLShow(QueueTail, QueueHead);
 		
 		queue.PopFromQueue(QueueHead, QueueTail);
 		queue.PopFromQueue(QueueHead, QueueTail);
 		
-		queue.DLLShow(QueueHead, QueueTail);
+		queue.DLLShow(QueueTail, QueueHead);
 		//--------------------------------------
 		
 	}

@@ -9,16 +9,16 @@ public class DoubleLinkedList
 		NodeForDoubleLinked node = new NodeForDoubleLinked( input );
 		
 		// 리스트에 노드가 존재  
-		if( tail.next != null )
+		if( head.next != null )
 		{
-			node.next = tail.next ; 	// [새 노드] -> [첫번째노드] <= tail
-			tail.next.pre = node; 		// [새 노드] <- [첫번째노드] <= tail 
+			node.next = head.next ; 	// [새 노드] -> [첫번째노드] <= head
+			head.next.pre = node; 		// [새 노드] <- [첫번째노드] <= head 
 		}
 		else
 		{
-			head.pre = node;
+			tail.pre = node;
 		}
-		tail.next = node;
+		head.next = node;
 		
 		System.out.println();
 	}
@@ -28,14 +28,14 @@ public class DoubleLinkedList
 	{
 		System.out.println("* 모든 노드 출력");
 		
-		if( tail.next == null )
+		if( head.next == null )
 		{
 			System.out.println("리스트가 비어있음");
 			
 		}
 		else
 		{
-			NodeForDoubleLinked selectNode = tail.next;
+			NodeForDoubleLinked selectNode = head.next;
 			
 			while( selectNode != null )
 			{
@@ -53,13 +53,13 @@ public class DoubleLinkedList
 	{
 		System.out.println("* 데이터 값이 " + input + "인 노드 모두 삭제");
 		
-		if( tail.next == null )
+		if( head.next == null )
 		{
 			System.out.println(" ~ 삭제할 노드가 없습니다.");
 		}
 		else
 		{
-			NodeForDoubleLinked selectNode = tail.next;
+			NodeForDoubleLinked selectNode = head.next;
 
 			// 모든 노드 찾기 
 			while( selectNode != null )
@@ -67,20 +67,20 @@ public class DoubleLinkedList
 				if( selectNode.num == input )
 				{
 					// 리스트에 노드가 단 하나 뿐일때
-					if( selectNode == null && selectNode == tail.next )
+					if( selectNode == null && selectNode == head.next )
 					{
-						tail.next = head.next = null ; 
+						head.next = tail.next = null ; 
 					}						
-					// 맨 앞 노드일 때	// tail -> [선택노드] <-> [노드] <->...
-					else if( selectNode == tail.next )
+					// 맨 앞 노드일 때	// head -> [선택노드] <-> [노드] <->...
+					else if( selectNode == head.next )
 					{
-						tail.next = tail.next.next;
+						head.next = head.next.next;
 					}					
-					// 맨 뒤 노드일 때 	// ...[노드] <-> [선택노드] <- head
+					// 맨 뒤 노드일 때 	// ...[노드] <-> [선택노드] <- tail
 					else if( selectNode.next == null )
 					{
 						selectNode.pre.next = null;	
-						head.next = selectNode.pre;
+						tail.next = selectNode.pre;
 					}
 					else
 					{
