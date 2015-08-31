@@ -2,13 +2,12 @@ import java.util.Scanner;
 
 public class playMain {
 	
-	// 게임 스테이지를 선택하는 입력값이 휴효하면 반환. 1~3의 숫자만 반환.
-	public static int selectGameStage()
+	// 입력된 숫자값 반환. 문자이거나 공백이 포함되지 않은 값으로 반환. 
+	public static int inputNum()
 	{
-		int num = 0 ; 
-		System.out.print("* 게임 스테이지 선택 *\n 1. 솔로플레이\n 2. 멀티플레이(난이도 하)\n 3. 멀티플레이[AI버전](난이도 중~상)\n: ");		 		
+		int inputNum = 0 ; 
 		Scanner sc = new Scanner( System.in );
-			
+		
 		while( true )
 		{	
 			// 입력값 자체가 잘못 되었을 경우 ( 문자, 특문, 실수등이 입력될 경우)
@@ -22,29 +21,43 @@ public class playMain {
 			else
 			{
 				// 숫자+공백+숫자로 이루어졌는지 확인 -------------------
-				String tmpStr = sc.nextLine();
-				int tmp = 0 ;
+				String inputStr = sc.nextLine();		// 입력값 저장. 
+				int blankCnt = 0 ;						// 공백 갯수 카운트 
 				// (공백찾기) 
-				for( int i = 0 ; i < tmpStr.length() ; i ++ )
+				for( int i = 0 ; i < inputStr.length() ; i ++ )
 				{
-					if( tmpStr.charAt(i) == ' ')
+					if( inputStr.charAt(i) == ' ')
 					{						
-						tmp++;
+						blankCnt++;
 						break;
 					}					
 				}
-				if( tmp > 0)
+				if( blankCnt > 0)
 				{
 					System.err.println(" ~ 공백없이 입력해 주세요. ");
 					continue;
+				}//-----------------------------------------------
+				else
+				{
+					inputNum = Integer.parseInt( inputStr );
+					return inputNum;	
 				}
-				//-----------------------------------------------
-					
-				num = Integer.parseInt( tmpStr );
-			}
-				
+			}		
+		}		
+	}
+	
+	// 게임 스테이지를 선택하는 입력값이 휴효하면 반환. 1~3의 숫자만 반환.
+	public static int selectGameStage()
+	{
+		int inputNum = 0 ; 
+		System.out.print("* 게임 스테이지 선택 *\n 1. 솔로플레이\n 2. 멀티플레이(난이도 하)\n 3. 멀티플레이[AI버전](난이도 중~상)\n: ");	
+			
+		while( true )
+		{	
+			inputNum = playMain.inputNum() ; // 입력값이 숫자만으로 이루어졌을 때 int값으로 반환. 
+
 			// 값의 범위 
-			if( num != 1 && num != 2 && num != 3 )
+			if( inputNum != 1 && inputNum != 2 && inputNum != 3 )
 			{
 				System.err.println(" ~ 1 또는 2 또는 3 만 입력해 주세요");
 				continue;	
@@ -54,7 +67,7 @@ public class playMain {
 				break;
 			}		
 		}			
-		return num;			
+		return inputNum;			
 	}
 	
 	// 게임 진행/종료를 위한 입력값의 유효성 검사. 유효하면 반환. y,Y,n,N만 반환함.

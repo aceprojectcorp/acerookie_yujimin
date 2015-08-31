@@ -1,0 +1,366 @@
+import java.util.Random;
+
+// 빙고판 만들고 초기화까지만 
+public class BingoGrid {
+	
+	int[][] numGrid ;		// 숫자저장.
+	int[][] checkGrid;		// 체크되어진 위치 저장 .
+	int[][] priorityGrid;	// 우선순위 저장. 
+	int gridSize ;			// 빙고판 사이즈. 
+	
+	public BingoGrid( int inputGridSize )
+	{
+		resetAllBingoGrid( inputGridSize );
+	}
+	
+	// 3개의 모든 빙고판 초기화 
+	void resetAllBingoGrid( int inputGridSize )
+	{
+		this.gridSize = inputGridSize; 
+		
+		numGrid 		= new int[gridSize][gridSize];
+		checkGrid 		= new int[gridSize][gridSize];
+		priorityGrid 	= new int[gridSize][gridSize];
+		
+		// 빙고판 모든 값에 0 넣기.
+		inputZeroToBingoGrid( numGrid );
+		inputZeroToBingoGrid( checkGrid );
+		inputZeroToBingoGrid( priorityGrid );
+		
+		// 빙고숫자판에 랜덤값 넣기.
+		createRandNumToNumGrid( numGrid );
+		
+		// 우선순위 저장. 
+		
+	}
+	
+	//[초기화용] 빙고판 초기화 (모든 숫자를 0으로) 
+	void inputZeroToBingoGrid( int[][] arr )
+	{
+		for( int i= 0 ; i < gridSize ; i++ )
+		{
+			for(int j = 0 ; j < gridSize ; j++)
+			{
+				arr[i][j] = 0;
+			}			
+		}
+	}
+	
+	//[초기화용] 빙고판에 중복되지 않는 1~100사이의 숫자들로 채워줌 
+	void createRandNumToNumGrid( int[][] arr )
+	{
+		Random rd = new Random() ;	
+		int randNumCnt = 0 ;			// 만들어진 빙고 숫자 갯수 저장 
+		int randNum = 0;				// 만들어진 난수값 저장.  
+		
+		// 빙고판 만들기 
+		while( randNumCnt < gridSize*gridSize )
+		{			
+			randNum = Math.abs(((rd.nextInt()) % 100 ) + 1);  // 1~100 사이의 난수 저장.
+			
+			// 기존 배열의 값들과 입력값이 같은지 확인. 같은 값이 없으면 false반환.  
+			if( hasEqualNumOfArr( randNum ) == false )
+			{
+				inputNumToBingoNumGrid( arr, randNum );
+				randNumCnt++;				
+			}		
+		}		
+	}
+	
+	//[초기화용] 숫자 빙고판에 입력된 값을 순서대로 저장.
+	void inputNumToBingoNumGrid( int[][] arr, int num )
+	{
+		for( int i= 0 ; i < gridSize ; i++ )
+		{
+			for(int j = 0 ; j < gridSize ; j++)
+			{
+				if( arr[i][j] == 0 )
+				{
+					arr[i][j] = num;
+					return;
+				}				
+			}			
+		}		
+	}
+	
+	// 빙고판의 위치에 따른 우선순위값 설정.
+	// 성공가능한 빙고 라인 갯수에 기초 하여 설정함.
+	void resetPriorityGrid()
+	{
+		if( gridSize == 5 )
+		{
+			int tmpArr[][]
+				= { {3, 2, 2, 2, 3},
+					{2, 3, 2, 3, 2},
+					{2, 2, 4, 2, 2},
+					{2, 3, 2, 3, 2},
+					{3, 2, 2, 2, 3}
+					};	
+
+			for( int i= 0 ; i < gridSize ; i++ )
+			{
+				for(int j = 0 ; j < gridSize ; j++)
+				{
+					priorityGrid[i][j] = tmpArr[i][j];
+				}			
+			}
+		}
+
+		else if( gridSize == 3 )
+		{
+			int tmpArr2[][]
+					= { {3, 2, 3},
+						{2, 4, 2},
+						{3, 2, 3},
+					  };	
+				for( int i= 0 ; i < gridSize ; i++ )
+				{
+					for(int j = 0 ; j < gridSize ; j++)
+					{
+						priorityGrid[i][j] = tmpArr2[i][j];
+					}
+				}
+		}		
+	}
+	
+	// 입력값이 배열에 저장되어 있는 값과 같은지 확인하는 메소드. 존재하면 true반환  
+	boolean hasEqualNumOfArr( int input )
+	{
+		for( int i= 0 ; i < gridSize ; i++ )
+		{
+			for(int j = 0 ; j < gridSize ; j++)
+			{
+				if( numGrid[i][j] == input )
+					return true;				
+			}			
+		}	
+		return false;
+	}
+	
+	// 입력값 위치에 체크 추가
+	public void addCheckToCheckGrid( int input )
+	{
+		for( int i= 0 ; i < gridSize ; i++ )
+		{
+			for(int j = 0 ; j < gridSize ; j++)
+			{
+				if( numGrid[i][j] == input )
+				{
+					checkGrid[i][j] = 1;
+					return;
+				}
+			}			
+		}		
+	}
+	
+	// 빙고판1에 해당하는 값이 체크되어 있는지(빙고판2를 보고) 확인하는 함수.
+	boolean hasCheckNum( int input )
+	{
+		for( int i= 0 ; i < gridSize ; i++ )
+		{
+			for(int j = 0 ; j < gridSize ; j++)
+			{
+				// 해당값의 빙고판이, 
+				if( numGrid[i][j] == input )
+				{
+					// 체크 되어 있는 상태면 true반환.
+					if( checkGrid[i][j] == 1 )					
+						return true; 						
+					else					
+						return false;						
+				}
+			}			
+		}		
+		return false;
+	}
+	
+	// 완성된 전체 빙고 라인수 카운트 
+	int allSuccBgLine()
+	{
+		int widthBgCnt = 0;						// 가로 빙고 갯수 카운트 
+		int[] heightBgCnt = { 0, 0, 0, 0, 0 };	// 세로 빙고 갯수 카운트 
+		int diagLeftUpBgCnt = 0;				// \방향 대각선 빙고 갯수 카운트
+		int diagRightUpBgCnt = 0;				// /방향 대각선 빙고 갯수 카운트 
+		int allSuccLineCnt = 0;					// 해당 배열의 완성된 빙고라인 갯수 
+		
+		for( int i = 0 ; i < gridSize ; i++ )
+		{
+			for(int j = 0 ; j < gridSize ; j++)
+			{
+				// 빙고판이 체크 되어있을 때, 가로, 세로, 대각선 빙고 갯수 카운트 변수에 저장  
+				if( checkGrid[i][j] == 1 )
+				{
+					widthBgCnt++;
+					heightBgCnt[j]++;
+					
+					// 체크된 빙고의 위치가 대각선(\) 빙고가 가능한 위치일 경우   
+					if( i == j )
+						diagLeftUpBgCnt++;	
+					
+					// 체크된 빙고의 위치가 대각선(/) 빙고가 가능한 위치일 경우
+					if( i+j == ( gridSize-1 ) )
+						diagRightUpBgCnt++;		
+					
+					// 5번째 줄(맨 아랫줄) 일때만, 
+					// 체크된 빙고 위치가 세로, 대각선 위치일 경우 해당 줄의 빙고갯수 확인. 
+					if( i == ( gridSize-1 ) )
+					{
+						// 세로 줄 빙고 라인수 확인 
+						if( heightBgCnt[j] == gridSize )			
+							allSuccLineCnt++;	
+						
+						// 대각선 줄 빙고 라인수 확인 / 방향
+						if( i+j == ( gridSize-1 ) && diagRightUpBgCnt == gridSize ) 
+							allSuccLineCnt++;
+						
+						// 대각선 줄 빙고 라인수 확인 \ 방향
+						if( i+j == ( gridSize-1 )*2 && diagLeftUpBgCnt == gridSize ) 
+							allSuccLineCnt++;
+					}
+				}
+			}
+			// 가로빙고갯수카운트는 j열(가로열) 끝날때 마다 확인 후, 초기화. 
+			if( widthBgCnt == gridSize )
+				allSuccLineCnt++;
+			widthBgCnt=0;
+		}		
+		return allSuccLineCnt;		
+	}	
+	
+	// 무작위로 체크되지 않은 빙고판에 체크하고, 해당하는 숫자를 반환 
+	int randCheck()
+	{ 
+		int randNumI = 0;
+		int randNumJ = 0;
+		int checkNum = 0;	// 체크된 위치에 존재하는 숫자값.  
+		Random rd = new Random() ;
+		
+		while( true )
+		{
+			randNumI = Math.abs((rd.nextInt()) % gridSize ) ; // 0~4 사이의 난수 
+			randNumJ = Math.abs((rd.nextInt()) % gridSize ) ;
+			
+			// 해당 위치의 빙고 숫자가 체크되지 않은 상태면 
+			if(  checkGrid[randNumI][randNumJ] == 0 )
+			{
+				// 체크된 위치와 같은 위치의 숫자값 저장. 
+				checkNum = numGrid[randNumI][randNumJ] ;
+								
+				// 컴퓨터 빙고판에 체크.
+				this.addCheckToCheckGrid( checkNum );		
+				
+				break;					
+			}
+		}		
+		return checkNum;
+	}
+	
+	void createNowPriorityGrid()
+	{
+		/*  ***** 우선순위 매기기 *****
+		 * 기본적으로 자리에 따른 우선순위 기본 점수가 있음. resetBingoFan3() 메소드 참고 
+		 * 해당 줄에 빙고 하나 있는 줄 +10  ㅇ-ㅇ-X-ㅇ-ㅇ
+		 * 두개 크로스 +20		ㅇ-X-ㅇ-ㅇ-ㅇ 
+		 * 					X-ㅇ-ㅇ-ㅇ-ㅇ 
+		 * 세개 크로스 +30 	ㅇ-ㅇ-X-ㅇ-ㅇ 
+		 * 해당 줄에 빙고 두개 있는 줄 + 40  ㅇ-ㅇ-X-X-ㅇ 
+		 * 해당줄에 빙고 세개 + 60, 해당줄에 빙고 네개 +100 
+		 */
+		
+		boolean diaLUpCheckPosition = false;	// 대각선 \ 방향을 확인해야 하는지 알려주는 변수 
+		boolean diaRUpCheckPosition = false;	// 대각선 / 방향을 확인해야 하는지 알려주는 변수 
+		
+		int[] numCnt = { 0, 0, 0, 0 };							// 가로, 세로, 대각선\, 대각선/ 의 빙고 갯수 
+		int widthCheckCnt = 0;		// 가로 체크 갯수 카운트 
+		int heightCheckCnt = 0;		// 세로 체크 갯수 카운트 
+		int diaLUpCheckCnt = 0;	// 대각선\ 체크 갯수 카운트 
+		int diaRUpCheckCnt = 0;	// 대각선/ 체크 갯수 카운트
+		
+		int[] plusForSameLineBingoCnt = { 0, 5, 10, 25, 45 };	// 같은 줄에 빙고가 몇개 있느냐에 따라 추가 점수를 줌. 실질적으로 2번째 값부터 사용. 
+																// ex) 1) 같은 줄에 빙고가 2개 있으면 10*2=20 20의 기본 우선순위값을 더해줌. ( 한줄에 빙고 1개 있으면 +10, 2개 있으면 2번 각각 돌아서 +20, 3개 있으면 3번 각각 돌아서 +30)  
+																// 		2) 해당 줄에 빙고가 발견될 경우 한번 돌아가며 +10을 미리 줌 ( 해당 줄에 빙고 갯수가 2개니까 각각 점마다 한번씩 총 두번 돌아서 기본 점수는 20이 되어있음)
+																//		3) 해당줄에 빙고 갯수가 있으면 카운트 함. 2개일 경우 20(10점씩 각각)을 줘서 총 +40점이 됨. 
+
+
+		for( int i=0 ; i < gridSize ; i++ )
+		{
+			for( int j=0 ; j < gridSize ; j++ )
+			{
+				// 값이 존재하는 숫자의 가로,세로,대각선(조건이 만족할 경우)의 방향에 위치해 있는 값에 우선순위를 높여줌 
+				if( this.checkGrid[i][j] == 1 )
+				{
+					this.priorityGrid[i][j] = 500 ; 	 // 해당 위치에 값이 체크되어 있음을 의미함. 					
+
+					if( i == j )
+						diaLUpCheckPosition = true;					
+
+					if( i+j == ( gridSize-1 ))
+						diaRUpCheckPosition = true;					
+
+					// 선택된 숫자의 가로, 세로, 대각선(조건이 만족할 경우) 위치에 존재하는 숫자들에게 +10씩 우선순위 높여줌.
+					// 선택된 숫자의 가로, 세로, 대각선(조건이 만족할 경우) 위치에 존재하는 빙고된 숫자 갯수 카운트  
+					for( int k=0 ; k < gridSize ; k++ )
+					{
+						this.priorityGrid[i][k] += 10;	// 가로  	
+						widthCheckCnt += hasCheckIndex_returnOne( i, k );	// 선택된 숫자의 가로 줄에 있는 빙고 갯수 카운트 						
+
+						this.priorityGrid[k][j] += 10;	// 세로  
+						heightCheckCnt += hasCheckIndex_returnOne( k, j );						
+
+						if( diaLUpCheckPosition == true )	// 대각선 \
+						{	
+							this.priorityGrid[k][k] += 10;
+							diaLUpCheckCnt += hasCheckIndex_returnOne( k, k );
+						}						
+
+						if( diaRUpCheckPosition == true )	// 대각선 /
+						{
+							this.priorityGrid[ Math.abs( k - (gridSize-1)) ][k] += 10;
+							diaRUpCheckCnt += hasCheckIndex_returnOne( Math.abs( k - (gridSize-1)), k );
+						}
+					}									
+
+					// 선택된 숫자의 가로, 세로, 대각선(조건이 만족할 경우) 위치에 존재하는 빙고된 숫자 갯수 만큼 우선순위 값 높여줌. 
+					if(  widthCheckCnt > 1 || heightCheckCnt > 1 || diaLUpCheckCnt > 1 || numCnt[3] > 1 	)
+					{
+						for( int k=0 ; k < gridSize ; k++ )
+						{
+							// 가로
+							if( widthCheckCnt > 1 && widthCheckCnt < 5 )
+								this.priorityGrid[i][k] += plusForSameLineBingoCnt[ numCnt[0] ];						
+
+							// 세로
+							if( heightCheckCnt > 1 && heightCheckCnt < 5 ) 
+								this.priorityGrid[k][j] += plusForSameLineBingoCnt[ numCnt[1] ];							
+
+							// 대각선 \ 
+							if( diaLUpCheckCnt > 1 && diaLUpCheckCnt < 5 )
+								this.priorityGrid[k][k] += plusForSameLineBingoCnt[ numCnt[2] ];							
+
+							// 대각선 / 
+							if( diaRUpCheckCnt > 1  && diaRUpCheckCnt < 5)
+								this.priorityGrid[ Math.abs( k - (gridSize-1)) ][k] += plusForSameLineBingoCnt[ numCnt[3] ];				
+
+						}
+					}					 
+
+					diaLUpCheckPosition = false;
+					diaRUpCheckPosition = false;
+					widthCheckCnt = 0 ; numCnt[1] = 0 ; numCnt[2] = 0 ; numCnt[3] = 0 ; 
+				}
+			}
+		}	
+	}
+	
+	// 선택된 줄에 빙고가 존재하면 1을 반환.
+	int hasCheckIndex_returnOne( int i, int j )
+	{
+		if( this.checkGrid[i][j] == 1 )
+			return 1;		
+
+		return 0;
+	}	
+	
+	
+
+}

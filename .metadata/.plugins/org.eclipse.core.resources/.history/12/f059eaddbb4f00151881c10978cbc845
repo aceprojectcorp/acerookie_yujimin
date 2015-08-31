@@ -1,0 +1,379 @@
+import java.util.ArrayList;
+
+public class MultiPlay_AIVer extends MultiPlay_NotAIVer{
+
+	int gameLevel ;	
+
+	public MultiPlay_AIVer()
+	{
+		resetBingo();
+	}	
+
+	void resetBingo()
+	{
+		myBG = new BingoGrid( BINGOSIZE );
+		comBG = new BingoGrid( BINGOSIZE );
+		mySuccLineNum = 0;			
+		comSuccLineNum = 0; 
+		playTime = 0 ;	
+		gameLevel = 1;
+	}	
+
+	// 실질적 게임 플레이 반복 함수. 모든 플레이어의 완성된 빙고라인수가 4개 이하인 경우 계속 반복됨. 
+	void play()
+	{	
+		boolean myTurnGood = true;
+		boolean comTurnGood = true;
+		int inputMyNum = 0;				// 내가 입력한 숫자값 
+		int inputComNum = 0;			// 컴퓨터가 입력한 숫자값   	
+
+		// 난이도 입력 
+		System.out.print("* 난이도를 선택해 주세요. \n 1. 난이도 중(상대 빙고판 보임)\n 2. 난이도 상(상대 빙고판 안보임) \n : " );
+		gameLevel = levelCheck(); 		
+
+		// 컴퓨터가 입력한 숫자값  
+		while( mySuccLineNum < BINGOSIZE && comSuccLineNum < BINGOSIZE ) 
+		{	
+			++playTime;	
+			
+			printPlayingInfo( playTime, inputMyNum, inputComNum, myTurnGood, comTurnGood );		
+
+			// ** 내 턴 시작 
+			inputMyNum = isValidNum( myBG );
+			myBG.addCheckToCheckGrid(inputMyNum);
+			myTurnGood =  comBG.hasCheckNum( inputMyNum ); 		
+			
+			// 상대가 시작 하기 전에 성공 여부 확인 
+			mySuccLineNum = myBG.allSuccBgLine(); 
+			if( mySuccLineNum >= BINGOSIZE || comSuccLineNum >= BINGOSIZE )
+				break;
+
+			// 플레이어의 빙고판3을 현재 상황에 맞게 리셋 - 컴퓨터가 참고하기 위해 - 난이도 1(쉬움)에서 사용 			
+			refreshPriorityGrid( myBG );
+					
+			// 컴퓨터의 빙고판3을 현재 상황에 맞게 리셋 - 컴퓨터가 참고하기 위해 
+			refreshPriorityGrid( comBG );
+			
+			// ** 상대 턴 시작 
+			// 우선순위가 높은 빙고 숫자 반환. 
+			inputComNum = getHighPriorityNum( comBG, myBG ); 
+			comBG.addCheckToCheckGrid( inputComNum );
+			comTurnGood = myBG.hasCheckNum( inputComNum );	
+							
+			mySuccLineNum = myBG.allSuccBgLine();
+			comSuccLineNum = comBG.allSuccBgLine();  			
+		}		
+		printEnd( inputMyNum, inputComNum, comSuccLineNum );	// 게임 종료 관련 메세지 출력		
+	}	
+
+	// 레벨 입력값이 유효한지 검사 후 입력된 값 반환.  
+	int levelCheck()
+	{
+		int num = 0 ; 	 		
+		
+		while( true )
+		{	
+			num = playMain.inputNum() ; // 입력값이 숫자만으로 이루어졌을 때 int값 반환. 		
+
+			// 값의 범위 
+			if( num != 1 && num != 2 )
+			{
+				System.err.println(" ~ 1 또는 2 만 입력해 주세요");
+				continue;	
+			}			
+			else
+			{				
+				break;
+			}		
+		}		
+		return num;			
+	}
+	
+	// 현재 상황에 맞게 우선순위 배열(priorityGrid)값 새로고침. 
+	void refreshPriorityGrid( BingoGrid bg )
+	{
+		/*  ***** 우선순위 매기기 *****
+		 * 기본적으로 자리에 따른 우선순위 기본 점수가 있음. resetBingoFan3() 메소드 참고 
+		 * 해당 줄에 빙고 하나 있는 줄 +10  ㅇ-ㅇ-X-ㅇ-ㅇ
+		 * 두개 크로스 +20		ㅇ-X-ㅇ-ㅇ-ㅇ 
+		 * 					X-ㅇ-ㅇ-ㅇ-ㅇ 
+		 * 세개 크로스 +30 	ㅇ-ㅇ-X-ㅇ-ㅇ 
+		 * 해당 줄에 빙고 두개 있는 줄 + 40  ㅇ-ㅇ-X-X-ㅇ 
+		 * 해당줄에 빙고 세개 + 60, 해당줄에 빙고 네개 +100 
+		 */
+		bg.resetPriorityGrid();
+		
+		boolean diaLUpCheckPosition = false;	// 대각선 \ 방향을 확인해야 하는지 알려주는 변수 
+		boolean diaRUpCheckPosition = false;	// 대각선 / 방향을 확인해야 하는지 알려주는 변수 
+		
+		int widthCheckCnt = 0;	// 가로 체크 갯수 카운트 
+		int heightCheckCnt = 0;	// 세로 체크 갯수 카운트 
+		int diaLUpCheckCnt = 0;	// 대각선\ 체크 갯수 카운트 
+		int diaRUpCheckCnt = 0;	// 대각선/ 체크 갯수 카운트
+		
+		int[] plusForBgCnt = { 0, 5, 10, 25, 45 };	// 같은 줄에 빙고가 몇개 있느냐에 따라 추가 점수를 줌. 실질적으로 2번째 값부터 사용. 
+												// ex) 1) 같은 줄에 빙고가 2개 있으면 10*2=20 20의 기본 우선순위값을 더해줌. ( 한줄에 빙고 1개 있으면 +10, 2개 있으면 2번 각각 돌아서 +20, 3개 있으면 3번 각각 돌아서 +30)  
+												// 		2) 해당 줄에 빙고가 발견될 경우 한번 돌아가며 +10을 미리 줌 ( 해당 줄에 빙고 갯수가 2개니까 각각 점마다 한번씩 총 두번 돌아서 기본 점수는 20이 되어있음)
+												//		3) 해당줄에 빙고 갯수가 있으면 카운트 함. 2개일 경우 20(10점씩 각각)을 줘서 총 +40점이 됨. 
+
+		for( int i=0 ; i < BINGOSIZE ; i++ )
+		{
+			for( int j=0 ; j < BINGOSIZE ; j++ )
+			{
+				// 값이 존재하는 숫자의 가로,세로,대각선(조건이 만족할 경우)의 방향에 위치해 있는 값에 우선순위를 높여줌 
+				if( bg.checkGrid[i][j] == 1 )
+				{
+					bg.priorityGrid[i][j] = 500 ; 	 // 해당 위치에 값이 체크되어 있음을 의미함. 					
+
+					if( i == j )
+						diaLUpCheckPosition = true;					
+
+					if( i+j == ( BINGOSIZE-1 ))
+						diaRUpCheckPosition = true;					
+
+					// 선택된 숫자의 가로, 세로, 대각선(조건이 만족할 경우) 위치에 존재하는 숫자들에게 +10씩 우선순위 높여줌.
+					// 선택된 숫자의 가로, 세로, 대각선(조건이 만족할 경우) 위치에 존재하는 빙고된 숫자 갯수 카운트  
+					for( int k=0 ; k < BINGOSIZE ; k++ )
+					{
+						bg.priorityGrid[i][k] += 10;	// 가로  	
+						widthCheckCnt += hasCheckIndex_returnOne( bg, i, k );	// 선택된 숫자의 가로 줄에 있는 빙고 갯수 카운트 						
+
+						bg.priorityGrid[k][j] += 10;	// 세로  
+						heightCheckCnt += hasCheckIndex_returnOne( bg, k, j );						
+
+						if( diaLUpCheckPosition == true )	// 대각선 \
+						{	
+							bg.priorityGrid[k][k] += 10;
+							diaLUpCheckCnt += hasCheckIndex_returnOne( bg, k, k );
+						}						
+
+						if( diaRUpCheckPosition == true )	// 대각선 /
+						{
+							bg.priorityGrid[ Math.abs( k - (BINGOSIZE-1)) ][k] += 10;
+							diaRUpCheckCnt += hasCheckIndex_returnOne( bg, Math.abs( k - (BINGOSIZE-1)), k );
+						}
+					}									
+
+					// 선택된 숫자의 가로, 세로, 대각선(조건이 만족할 경우) 위치에 존재하는 빙고된 숫자 갯수 만큼 우선순위 값 높여줌. 
+					if(  widthCheckCnt > 1 || heightCheckCnt > 1 || diaLUpCheckCnt > 1 || diaRUpCheckCnt > 1 	)
+					{
+						for( int k=0 ; k < BINGOSIZE ; k++ )
+						{
+							// 가로
+							if( widthCheckCnt > 1 && widthCheckCnt < BINGOSIZE )
+								bg.priorityGrid[i][k] += plusForBgCnt[ widthCheckCnt ];						
+
+							// 세로
+							if( heightCheckCnt > 1 && heightCheckCnt < BINGOSIZE ) 
+								bg.priorityGrid[k][j] += plusForBgCnt[ heightCheckCnt ];							
+
+							// 대각선 \ 
+							if( diaLUpCheckCnt > 1 && diaLUpCheckCnt < BINGOSIZE )
+								bg.priorityGrid[k][k] += plusForBgCnt[ diaLUpCheckCnt ];							
+
+							// 대각선 / 
+							if( diaRUpCheckCnt > 1  && diaRUpCheckCnt < BINGOSIZE )
+								bg.priorityGrid[ Math.abs( k - (BINGOSIZE-1)) ][k] += plusForBgCnt[ diaRUpCheckCnt ];				
+
+						}
+					}					 
+
+					diaLUpCheckPosition = false;
+					diaRUpCheckPosition = false;
+					widthCheckCnt = 0 ; heightCheckCnt = 0 ; diaLUpCheckCnt = 0 ; diaRUpCheckCnt = 0 ; 
+				}
+			}
+		}	
+	}
+	
+	// 선택된 줄에 빙고가 존재하면 1을 반환.
+	int hasCheckIndex_returnOne( BingoGrid bg, int i, int j )
+	{
+		if( bg.checkGrid[i][j] == 1 )
+			return 1;		
+
+		return 0;
+	}		
+
+	// 빙고판3에서 제일 높은 우선순위를 가진 숫자 반환. 같은 우선순위를 가진 숫자가 여러개 있을 경우 상대가 가지지 않은 번호 -> 랜덤 순으로 반환. 
+	int getHighPriorityNum( BingoGrid myBG, BingoGrid rivalBg )
+	{
+		int maxNum = 0 ;
+		ArrayList<Integer> maxNumList = new ArrayList<Integer>() ; 			// 가장 높은 우선순위를 갖는 숫자(실제 숫자)를 저장. 	
+		ArrayList<Integer> playerGoodNumList = new ArrayList<Integer>() ; 	// maxNumList에 있는 숫자가 모두 플레이어의 빙고판에 있는 숫자일때, 
+																			// maxNumList에 있는 숫자에 해당하는 플레이어의 빙고판 우선순위를 저장  
+
+		// 우선순위가 높은 숫자 찾기 함수
+		// 우선 순위 높은 숫자들 중 적절한 값 리턴 함수 
+		searchHighPrioNum( myBG, maxNumList, maxNum );
+		
+		
+		// 리스트 갯수가 2개 이상이면
+		if( maxNumList.size() >= 2 )
+		{
+			// 상대의 빙고판에 없는 숫자면 바로 사용. 
+			for( int i = 0 ; i < maxNumList.size() ; i ++ )
+			{
+				if ( rivalBg.hasCheckNum(maxNumList.get(i)) == false ) //hasEqualNumOfArr( vsArr1, maxNumList.get(i)) == false )
+					return maxNumList.get(i);
+			}		
+
+			// 상대의 빙고판에 있는 숫자면 우선순위 제일 낮은 숫자 사용. - 난이도 1(쉬움)에서만 사용. 
+			// 난이도 2에서는 선택되지 않은 빙고판 숫자를 못본다는 설정이니까!! 
+			if( gameLevel == 1 )
+			{
+				//
+				System.out.println( "플레이어 빙고판 우선순위 찾기 시작 ");
+				
+				int minNum = getPriority( rivalBg, maxNumList.get(0)) ;
+				
+				//
+				for( int i = 0 ; i < maxNumList.size() ; i ++ )
+				{
+					System.out.print( maxNumList.get(i) + "\t");
+				}
+				System.out.println();
+				
+				// maxNumList에 해당하는 값이 플레이어의 빙고판에 모두 존재하니까, 플레이어의 숫자 중 우선순위가 가장 낮은 숫자 사용.
+				for( int i = 0 ; i < maxNumList.size() ; i ++ )
+				{
+					if( minNum > getPriority( rivalBg, maxNumList.get(i)) )
+						minNum = getPriority( rivalBg, maxNumList.get(i)) ; 
+					
+					// 플레이어의 빙고판 우선순위 숫자를 저장
+					playerGoodNumList.add( getPriority( rivalBg, maxNumList.get(i)) );					
+				}
+				
+				// 상대의 최소 우선순위 값을 가진 숫자 반환 
+				for( int i = 0 ; i < maxNumList.size() ; i ++ )
+				{
+					if( playerGoodNumList.get(i) ==  minNum )
+						return maxNumList.get(i);					
+				}
+			}					
+		}
+		return maxNumList.get(0);
+	}
+	
+	// 제일 큰 우선순위를 가진 숫자 찾고 리스트에 저장  
+	void searchHighPriorityNum( BingoGrid myBG, ArrayList<Integer> maxNumList, int maxNum )
+	{		
+		for( int i=0 ; i < BINGOSIZE ; i++ )
+		{
+			for( int j=0 ; j < BINGOSIZE ; j++ )
+			{
+				// 500 미만이고(이미 선택된 숫자가 아니고) 
+				if( myBG.priorityGrid[i][j] < 500 )
+				{
+					// 제일 큰 값(maxNum) 보다 큰값이 들어오면 리스트를 비우고 다시 채움. 최대값도 바꿈.
+					if(  myBG.priorityGrid[i][j] > maxNum )
+					{
+						maxNum = myBG.priorityGrid[i][j] ;
+						maxNumList.clear();
+						maxNumList.add( myBG.numGrid[i][j] );
+					}
+					else if ( myBG.priorityGrid[i][j] == maxNum )
+					{
+						maxNumList.add( myBG.numGrid[i][j] );
+					}
+				}
+			}
+		}	
+	}
+	
+	// 빙고판에 존재하는 숫자를 넣으면 해당 위치의 우선순위 값을 반환하는 함수.
+	int getPriority( BingoGrid bg, int input )
+	{
+		for( int i=0 ; i < BINGOSIZE ; i++ )
+		{
+			for( int j=0 ; j < BINGOSIZE ; j++ )
+			{
+				if( bg.numGrid[i][j] == input )
+					return bg.priorityGrid[i][j];				
+			}			
+		}
+		
+		return 0;
+	}
+	
+	
+	// 숫자 빙고판 출력 - 입력된 빙고 번호의 체크까지 함께 출력 
+	// whosBingoFan가 0이면 나, 1이면 레벨 하,중인 컴퓨터, 2면 레벨 상인 컴퓨터 
+	void printBG( BingoGrid bg, int whosBingoFan )
+	{		
+		 if( whosBingoFan == 0 ) 
+			System.out.println("\n============ << 내 빙고판 >> ==============");
+		 else
+			System.out.println( "\n============ << 상대 빙고판 >> =============");
+		 
+		for( int i= 0 ; i < BINGOSIZE ; i++ )
+		{
+			for(int j = 0 ; j < BINGOSIZE ; j++)
+			{
+				if( bg.checkGrid[i][j] == 1 )
+				{
+					System.out.print( "(" + bg.numGrid[i][j] + ")\t" );
+				}
+				else
+				{
+					if(  whosBingoFan == 0 || whosBingoFan == 1)
+						System.out.print( bg.numGrid[i][j] +"\t" );
+					else // whosBingoFan == 2 // 난이도 어려움 설정. AI버전에서만 사용 가능. 
+						System.out.print( "*\t" );
+				}
+				
+			}	System.out.println();		
+		}
+		System.out.println("=========================================");		
+	}
+	
+	//play 정보 출력부분. 게임횟수, 내 숫자빙고판, 상대 숫자빙고판, 완성 빙고라인수, 이전 턴의 입력값들 출력. 
+	void printPlayingInfo( int playTime, int inputMyNum, int inputComNum, boolean myTurnGood, boolean comTurnGood )
+	{
+		if( playTime > 1 )
+		{				
+			System.out.println("\n\n**************************** [ " + playTime + "판째 ] ****");
+		}	
+		
+		// 출력 
+		printBG( myBG, 0 );
+		
+		if( playTime >= 2 )
+		{
+			System.out.println("* 완성된 나의 빙고 수 : " + mySuccLineNum ) ;
+		}
+		
+		// 게임 레벨에 따른 상대 숫자 빙고판 출력 형식이 바뀜 
+		if( gameLevel == 1 )
+			printBG( comBG, 1 );
+		else
+			printBG( comBG, 2 );
+		
+		if( playTime >= 2 )
+		{
+			System.out.println("* 완성된 상대의 빙고 수 : " + comSuccLineNum ) ;
+				
+			if( myTurnGood == false )
+			{
+				System.out.println(" ~ 내가 입력한 숫자 " + inputMyNum + "은 상대에게 없는 숫자 였습니다. ^_^");
+				myTurnGood = true;				
+			}
+			else
+			{
+				System.out.println(" ~ 내가 입력한 숫자 " + inputMyNum + "은 상대에게 있는 숫자 였습니다. T-T");
+			}
+			
+			if( comTurnGood == false )
+			{
+				System.out.println(" ~ 컴퓨터가 입력한 숫자 " + inputComNum + "은 나에게 없는 숫자 였습니다. T-T ");
+				comTurnGood = true;				
+			}
+			else
+			{
+				System.out.println(" ~ 컴퓨터가 입력한 숫자 " + inputComNum + "은 나에게 있는 숫자 였습니다. ^_^ ");
+			}
+		}
+	}
+	
+}
+

@@ -1,0 +1,159 @@
+import java.util.Scanner;
+
+// 입력값이 숫자로만 (공백x) 존재하는지 확인함
+
+
+
+
+public class playMain {
+	
+	public static int hasNextInt()
+	{
+		
+		return 0;
+	}
+	
+	// 게임 스테이지를 선택하는 입력값이 휴효하면 반환. 1~3의 숫자만 반환.
+	public static int selectGameStage()
+	{
+		int num = 0 ; 
+		System.out.print("* 게임 스테이지 선택 *\n 1. 솔로플레이\n 2. 멀티플레이(난이도 하)\n 3. 멀티플레이[AI버전](난이도 중~상)\n: ");		 		
+		Scanner sc = new Scanner( System.in );
+			
+		while( true )
+		{	
+			// 입력값 자체가 잘못 되었을 경우 ( 문자, 특문, 실수등이 입력될 경우)
+			if( !sc.hasNextInt() )			// 여기서 실질적으로 입력 받음 
+			{		
+				sc.nextLine();				// 잘못된 입력값을 비움. _ hasNext에 남아있던 개행문자를 이용해서 스캐너 비움. 				
+				System.err.println(" ~ 숫자를 입력해 주세요.");
+				continue;
+			}
+			// 입력값이 일단 숫자. ( hasNextInt가 단어 단위로 받아서 공백이 포함 될 수 있음 ) 
+			else
+			{
+				// 숫자+공백+숫자로 이루어졌는지 확인 -------------------
+				String tmpStr = sc.nextLine();
+				int tmp = 0 ;
+				// (공백찾기) 
+				for( int i = 0 ; i < tmpStr.length() ; i ++ )
+				{
+					if( tmpStr.charAt(i) == ' ')
+					{						
+						tmp++;
+						break;
+					}					
+				}
+				if( tmp > 0)
+				{
+					System.err.println(" ~ 공백없이 입력해 주세요. ");
+					continue;
+				}
+				//-----------------------------------------------
+					
+				num = Integer.parseInt( tmpStr );
+			}
+				
+			// 값의 범위 
+			if( num != 1 && num != 2 && num != 3 )
+			{
+				System.err.println(" ~ 1 또는 2 또는 3 만 입력해 주세요");
+				continue;	
+			}			
+			else
+			{				
+				break;
+			}		
+		}			
+		return num;			
+	}
+	
+	// 게임 진행/종료를 위한 입력값의 유효성 검사. 유효하면 반환. y,Y,n,N만 반환함.
+	public static String yesOrNo()
+	{
+		String inputSt = null;
+		
+		while( true )
+		{
+			Scanner sc = new Scanner(System.in);
+			
+			inputSt = sc.nextLine();
+
+			if( inputSt.compareTo("y") == 0 ||
+				inputSt.compareTo("Y") == 0 ||
+				inputSt.compareTo("n") == 0 ||
+				inputSt.compareTo("N") == 0
+			 )				
+			{
+				break;
+			}
+			else
+			{				
+				System.err.println(" ~ y 또는 n 값만 입력해 주세요.");
+			}
+		}
+		
+		return inputSt;
+	}
+
+	
+	public static void main(String[] args) {
+	
+		String inputYesOrNo = null;		// 게임 진행 여부를 알려주는 입력값을 저장할 변수
+		int gameStage = 1; 				// 게임 스테이지를 알려주는 입력값을 저장할 변수 
+		
+		// 솔로플레이 버전 
+		SoloPlay bingo1 = new SoloPlay();
+		
+		// AI 바보 버전 
+		MultiPlay_NotAIVer bingo2 = new MultiPlay_NotAIVer();
+		
+		// AI 똑똑이 버전 
+		MultiPlay_AIVer bingo3 = new MultiPlay_AIVer();
+		
+		
+		while( true )
+		{ 
+			// 게임 스테이지 선택 
+			gameStage = selectGameStage();
+			
+			switch ( gameStage )
+			{
+			case 1 : 
+				System.out.println("\n ****** 솔로플레이 시작 ****** \n"); 
+				bingo1.resetBingo(); 
+				bingo1.play(); 
+				break;
+			case 2 : 
+				System.out.println("\n ****** 멀티플레이(쉬움) 시작 ****** \n"); 
+				bingo2.resetBingo(); bingo2.play(); break;
+			case 3 : 
+				System.out.println("\n ****** 솔로플레이(AI) 시작 ****** \n"); 
+				bingo3.resetBingo(); 
+				bingo3.play(); 
+				break;
+			default : 
+				System.out.println("\n ****** 솔로플레이 시작 ****** \n"); 
+				bingo1.resetBingo(); 
+				bingo1.play(); 
+				break;
+			}
+			
+			
+			System.out.print("\n\n* 다시 게임을 시작하시겠습니까? (y/n) : ");
+			
+			// 게임 다시 시작을 위한 입력값의 유효성 확인. 유효하면 반환. y,Y,n,N만 반환함.
+			inputYesOrNo = yesOrNo();
+			
+			// 입력값이 n,N일경우 해당 반복문을 나가며 게임 종료. y,Y일 경우 반복문 맨위로 가서 다시 게임 시작. 
+			if( inputYesOrNo.compareTo("n") == 0 || inputYesOrNo.compareTo("N") == 0  )
+			{
+				System.out.println(" ~ 게임종료 ");
+				break;
+			}			
+		}
+		
+
+	}
+
+}

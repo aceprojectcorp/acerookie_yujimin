@@ -1,0 +1,96 @@
+import java.util.Random;
+
+
+public class BingoGrid {
+	
+	int[][] bingoNumGrid ;		// 숫자저장.
+	int[][] bingoCheckGrid;		// 체크되어진 위치 저장 .
+	int[][] bingoPriorityGrid;	// 우선순위 저장. 
+	int bingoGridSize ;			// 빙고판 사이즈. 
+	
+	public void BingoGrid( int bingoGridSize )
+	{
+		resetAllBingoGrid( bingoGridSize );
+	}
+	
+	// 3개의 모든 빙고판 초기화 
+	void resetAllBingoGrid( int bingoGridSize )
+	{
+		this.bingoGridSize = bingoGridSize; 
+		
+		// 빙고판 모든 값에 0 넣기.
+		inputZeroToBingoGrid( bingoNumGrid );
+		inputZeroToBingoGrid( bingoCheckGrid );
+		inputZeroToBingoGrid( bingoPriorityGrid );
+		
+		// 빙고숫자판에 랜덤값 넣기.
+		createRandNumToBingoNumGrid( bingoNumGrid );
+		
+		// 우선순위 저장. 
+		
+	}
+	
+	// 빙고판 초기화 (모든 숫자를 0으로) 
+	void inputZeroToBingoGrid( int[][] arr )
+	{
+		for( int i= 0 ; i < bingoGridSize ; i++ )
+		{
+			for(int j = 0 ; j < bingoGridSize ; j++)
+			{
+				arr[i][j] = 0;
+			}			
+		}
+	}
+	
+	// 빙고판에 중복되지 않는 1~100사이의 숫자들로 채워줌 
+	void createRandNumToBingoNumGrid( int[][] arr )
+	{
+		Random rd = new Random() ;	
+		int randNumCnt = 0 ;			// 만들어진 빙고 숫자 갯수 저장 
+		int randNum = 0;				// 만들어진 난수값 저장.  
+		
+		// 빙고판 만들기 
+		while( randNumCnt < bingoGridSize*bingoGridSize )
+		{			
+			randNum = Math.abs(((rd.nextInt()) % 100 ) + 1);  // 1~100 사이의 난수 저장.
+			
+			// 기존 배열의 값들과 입력값이 같은지 확인. 같은 값이 없으면 false반환.  
+			if( hasEqualNumOfArr( arr, randNum ) == false )
+			{
+				inputNumToBingoNumGrid( arr, randNum );
+				randNumCnt++;				
+			}		
+		}		
+	}
+	
+	// 입력값이 배열에 저장되어 있는 값과 같은지 확인하는 메소드. 존재하면 true반환  
+	boolean hasEqualNumOfArr( int[][] arr, int input )
+	{
+		for( int i= 0 ; i < bingoGridSize ; i++ )
+		{
+			for(int j = 0 ; j < bingoGridSize ; j++)
+			{
+				if( arr[i][j] == input )
+					return true;				
+			}			
+		}	
+		return false;
+	}
+
+	// 숫자 빙고판에 입력된 값을 순서대로 저장.
+	void inputNumToBingoNumGrid( int[][] arr, int num )
+	{
+		for( int i= 0 ; i < bingoGridSize ; i++ )
+		{
+			for(int j = 0 ; j < bingoGridSize ; j++)
+			{
+				if( arr[i][j] == 0 )
+				{
+					arr[i][j] = num;
+					return;
+				}				
+			}			
+		}		
+	}
+
+}
