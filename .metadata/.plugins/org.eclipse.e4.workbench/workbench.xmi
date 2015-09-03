@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_IFUeoU93EeWiJIvK25Oa5A" elementId="org.eclipse.e4.legacy.ide.application" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_IFUeok93EeWiJIvK25Oa5A" bindingContexts="_IFUepE93EeWiJIvK25Oa5A">
-  <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;workbench>&#xA;&lt;mruList>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MultiPlay_AIVer.java&quot; tooltip=&quot;BingoGame/src/MultiPlay_AIVer.java&quot;>&#xA;&lt;persistable path=&quot;/BingoGame/src/MultiPlay_AIVer.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MultiPlay_NotAIVer.java&quot; tooltip=&quot;BingoGame/src/MultiPlay_NotAIVer.java&quot;>&#xA;&lt;persistable path=&quot;/BingoGame/src/MultiPlay_NotAIVer.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SoloPlay.java&quot; tooltip=&quot;BingoGame/src/SoloPlay.java&quot;>&#xA;&lt;persistable path=&quot;/BingoGame/src/SoloPlay.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;BingoGrid.java&quot; tooltip=&quot;BingoGame/src/BingoGrid.java&quot;>&#xA;&lt;persistable path=&quot;/BingoGame/src/BingoGrid.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;playMain.java&quot; tooltip=&quot;BingoGame/src/playMain.java&quot;>&#xA;&lt;persistable path=&quot;/BingoGame/src/playMain.java&quot;/>&#xA;&lt;/file>&#xA;&lt;/mruList>&#xA;&lt;/workbench>"/>
+  <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;workbench>&#xA;&lt;mruList>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MultiPlay_AIVer.java&quot; tooltip=&quot;BingoGame/src/MultiPlay_AIVer.java&quot;>&#xA;&lt;persistable path=&quot;/BingoGame/src/MultiPlay_AIVer.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;BingoGrid.java&quot; tooltip=&quot;BingoGame/src/BingoGrid.java&quot;>&#xA;&lt;persistable path=&quot;/BingoGame/src/BingoGrid.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MultiPlay_NotAIVer.java&quot; tooltip=&quot;BingoGame/src/MultiPlay_NotAIVer.java&quot;>&#xA;&lt;persistable path=&quot;/BingoGame/src/MultiPlay_NotAIVer.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SoloPlay.java&quot; tooltip=&quot;BingoGame/src/SoloPlay.java&quot;>&#xA;&lt;persistable path=&quot;/BingoGame/src/SoloPlay.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;playMain.java&quot; tooltip=&quot;BingoGame/src/playMain.java&quot;>&#xA;&lt;persistable path=&quot;/BingoGame/src/playMain.java&quot;/>&#xA;&lt;/file>&#xA;&lt;/mruList>&#xA;&lt;/workbench>"/>
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
   <tags>ModelMigrationProcessor.001</tags>
   <children xsi:type="basic:TrimmedWindow" xmi:id="_IFUeok93EeWiJIvK25Oa5A" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_Id2TYE93EeWiJIvK25Oa5A" label="%trimmedwindow.label.eclipseSDK" x="313" y="257" width="1409" height="920">
@@ -206,35 +206,19 @@
       <tags>View</tags>
       <tags>categoryTag:Help</tags>
     </sharedElements>
-    <sharedElements xsi:type="advanced:Area" xmi:id="_Ixb9wE93EeWiJIvK25Oa5A" elementId="org.eclipse.ui.editorss" selectedElement="__B5nQE9_EeWngbPUNL8tAw">
-      <children xsi:type="basic:PartSashContainer" xmi:id="__B5nQE9_EeWngbPUNL8tAw" selectedElement="_Ixb9wU93EeWiJIvK25Oa5A" horizontal="true">
-        <children xsi:type="basic:PartStack" xmi:id="__B5nQU9_EeWngbPUNL8tAw" elementId="PartStack@2ad10be4" containerData="5463" selectedElement="_ch598E9_EeWngbPUNL8tAw">
-          <children xsi:type="basic:Part" xmi:id="_ch598E9_EeWngbPUNL8tAw" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="BingoGrid.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.gif" closeable="true">
-            <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;BingoGrid.java&quot; partName=&quot;BingoGrid.java&quot; title=&quot;BingoGrid.java&quot; tooltip=&quot;BingoGame/src/BingoGrid.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/BingoGame/src/BingoGrid.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;686&quot; selectionTopPixel=&quot;2994&quot;/>&#xA;&lt;/editor>"/>
-            <tags>Editor</tags>
-            <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-            <tags>removeOnHide</tags>
-          </children>
-        </children>
-        <children xsi:type="basic:PartStack" xmi:id="_Ixb9wU93EeWiJIvK25Oa5A" elementId="org.eclipse.e4.primaryDataStack" containerData="4537" selectedElement="_BsycAE-HEeWngbPUNL8tAw">
-          <tags>newtablook</tags>
-          <tags>org.eclipse.e4.primaryDataStack</tags>
-          <tags>EditorStack</tags>
+    <sharedElements xsi:type="advanced:Area" xmi:id="_Ixb9wE93EeWiJIvK25Oa5A" elementId="org.eclipse.ui.editorss" selectedElement="_Ixb9wU93EeWiJIvK25Oa5A">
+      <children xsi:type="basic:PartStack" xmi:id="_Ixb9wU93EeWiJIvK25Oa5A" elementId="org.eclipse.e4.primaryDataStack" selectedElement="_AzwiMFBLEeWJ3rhTiY39Iw">
+        <tags>newtablook</tags>
+        <tags>org.eclipse.e4.primaryDataStack</tags>
+        <tags>EditorStack</tags>
+        <tags>active</tags>
+        <children xsi:type="basic:Part" xmi:id="_AzwiMFBLEeWJ3rhTiY39Iw" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="BingoGrid.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.gif" closeable="true">
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;BingoGrid.java&quot; partName=&quot;BingoGrid.java&quot; title=&quot;BingoGrid.java&quot; tooltip=&quot;BingoGame/src/BingoGrid.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/BingoGame/src/BingoGrid.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;5194&quot; selectionTopPixel=&quot;2153&quot;/>&#xA;&lt;/editor>"/>
+          <tags>Editor</tags>
+          <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
+          <tags>removeOnHide</tags>
           <tags>active</tags>
-          <children xsi:type="basic:Part" xmi:id="_BsycAE-HEeWngbPUNL8tAw" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="MultiPlay_AIVer.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.gif" closeable="true">
-            <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MultiPlay_AIVer.java&quot; partName=&quot;MultiPlay_AIVer.java&quot; title=&quot;MultiPlay_AIVer.java&quot; tooltip=&quot;BingoGame/src/MultiPlay_AIVer.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/BingoGame/src/MultiPlay_AIVer.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;277&quot; selectionTopPixel=&quot;0&quot;/>&#xA;&lt;/editor>"/>
-            <tags>Editor</tags>
-            <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-            <tags>removeOnHide</tags>
-            <tags>active</tags>
-            <tags>activeOnClose</tags>
-          </children>
-          <children xsi:type="basic:Part" xmi:id="_tgTn4E_DEeWngbPUNL8tAw" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="SoloPlay.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.gif" closeable="true">
-            <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SoloPlay.java&quot; partName=&quot;SoloPlay.java&quot; title=&quot;SoloPlay.java&quot; tooltip=&quot;BingoGame/src/SoloPlay.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/BingoGame/src/SoloPlay.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;324&quot; selectionTopPixel=&quot;0&quot;/>&#xA;&lt;/editor>"/>
-            <tags>Editor</tags>
-            <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
-            <tags>removeOnHide</tags>
-          </children>
+          <tags>activeOnClose</tags>
         </children>
       </children>
     </sharedElements>
@@ -395,7 +379,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_IqfBME93EeWiJIvK25Oa5A" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_6xjQkE94EeWngbPUNL8tAw" elementId="print" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_IGSIDk93EeWiJIvK25Oa5A"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_JA0DMVBLEeWw8tItEsHTkQ" elementId="print" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_IGSIDk93EeWiJIvK25Oa5A"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_IqfBMU93EeWiJIvK25Oa5A" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -425,7 +409,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_IqfoQE93EeWiJIvK25Oa5A" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_6xoJEU94EeWngbPUNL8tAw" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_IGMoaU93EeWiJIvK25Oa5A"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_JA6J0FBLEeWw8tItEsHTkQ" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_IGMoaU93EeWiJIvK25Oa5A"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_IqfoQU93EeWiJIvK25Oa5A" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -764,7 +748,7 @@
     </bindings>
     <bindings xmi:id="_IHnksk93EeWiJIvK25Oa5A" keySequence="ALT+CTRL+H" command="_IGEFmE93EeWiJIvK25Oa5A"/>
     <bindings xmi:id="_IHoLwE93EeWiJIvK25Oa5A" keySequence="ALT+COMMAND+SHIFT+ARROW_DOWN" command="_IGT9K093EeWiJIvK25Oa5A"/>
-    <bindings xmi:id="_6aDWkU94EeWngbPUNL8tAw" keySequence="COMMAND+CTRL+F" command="_IHzK4U93EeWiJIvK25Oa5A"/>
+    <bindings xmi:id="_Iog38FBLEeWw8tItEsHTkQ" keySequence="COMMAND+CTRL+F" command="_IHzK4U93EeWiJIvK25Oa5A"/>
   </bindingTables>
   <bindingTables xmi:id="_IG7BIU93EeWiJIvK25Oa5A" elementId="org.eclipse.ui.textEditorScope" bindingContext="_IGY1qE93EeWiJIvK25Oa5A">
     <bindings xmi:id="_IG7BIk93EeWiJIvK25Oa5A" keySequence="COMMAND+SHIFT+NUMPAD_MULTIPLY" command="_IGModE93EeWiJIvK25Oa5A"/>
@@ -1201,7 +1185,7 @@
     <bindings xmi:id="_IHnksE93EeWiJIvK25Oa5A" keySequence="CTRL+D" command="_IGGhzE93EeWiJIvK25Oa5A"/>
   </bindingTables>
   <bindingTables xmi:id="_IHzx9E93EeWiJIvK25Oa5A" contributorURI="platform:/fragment/org.eclipse.e4.ui.workbench.renderers.swt.cocoa" bindingContext="_IFUep093EeWiJIvK25Oa5A">
-    <bindings xmi:id="_6aEksE94EeWngbPUNL8tAw" keySequence="M1+W" command="_IHzx8k93EeWiJIvK25Oa5A"/>
+    <bindings xmi:id="_Iog38VBLEeWw8tItEsHTkQ" keySequence="M1+W" command="_IHzx8k93EeWiJIvK25Oa5A"/>
   </bindingTables>
   <bindingTables xmi:id="_Ixck0U93EeWiJIvK25Oa5A" bindingContext="_Ixck0E93EeWiJIvK25Oa5A"/>
   <bindingTables xmi:id="_IxdL4U93EeWiJIvK25Oa5A" bindingContext="_IxdL4E93EeWiJIvK25Oa5A"/>

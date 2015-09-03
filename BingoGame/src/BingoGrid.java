@@ -2,17 +2,17 @@ import java.util.Random;
 
 public class BingoGrid {
 	
-	int[][] numGrid ;		// ¼ıÀÚÀúÀå.
-	int[][] checkGrid;		// Ã¼Å©µÇ¾îÁø À§Ä¡ ÀúÀå .
-	int[][] priorityGrid;	// ¿ì¼±¼øÀ§ ÀúÀå. 
-	int gridSize ;			// ºù°íÆÇ »çÀÌÁî. 
+	int[][] numGrid ;		// ìˆ«ìì €ì¥.
+	int[][] checkGrid;		// ì²´í¬ë˜ì–´ì§„ ìœ„ì¹˜ ì €ì¥ .
+	int[][] priorityGrid;	// ìš°ì„ ìˆœìœ„ ì €ì¥. 
+	int gridSize ;			// ë¹™ê³ íŒ ì‚¬ì´ì¦ˆ. 
 	
 	public BingoGrid( int inputGridSize )
 	{
 		resetAllBingoGrid( inputGridSize );
 	}
 	
-	// 3°³ÀÇ ¸ğµç ºù°íÆÇ ÃÊ±âÈ­ 
+	// 3ê°œì˜ ëª¨ë“  ë¹™ê³ íŒ ì´ˆê¸°í™” 
 	void resetAllBingoGrid( int inputGridSize )
 	{
 		this.gridSize = inputGridSize; 
@@ -21,17 +21,17 @@ public class BingoGrid {
 		checkGrid 		= new int[gridSize][gridSize];
 		priorityGrid 	= new int[gridSize][gridSize];
 		
-		// ºù°íÆÇ ¸ğµç °ª¿¡ 0 ³Ö±â.
+		// ë¹™ê³ íŒ ëª¨ë“  ê°’ì— 0 ë„£ê¸°.
 		inputZeroToBingoGrid( numGrid );
 		inputZeroToBingoGrid( checkGrid );
 		
-		// ºù°í¼ıÀÚÆÇ¿¡ ·£´ı°ª ³Ö±â.
+		// ë¹™ê³ ìˆ«ìíŒì— ëœë¤ê°’ ë„£ê¸°.
 		createRandNumToNumGrid();
 		
 		resetPriorityGrid();		
 	}
 	
-	//[ÃÊ±âÈ­¿ë] ºù°íÆÇ ÃÊ±âÈ­ (¸ğµç ¼ıÀÚ¸¦ 0À¸·Î) 
+	//[ì´ˆê¸°í™”ìš©] ë¹™ê³ íŒ ì´ˆê¸°í™” (ëª¨ë“  ìˆ«ìë¥¼ 0ìœ¼ë¡œ) 
 	void inputZeroToBingoGrid( int[][] arr )
 	{
 		for( int i= 0 ; i < gridSize ; i++ )
@@ -43,19 +43,19 @@ public class BingoGrid {
 		}
 	}
 	
-	//[ÃÊ±âÈ­¿ë] ºù°íÆÇ¿¡ Áßº¹µÇÁö ¾Ê´Â 1~100»çÀÌÀÇ ¼ıÀÚµé·Î Ã¤¿öÁÜ 
+	//[ì´ˆê¸°í™”ìš©] ë¹™ê³ íŒì— ì¤‘ë³µë˜ì§€ ì•ŠëŠ” 1~100ì‚¬ì´ì˜ ìˆ«ìë“¤ë¡œ ì±„ì›Œì¤Œ 
 	void createRandNumToNumGrid()
 	{
 		Random rd = new Random() ;	
-		int randNumCnt = 0 ;			// ¸¸µé¾îÁø ºù°í ¼ıÀÚ °¹¼ö ÀúÀå 
-		int randNum = 0;				// ¸¸µé¾îÁø ³­¼ö°ª ÀúÀå.  
+		int randNumCnt = 0 ;			// ë§Œë“¤ì–´ì§„ ë¹™ê³  ìˆ«ì ê°¯ìˆ˜ ì €ì¥ 
+		int randNum = 0;				// ë§Œë“¤ì–´ì§„ ë‚œìˆ˜ê°’ ì €ì¥.  
 		
-		// ºù°íÆÇ ¸¸µé±â 
+		// ë¹™ê³ íŒ ë§Œë“¤ê¸° 
 		while( randNumCnt < gridSize*gridSize )
 		{			
-			randNum = Math.abs(((rd.nextInt()) % 100 ) + 1);  // 1~100 »çÀÌÀÇ ³­¼ö ÀúÀå.
+			randNum = Math.abs(((rd.nextInt()) % 100 ) + 1);  // 1~100 ì‚¬ì´ì˜ ë‚œìˆ˜ ì €ì¥.
 			
-			// ±âÁ¸ ¹è¿­ÀÇ °ªµé°ú ÀÔ·Â°ªÀÌ °°ÀºÁö È®ÀÎ. °°Àº °ªÀÌ ¾øÀ¸¸é false¹İÈ¯.  
+			// ê¸°ì¡´ ë°°ì—´ì˜ ê°’ë“¤ê³¼ ì…ë ¥ê°’ì´ ê°™ì€ì§€ í™•ì¸. ê°™ì€ ê°’ì´ ì—†ìœ¼ë©´ falseë°˜í™˜.  
 			if( hasEqualNumOfArr( randNum ) == false )
 			{
 				enterNumToBingoNumGrid( numGrid, randNum );
@@ -64,7 +64,7 @@ public class BingoGrid {
 		}		
 	}
 	
-	//[ÃÊ±âÈ­¿ë] ¼ıÀÚ ºù°íÆÇ¿¡ ÀÔ·ÂµÈ °ªÀ» ¼ø¼­´ë·Î ÀúÀå.
+	//[ì´ˆê¸°í™”ìš©] ìˆ«ì ë¹™ê³ íŒì— ì…ë ¥ëœ ê°’ì„ ìˆœì„œëŒ€ë¡œ ì €ì¥.
 	void enterNumToBingoNumGrid( int[][] arr, int num )
 	{
 		for( int i= 0 ; i < gridSize ; i++ )
@@ -80,8 +80,8 @@ public class BingoGrid {
 		}		
 	}
 	
-	// [ÃÊ±âÈ­¿ë] ºù°íÆÇÀÇ À§Ä¡¿¡ µû¸¥ ¿ì¼±¼øÀ§°ª ¼³Á¤.
-	// ¼º°ø°¡´ÉÇÑ ºù°í ¶óÀÎ °¹¼ö¿¡ ±âÃÊ ÇÏ¿© ¼³Á¤ÇÔ.
+	// [ì´ˆê¸°í™”ìš©] ë¹™ê³ íŒì˜ ìœ„ì¹˜ì— ë”°ë¥¸ ìš°ì„ ìˆœìœ„ê°’ ì„¤ì •.
+	// ì„±ê³µê°€ëŠ¥í•œ ë¹™ê³  ë¼ì¸ ê°¯ìˆ˜ì— ê¸°ì´ˆ í•˜ì—¬ ì„¤ì •í•¨.
 	void resetPriorityGrid()
 	{
 		if( gridSize == 5 )
@@ -120,7 +120,7 @@ public class BingoGrid {
 		}		
 	}
 	
-	// ÀÔ·Â°ªÀÌ ¹è¿­¿¡ ÀúÀåµÇ¾î ÀÖ´Â °ª°ú °°ÀºÁö È®ÀÎÇÏ´Â ¸Ş¼Òµå. Á¸ÀçÇÏ¸é true¹İÈ¯  
+	// ì…ë ¥ê°’ì´ ë°°ì—´ì— ì €ì¥ë˜ì–´ ìˆëŠ” ê°’ê³¼ ê°™ì€ì§€ í™•ì¸í•˜ëŠ” ë©”ì†Œë“œ. ì¡´ì¬í•˜ë©´ trueë°˜í™˜  
 	boolean hasEqualNumOfArr( int input )
 	{
 		for( int i= 0 ; i < gridSize ; i++ )
@@ -134,7 +134,7 @@ public class BingoGrid {
 		return false;
 	}
 	
-	// ÀÔ·Â°ª À§Ä¡¿¡ Ã¼Å© Ãß°¡
+	// ì…ë ¥ê°’ ìœ„ì¹˜ì— ì²´í¬ ì¶”ê°€
 	public void addCheckToCheckGrid( int input )
 	{
 		for( int i= 0 ; i < gridSize ; i++ )
@@ -150,17 +150,17 @@ public class BingoGrid {
 		}		
 	}
 	
-	// ºù°íÆÇ1¿¡ ÇØ´çÇÏ´Â °ªÀÌ Ã¼Å©µÇ¾î ÀÖ´ÂÁö(ºù°íÆÇ2¸¦ º¸°í) È®ÀÎÇÏ´Â ÇÔ¼ö.
+	// ë¹™ê³ íŒ1ì— í•´ë‹¹í•˜ëŠ” ê°’ì´ ì²´í¬ë˜ì–´ ìˆëŠ”ì§€(ë¹™ê³ íŒ2ë¥¼ ë³´ê³ ) í™•ì¸í•˜ëŠ” í•¨ìˆ˜.
 	boolean hasCheckNum( int input )
 	{
 		for( int i= 0 ; i < gridSize ; i++ )
 		{
 			for(int j = 0 ; j < gridSize ; j++)
 			{
-				// ÇØ´ç°ªÀÇ ºù°íÆÇÀÌ, 
+				// í•´ë‹¹ê°’ì˜ ë¹™ê³ íŒì´, 
 				if( numGrid[i][j] == input )
 				{
-					// Ã¼Å© µÇ¾î ÀÖ´Â »óÅÂ¸é true¹İÈ¯.
+					// ì²´í¬ ë˜ì–´ ìˆëŠ” ìƒíƒœë©´ trueë°˜í™˜.
 					if( checkGrid[i][j] == 1 )					
 						return true; 						
 					else					
@@ -171,52 +171,52 @@ public class BingoGrid {
 		return false;
 	}
 	
-	// ¿Ï¼ºµÈ ÀüÃ¼ ºù°í ¶óÀÎ¼ö Ä«¿îÆ® 
+	// ì™„ì„±ëœ ì „ì²´ ë¹™ê³  ë¼ì¸ìˆ˜ ì¹´ìš´íŠ¸ 
 	int allSuccBgLine()
 	{
-		int widthBgCnt = 0;						// °¡·Î ºù°í °¹¼ö Ä«¿îÆ® 
-		int[] heightBgCnt = { 0, 0, 0, 0, 0 };	// ¼¼·Î ºù°í °¹¼ö Ä«¿îÆ® 
-		int diagLeftUpBgCnt = 0;				// \¹æÇâ ´ë°¢¼± ºù°í °¹¼ö Ä«¿îÆ®
-		int diagRightUpBgCnt = 0;				// /¹æÇâ ´ë°¢¼± ºù°í °¹¼ö Ä«¿îÆ® 
-		int allSuccLineCnt = 0;					// ÇØ´ç ¹è¿­ÀÇ ¿Ï¼ºµÈ ºù°í¶óÀÎ °¹¼ö 
+		int widthBgCnt = 0;						// ê°€ë¡œ ë¹™ê³  ê°¯ìˆ˜ ì¹´ìš´íŠ¸ 
+		int[] heightBgCnt = { 0, 0, 0, 0, 0 };	// ì„¸ë¡œ ë¹™ê³  ê°¯ìˆ˜ ì¹´ìš´íŠ¸ 
+		int diagLeftUpBgCnt = 0;				// \ë°©í–¥ ëŒ€ê°ì„  ë¹™ê³  ê°¯ìˆ˜ ì¹´ìš´íŠ¸
+		int diagRightUpBgCnt = 0;				// /ë°©í–¥ ëŒ€ê°ì„  ë¹™ê³  ê°¯ìˆ˜ ì¹´ìš´íŠ¸ 
+		int allSuccLineCnt = 0;					// í•´ë‹¹ ë°°ì—´ì˜ ì™„ì„±ëœ ë¹™ê³ ë¼ì¸ ê°¯ìˆ˜ 
 		
 		for( int i = 0 ; i < gridSize ; i++ )
 		{
 			for(int j = 0 ; j < gridSize ; j++)
 			{
-				// ºù°íÆÇÀÌ Ã¼Å© µÇ¾îÀÖÀ» ¶§, °¡·Î, ¼¼·Î, ´ë°¢¼± ºù°í °¹¼ö Ä«¿îÆ® º¯¼ö¿¡ ÀúÀå  
+				// ë¹™ê³ íŒì´ ì²´í¬ ë˜ì–´ìˆì„ ë•Œ, ê°€ë¡œ, ì„¸ë¡œ, ëŒ€ê°ì„  ë¹™ê³  ê°¯ìˆ˜ ì¹´ìš´íŠ¸ ë³€ìˆ˜ì— ì €ì¥  
 				if( checkGrid[i][j] == 1 )
 				{
 					widthBgCnt++;
 					heightBgCnt[j]++;
 					
-					// Ã¼Å©µÈ ºù°íÀÇ À§Ä¡°¡ ´ë°¢¼±(\) ºù°í°¡ °¡´ÉÇÑ À§Ä¡ÀÏ °æ¿ì   
+					// ì²´í¬ëœ ë¹™ê³ ì˜ ìœ„ì¹˜ê°€ ëŒ€ê°ì„ (\) ë¹™ê³ ê°€ ê°€ëŠ¥í•œ ìœ„ì¹˜ì¼ ê²½ìš°   
 					if( i == j )
 						diagLeftUpBgCnt++;	
 					
-					// Ã¼Å©µÈ ºù°íÀÇ À§Ä¡°¡ ´ë°¢¼±(/) ºù°í°¡ °¡´ÉÇÑ À§Ä¡ÀÏ °æ¿ì
+					// ì²´í¬ëœ ë¹™ê³ ì˜ ìœ„ì¹˜ê°€ ëŒ€ê°ì„ (/) ë¹™ê³ ê°€ ê°€ëŠ¥í•œ ìœ„ì¹˜ì¼ ê²½ìš°
 					if( i+j == ( gridSize-1 ) )
 						diagRightUpBgCnt++;		
 					
-					// 5¹øÂ° ÁÙ(¸Ç ¾Æ·§ÁÙ) ÀÏ¶§¸¸, 
-					// Ã¼Å©µÈ ºù°í À§Ä¡°¡ ¼¼·Î, ´ë°¢¼± À§Ä¡ÀÏ °æ¿ì ÇØ´ç ÁÙÀÇ ºù°í°¹¼ö È®ÀÎ. 
+					// 5ë²ˆì§¸ ì¤„(ë§¨ ì•„ë«ì¤„) ì¼ë•Œë§Œ, 
+					// ì²´í¬ëœ ë¹™ê³  ìœ„ì¹˜ê°€ ì„¸ë¡œ, ëŒ€ê°ì„  ìœ„ì¹˜ì¼ ê²½ìš° í•´ë‹¹ ì¤„ì˜ ë¹™ê³ ê°¯ìˆ˜ í™•ì¸. 
 					if( i == ( gridSize-1 ) )
 					{
-						// ¼¼·Î ÁÙ ºù°í ¶óÀÎ¼ö È®ÀÎ 
+						// ì„¸ë¡œ ì¤„ ë¹™ê³  ë¼ì¸ìˆ˜ í™•ì¸ 
 						if( heightBgCnt[j] == gridSize )			
 							allSuccLineCnt++;	
 						
-						// ´ë°¢¼± ÁÙ ºù°í ¶óÀÎ¼ö È®ÀÎ / ¹æÇâ
+						// ëŒ€ê°ì„  ì¤„ ë¹™ê³  ë¼ì¸ìˆ˜ í™•ì¸ / ë°©í–¥
 						if( i+j == ( gridSize-1 ) && diagRightUpBgCnt == gridSize ) 
 							allSuccLineCnt++;
 						
-						// ´ë°¢¼± ÁÙ ºù°í ¶óÀÎ¼ö È®ÀÎ \ ¹æÇâ
+						// ëŒ€ê°ì„  ì¤„ ë¹™ê³  ë¼ì¸ìˆ˜ í™•ì¸ \ ë°©í–¥
 						if( i+j == ( gridSize-1 )*2 && diagLeftUpBgCnt == gridSize ) 
 							allSuccLineCnt++;
 					}
 				}
 			}
-			// °¡·Îºù°í°¹¼öÄ«¿îÆ®´Â j¿­(°¡·Î¿­) ³¡³¯¶§ ¸¶´Ù È®ÀÎ ÈÄ, ÃÊ±âÈ­. 
+			// ê°€ë¡œë¹™ê³ ê°¯ìˆ˜ì¹´ìš´íŠ¸ëŠ” jì—´(ê°€ë¡œì—´) ëë‚ ë•Œ ë§ˆë‹¤ í™•ì¸ í›„, ì´ˆê¸°í™”. 
 			if( widthBgCnt == gridSize )
 				allSuccLineCnt++;
 			widthBgCnt=0;
@@ -224,26 +224,26 @@ public class BingoGrid {
 		return allSuccLineCnt;		
 	}	
 	
-	// ¹«ÀÛÀ§·Î Ã¼Å©µÇÁö ¾ÊÀº ºù°íÆÇ¿¡ Ã¼Å©ÇÏ°í, ÇØ´çÇÏ´Â ¼ıÀÚ¸¦ ¹İÈ¯ 
+	// ë¬´ì‘ìœ„ë¡œ ì²´í¬ë˜ì§€ ì•Šì€ ë¹™ê³ íŒì— ì²´í¬í•˜ê³ , í•´ë‹¹í•˜ëŠ” ìˆ«ìë¥¼ ë°˜í™˜ 
 	int randCheck()
 	{ 
 		int randNumI = 0;
 		int randNumJ = 0;
-		int checkNum = 0;	// Ã¼Å©µÈ À§Ä¡¿¡ Á¸ÀçÇÏ´Â ¼ıÀÚ°ª.  
+		int checkNum = 0;	// ì²´í¬ëœ ìœ„ì¹˜ì— ì¡´ì¬í•˜ëŠ” ìˆ«ìê°’.  
 		Random rd = new Random() ;
 		
 		while( true )
 		{
-			randNumI = Math.abs((rd.nextInt()) % gridSize ) ; // 0~4 »çÀÌÀÇ ³­¼ö 
+			randNumI = Math.abs((rd.nextInt()) % gridSize ) ; // 0~4 ì‚¬ì´ì˜ ë‚œìˆ˜ 
 			randNumJ = Math.abs((rd.nextInt()) % gridSize ) ;
 			
-			// ÇØ´ç À§Ä¡ÀÇ ºù°í ¼ıÀÚ°¡ Ã¼Å©µÇÁö ¾ÊÀº »óÅÂ¸é 
+			// í•´ë‹¹ ìœ„ì¹˜ì˜ ë¹™ê³  ìˆ«ìê°€ ì²´í¬ë˜ì§€ ì•Šì€ ìƒíƒœë©´ 
 			if(  checkGrid[randNumI][randNumJ] == 0 )
 			{
-				// Ã¼Å©µÈ À§Ä¡¿Í °°Àº À§Ä¡ÀÇ ¼ıÀÚ°ª ÀúÀå. 
+				// ì²´í¬ëœ ìœ„ì¹˜ì™€ ê°™ì€ ìœ„ì¹˜ì˜ ìˆ«ìê°’ ì €ì¥. 
 				checkNum = numGrid[randNumI][randNumJ] ;
 								
-				// ÄÄÇ»ÅÍ ºù°íÆÇ¿¡ Ã¼Å©.
+				// ì»´í“¨í„° ë¹™ê³ íŒì— ì²´í¬. 
 				this.addCheckToCheckGrid( checkNum );		
 				
 				break;					
