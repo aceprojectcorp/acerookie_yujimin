@@ -14,9 +14,9 @@ public class printScore_play : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		staticGameData.distFromPreStage++;
-		totalScore.text = (staticGameData.distFromPreStage + staticGameData.hitScoreFromPreStage).ToString();
-		hitScore.text = staticGameData.hitScoreFromPreStage.ToString();
-		goldScore.text = staticGameData.getGoldFromPreStage.ToString();	
+		GameData.distFromPreStage++;
+		totalScore.text = (GameData.distFromPreStage + GameData.hitScoreFromPreStage).ToString();
+		hitScore.text = GameData.hitScoreFromPreStage.ToString();
+		goldScore.text = GameData.getGoldFromPreStage.ToString();	
 	}
 }
