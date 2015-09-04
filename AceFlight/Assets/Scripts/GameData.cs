@@ -9,7 +9,12 @@ public static class GameData {
 	public static int distFromPreStage = 0 ;
 	public static float bgSpeed = 0.01f;
 
+	public static float screenWidth = 0f;
+	public static float screenHeight = 0f;
+
 	public static GameSceneState nowScene = GameSceneState.title;
+
+
 
 
 }
