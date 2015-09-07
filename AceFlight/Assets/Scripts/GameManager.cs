@@ -6,21 +6,12 @@ public enum GameState { title, play, result, loading }
 
 public class GameManager : MonoBehaviour {
 	
-	public UIRoot playUiRoot ;
+
 //	public UIPanel playerP ;
 //	public UIDragObject playerDg;
-
-	Vector3 playerPos = new Vector3(0,0,0);
-
-	int screenWidth = 0; 
-	int screenHeight = 0;
 	
 	void Start () 
 	{
-		screenWidth = playUiRoot.manualWidth;
-		screenHeight = playUiRoot.manualHeight;
-	
-		initPlayScene ();
 
 	}
 	
@@ -30,6 +21,7 @@ public class GameManager : MonoBehaviour {
 //		if(Input.GetMouseButton(0) == true)	// 왼쪽 마우스 눌렀을때!!!
 //		{
 //			Input.mousePosition	// vector3로 받아옴.  
+// 광재님이 주신 팁!!!!!! 유니티 NGUI 개발 팁!!!!
 // 스프라이트 하나하나 조각조각 이쁘게.
 // transform에서 날개 안바꿔도됨 UISprite의 Flip을 Horizontally를 바꿔줌 
 // uiEventTrigger 에서 해당 객체에 관련 이벤트가 있을때 처리해줌
@@ -41,18 +33,10 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	void bgMove( UISprite bg )
-	{
-
-	}
-
+	// 게임결과창 에서 다시 게임 할때, 처음 게임할때 초기화해야할 변수들 생각해서 만들기 ㄴ
 	void initPlayScene()
 	{
-		/*playerPos = playerP.transform.localPosition;
-		playerPos.y -= (screenHeight / 4f); // * 3f;
-		Debug.Log (playerPos);
-		Debug.Log ( playerP.transform.position );
-		playerP.transform.localPosition = playerPos;*/
+
 	}
 
 

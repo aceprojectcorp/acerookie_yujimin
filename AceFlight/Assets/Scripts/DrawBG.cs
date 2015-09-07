@@ -2,26 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// TODO : bgMove() 배경1이 밑에있고, 배경2가 위일때 약간 틈이 생김. 조정하기 
 public class DrawBG : MonoBehaviour {
-
-	Vector3 bgPos = new Vector3( 0, 0, 0 );				// 배경 최초 위치  
-	Vector3 posPlusSizeY = new Vector3( 0, 0, 0 );
-
-	public List <UISprite> BgList = new List<UISprite> ();
 	
-	public UISprite selectBg1;							// 배경. 이동테스트 
+	Vector3 bgPos1 			= new Vector3( 0, 0, 0 );		// selectBg1 위치  
+	Vector3 bgPos2 			= new Vector3( 0, 0, 0 );		// selectBg2 위치
+	
+	public List <UISprite> BgList = new List<UISprite> ();	// 배경 스프라이트를 저장할 리스트 
+	
+	public UISprite selectBg1;								// 스크롤할 배경 객체 
 	public UISprite selectBg2;
-
-
-	// Use this for initialization
+	
+	// 두번째 배경객체에 세로 크기 만큼 y 위치값 추가, play씬일때만 배경 이미지 랜덤 변경. 
 	void Start () 
 	{
-
-		selectBg1.gameObject.SetActive (true);
-		selectBg2.gameObject.SetActive (true);
-
-		posPlusSizeY.y += selectBg2.localSize.y;
-		selectBg2.transform.localPosition = posPlusSizeY;
+		bgPos2.y += selectBg1.localSize.y;
+		selectBg2.transform.localPosition = bgPos2;
 
 		GameObject darkBg = transform.Find ("BG_Dark").gameObject;
 
@@ -39,40 +35,27 @@ public class DrawBG : MonoBehaviour {
 			selectBg2.spriteName = "BG01";
 		}
 
+		selectBg1.gameObject.SetActive (true);
+		selectBg2.gameObject.SetActive (true);
 
+		bgPos1 = selectBg1.transform.localPosition;
 	}
-	
-	// Update is called once per frame
+
 	void Update () 
 	{
-		bgMove( selectBg1 );
-		bgMove( selectBg2 );		
-	}
-
-	void bgMove( UISprite bg )
-	{
-		//		Debug.Log ( "bg.pixelSize " + bg.pixelSize );
-		//		Debug.Log ( "bg.transform.localScale : " + bg.transform.localScale );
-		//		Debug.Log ( "bg.transform.lossyScale : " + bg.transform.lossyScale );
-		//		Debug.Log ( "bg.localSize" + bg.localSize );
-		//		Debug.Log ( "bg.transform.position" + bg.transform.position );
-		//		Debug.Log ( "bg.transform.localPosition : " + bg.transform.localPosition );
-				
-		
-		if ( -(bg.localSize.y) >= bg.transform.localPosition.y ) 
-		{ 	
-			bgPos.y = bg.localSize.y - ( GameData.bgSpeed * 1000f);
-			bg.transform.localPosition = bgPos ;
-		} 
+		// 배경 이미지 스크롤. GameData.bgSpeed 값 증가하면 배경 이미지 스크롤 속도 향상. -----
+		if (Mathf.Abs (bgPos1.y - GameData.bgSpeed) < 960 /*GameData.screenHeight */) 
+			bgPos1.y -= GameData.bgSpeed;
 		else 
-		{
-			bgPos = bg.transform.position;
-			bgPos.y -= GameData.bgSpeed;
-			bg.transform.position = bgPos;
-		}
-		
-		
-		
-	}
+			bgPos1.y = selectBg2.transform.localPosition.y + selectBg2.localSize.y - GameData.bgSpeed;//-1; 
 
+		if (Mathf.Abs (bgPos2.y - GameData.bgSpeed) < 960 /*GameData.screenHeight */) 
+			bgPos2.y -= GameData.bgSpeed;
+		else 
+			bgPos2.y = selectBg1.transform.localPosition.y + selectBg1.localSize.y - GameData.bgSpeed;// -1;
+			
+		selectBg1.transform.localPosition = bgPos1;
+		selectBg2.transform.localPosition = bgPos2;
+		//------------------------------------------------------------------------
+	}
 }
