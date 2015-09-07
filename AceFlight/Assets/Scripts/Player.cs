@@ -27,7 +27,7 @@ public class Player : MonoBehaviour {
 
 		// ---- 캐릭터 이동 ----------------------------------------------------//
 		// 가로 55~850 위치의 터치 받음. 마우스 입력 위치는 좌측 하단부터 0,0 시작. 전부 양수 
-		if( Input.mousePosition.y  < GameData.screenHeight/2 &&
+		if( Input.mousePosition.y  < GameData.screenHeight &&
 		   Input.mousePosition.y  > 55f )
 		{
 			if (Input.GetMouseButtonDown (0) == true ) 
