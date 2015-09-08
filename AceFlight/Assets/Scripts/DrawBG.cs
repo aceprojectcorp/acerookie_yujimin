@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// TODO : bgMove() 배경1이 밑에있고, 배경2가 위일때 약간 틈이 생김. 조정하기 
+//[주의] 초반에 screenHeight를 제대로 받지 못하면 이미지가 저 하늘 위로 날라감... 
 public class DrawBG : MonoBehaviour {
 	
 	Vector3 bgPos1 			= new Vector3( 0, 0, 0 );		// selectBg1 위치  
@@ -16,12 +16,19 @@ public class DrawBG : MonoBehaviour {
 	// 두번째 배경객체에 세로 크기 만큼 y 위치값 추가, play씬일때만 배경 이미지 랜덤 변경. 
 	void Start () 
 	{
-		bgPos2.y += selectBg1.localSize.y;
+		// test!!!!!
+		GameObject UIRootObj = GameObject.Find ("UI Root");
+		GameData.Instance.screenHeight = UIRootObj.GetComponent<UIRoot>().manualHeight ; 
+		GameData.Instance.screenWidth = UIRootObj.GetComponent<UIRoot>().manualWidth ;
+
+
+
+		bgPos2.y += selectBg1.localSize.y - 2;
 		selectBg2.transform.localPosition = bgPos2;
 
 		GameObject darkBg = transform.Find ("BG_Dark").gameObject;
 
-		if ( GameData.nowScene == GameSceneState.play ) 
+		if ( GameData.Instance.nowScene == GameSceneState.play ) 
 		{
 			darkBg.SetActive(false);
 			int randListIdx = Random.Range(0, BgList.Count);
@@ -39,23 +46,26 @@ public class DrawBG : MonoBehaviour {
 		selectBg2.gameObject.SetActive (true);
 
 		bgPos1 = selectBg1.transform.localPosition;
+
+
 	}
 
 	void Update () 
 	{
-		// 배경 이미지 스크롤. GameData.bgSpeed 값 증가하면 배경 이미지 스크롤 속도 향상. -----
-		if (Mathf.Abs (bgPos1.y - GameData.bgSpeed) < 960 /*GameData.screenHeight */) 
-			bgPos1.y -= GameData.bgSpeed;
-		else 
-			bgPos1.y = selectBg2.transform.localPosition.y + selectBg2.localSize.y - GameData.bgSpeed;//-1; 
+		// 배경 이동. - 먼저 이동시킬 위치 바꿔 주고 나서 해당 배경 이동하기.------------------- 
+		bgPos1.y -= GameData.Instance.bgSpeed * Time.deltaTime;
+		bgPos2.y -= GameData.Instance.bgSpeed * Time.deltaTime;
 
-		if (Mathf.Abs (bgPos2.y - GameData.bgSpeed) < 960 /*GameData.screenHeight */) 
-			bgPos2.y -= GameData.bgSpeed;
-		else 
-			bgPos2.y = selectBg1.transform.localPosition.y + selectBg1.localSize.y - GameData.bgSpeed;// -1;
-			
+		if( Mathf.Abs( bgPos1.y ) >= GameData.Instance.screenHeight )		
+			bgPos1.y = bgPos2.y + selectBg2.localSize.y - 2; 		// -2씩 안해주면 눈에 보이는 크랙 발생. 
+	
+		if( Mathf.Abs( bgPos2.y ) >= GameData.Instance.screenHeight )
+			bgPos2.y = bgPos1.y + selectBg1.localSize.y - 2; 
+
 		selectBg1.transform.localPosition = bgPos1;
 		selectBg2.transform.localPosition = bgPos2;
+
+
 		//------------------------------------------------------------------------
 	}
 }
