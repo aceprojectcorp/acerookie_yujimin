@@ -4,7 +4,9 @@ using System.Collections.Generic;
 
 //[주의] 초반에 screenHeight를 제대로 받지 못하면 이미지가 저 하늘 위로 날라감... 
 public class DrawBG : MonoBehaviour {
-	
+
+	public float m_totalPixelMoved;
+
 	Vector3 bgPos1 			= new Vector3( 0, 0, 0 );		// selectBg1 위치  
 	Vector3 bgPos2 			= new Vector3( 0, 0, 0 );		// selectBg2 위치
 	
@@ -58,6 +60,13 @@ public class DrawBG : MonoBehaviour {
 		bgSpeed = GameData.Instance.nowGameSpeed * GameData.Instance.framePerSec; 
 		bgPos1.y -= bgSpeed * Time.deltaTime;
 		bgPos2.y -= bgSpeed * Time.deltaTime;
+
+		//pixel moved per frame
+		//Debug.Log (bgSpeed * Time.deltaTime);
+		m_totalPixelMoved += (bgSpeed * Time.deltaTime);
+//		Debug.Log (m_totalPixelMoved);
+		int distance = (int)( m_totalPixelMoved / 10.0f );
+		Debug.Log (distance);
 
 		if( Mathf.Abs( bgPos1.y ) >= GameData.Instance.screenHeight )		
 			bgPos1.y = bgPos2.y + selectBg2.localSize.y - 2; 		// -2씩 안해주면 눈에 보이는 크랙 발생. 

@@ -14,15 +14,21 @@ public class MonsterObj : MonoBehaviour {
 	public float monStartPosX 	= 0 ; 
  	float monStartPosY = 544 ; 
 
+	void Awake()
+	{
+//		Debug.Log (gameObject.transform.localPosition);
+//		gameObject.SetActive ( false );  
+
+		//Debug.Log (monPos);
+	}
 	// Use this for initialization 
 	void Start () 
 	{
 		// 배치 확률에 따라 몬스터 레벨 생성. 레벨 생성 후 레벨에 따른 몬스터 정보 셋팅 (MoninfoInit()) 
 		makeLv ();
+		monPos = gameObject.transform.localPosition;
 
-		monPos.x = monStartPosX;
-		monPos.y = monStartPosY;
-		gameObject.transform.localPosition = monPos;  
+
 	}
 
 	void makeLv()

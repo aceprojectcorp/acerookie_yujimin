@@ -23,16 +23,19 @@ public class BtnScript : MonoBehaviour {
 	//***** Scene move !!! -----
 	public void GoGameStartScene()
 	{
+		GameData.Instance.nowGameSpeed = 2f;
 		GameData.Instance.nowScene = GameSceneState.play;
 		Application.LoadLevel ("GamePlay");	
 	}
 	public void GoTitleScene()
 	{
+		GameData.Instance.nowGameSpeed = 2f;
 		GameData.Instance.nowScene = GameSceneState.title;
 		Application.LoadLevel ("Title");
 	}
 	public void GoGameResult()
 	{
+		GameData.Instance.nowGameSpeed = 2f;
 		GameData.Instance.nowScene = GameSceneState.result;
 		Application.LoadLevel ("GameResult");
 	}

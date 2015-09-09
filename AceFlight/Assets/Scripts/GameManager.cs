@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
 	{
 		Application.targetFrameRate = GameData.Instance.framePerSec; //60;	// 초당 프레임수 고정 
 	}
+
 	void Start () 
 	{
 		InitPlayScene ();
@@ -28,25 +29,24 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () 
-	{
-//		if (frameCnt == 0)
-//			monEnterSwc = true;
-//		else
-			monEnterSwc = false;
+	{ 
+		// 맨 첫 줄 몬스터 등장용 
+		if (frameCnt == 0)
+			monEnterSwc = true;
+		else
+			monEnterSwc = false; 
 
 		frameCnt++;
 
-		// 이동 거리에 따라 거리 점수, idxCM값변경, 게임속도 변경   	// 프레임 갯수는 쪼갤 수가 없어서 int형으로 변환해서 사용. // 속도 10 이상 x 
+		// 이동 거리에 따라 거리 점수, idxCM값변경, 게임속도 변경 ----  	// 프레임 갯수는 쪼갤 수가 없어서 int형으로 변환해서 사용. // 속도 10 이상 x 
 		if( frameCnt % (int)( GameData.Instance.pixelPerMeter / GameData.Instance.nowGameSpeed ) == 0 )
 		{
 			monEnterSwc = true;
 			GameData.Instance.scDistFromStage++;
 
-			// idxCM 구하고, idxCM값 변경 시 게임 속도 변경 
+			// 이동 거리 구간에 따라 infoForChangeMeter를 참조할 인덱스번호인 idxCM 구하고, idxCM값 변경 시 게임 속도 변경 
 			if( GameData.Instance.idxCM != GameData.Instance.infoForChangeMeter.GetLength(0) -1 ) 
 			{
-				// scSpeedAndMonPlace테이블의 마지막 줄은 확인 안해도 되기 때문에 scSpeedAndMonPlace.Rank -1 만큼 돌림. 
-				//  ( 0~테이블 세로갯수-1 까지 나오지 않으면 마지막줄에 해당하니까 ) 
 				for( int i=0 ; i < GameData.Instance.infoForChangeMeter.GetLength(0); i++ )//scSpeedAndMonPlace
 				{				
 					if( GameData.Instance.scDistFromStage < GameData.Instance.infoForChangeMeter[i][0])
@@ -68,34 +68,31 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 		}
+		//			Debug.Log("GetLength(0) : " + GameData.Instance.infoForChangeMeter.GetLength(0) );	// 11
+		//-----------------------------------------------
+
 
 		// 몬스터 등장 _ 일단 몬스터 등장 후 좌표 재지정으로 해놓고.. 광재님 오시면 여쭙기 ㅠㅠ 몬스터 객체 생성때 부터 위치 지정 하는걸로 바꿔 주기 
-		if( GameData.Instance.scDistFromStage % 30 == 0 && monEnterSwc == true )
+		if( GameData.Instance.scDistFromStage % GameData.Instance.createMonMeter == 0 && monEnterSwc == true )
 		{
 			for( int i=0 ; i < 5 ; i++ )
-			{
-			
-				GameObject monInst = (GameObject) Instantiate( Resources.Load("MonsterObj") ) as GameObject;
+			{			
+/*				GameObject monInst = (GameObject) Instantiate( Resources.Load("MonsterObj") ) as GameObject;
+			monInst.transform.localPosition = monFirstPos;
 				monInst.GetComponent<MonsterObj>().monStartPosX = monStartPosX[i];
+*/
 
-				/*
 				monFirstPos.x = monStartPosX[i];
 				monFirstPos.y = monStartPosY;
-
-				GameObject monInst = (GameObject) Instantiate( Resources.Load("MonsterObj") ) as GameObject;
+				//GameObject monInst = (GameObject) Instantiate( MonsterObj, monFirstPos, mlFirstAngle );
+				GameObject monInst = Instantiate(MonsterObj) as GameObject;
+				monInst.transform.parent = GameObject.Find("UI Root").transform;
+				monInst.transform.localScale = Vector3.one;
 				monInst.transform.localPosition = monFirstPos;
-				monInst.SetActive(true);
-				*/ 
 
-
+//				Debug.Log (monFirstPos + " " + monInst.transform.localPosition);
 			}
-
-
 		}
-
-	
-
-
 
 	}
 
@@ -105,13 +102,11 @@ public class GameManager : MonoBehaviour {
 		GameData.Instance.scGoldFromStage = 0;
 		GameData.Instance.scHitMonFromStage = 0;
 		GameData.Instance.scDistFromStage = 0 ;
-
-		GameData.Instance.nowGameSpeed = 2f;
 		GameData.Instance.idxCM = 0;  
 		idxPreVal = 0;
 
 	}
-
+	 
 
 	//			Debug.Log("RANK : " + GameData.Instance.infoForChangeMeter.Rank);					// 2 (차원) 
 	//			Debug.Log("GetLength(0) : " + GameData.Instance.infoForChangeMeter.GetLength(0) );	// 11

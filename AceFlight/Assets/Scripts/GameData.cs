@@ -25,6 +25,7 @@ public class GameData: MonoBehaviour
 	public int 	 pixelPerMeter 	= 10;	// 거리 측정 기준.	 
 	public int 	 framePerSec 	= 60;
 	public float nowGameSpeed 	= 2f;	// 현재 게임 속도.  
+	public float createMonMeter = 30 ; 
 
 	public float screenWidth = 0f;
 	public float screenHeight = 0f;
