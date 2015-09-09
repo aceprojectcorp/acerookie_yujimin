@@ -21,36 +21,37 @@ public class GameData: MonoBehaviour
 	public int maxScore = 0 ; 			// 최대 점수 (지금까지 했던 점수 중 최대 점수 저장... 나중에 시간되면..^^..) 
 
 	// 속도 관련 
-	public float bgSpeed = 120f;		// 초당 120픽셀 이동 / 초당 60프레임. -> 1프레임당 2픽셀씩 이동. 2px * 60 frame 
-	public int pixelPerFrame = 2;		// gameSpeed~
-	public int pixelPerMeter = 10;		// 거리 측정 기준. fixelPerMeter(픽셀) 만큼 이동하면 1m 임. 
-	public int pixelPerSec = 120 ; 		 
-	public int framePerSec = 60;
+	public int 	 pixelPerFrame 	= 2;	 
+	public int 	 pixelPerMeter 	= 10;	// 거리 측정 기준.	 
+	public int 	 framePerSec 	= 60;
+	public float nowGameSpeed 	= 2f;	// 현재 게임 속도.  
 
 	public float screenWidth = 0f;
 	public float screenHeight = 0f;
 	
 	public GameSceneState nowScene ;
 
-	// 스크롤 속도 / 몬스터 배치 테이블 
-	//		거리(m)		스크롤속도		레벨		<-등장확률		레벨		<- 등장확률 
-	public int[,] ScSpeedAndMonPlace = new int[,]
-	  { { 100, 		100, 		1, 		70,			2, 		30 },
-		{ 200, 		120, 		1, 		30,			2, 		30 },
-		{ 300, 		140, 		2, 		70,			3, 		30 },
-		{ 400, 		160, 		2, 		30,			3, 		30 },
-		{ 500, 		180, 		3, 		70,			4, 		30 },
-		{ 600, 		200, 		3, 		30,			4, 		30 },
-		{ 700, 		220, 		4, 		70,			5, 		30 },
-		{ 800, 		240, 		4, 		30,			5, 		30 },
-		{ 900, 		260, 		5, 		70,			6, 		30 },
-		{ 1000,		280, 		5, 		30,			6, 		30 },
-		{ 1000,		300, 		6, 		70,			7, 		20,		8,		10 }
+	public int idxCM = 0;  
+
+	// 스크롤 속도/ 몬스터 배치 테이블 
+	public int[][] infoForChangeMeter = new int[][]
+//		거리(m)		스크롤속도		레벨		<-등장확률		레벨		<- 등장확률 
+	  { new int[]{ 100, 		100, 		1, 		70,			2, 		30 },
+		new int[]{ 200, 		120, 		1, 		30,			2, 		70 },
+		new int[]{ 300, 		140, 		2, 		70,			3, 		30 },
+		new int[]{ 400, 		160, 		2, 		30,			3, 		70 },
+		new int[]{ 500, 		180, 		3, 		70,			4, 		30 },
+		new int[]{ 600, 		200, 		3, 		30,			4, 		70 },
+		new int[]{ 700, 		220, 		4, 		70,			5, 		30 },
+		new int[]{ 800, 		240, 		4, 		30,			5, 		70 },
+		new int[]{ 900, 		260, 		5, 		70,			6, 		30 },
+		new int[]{ 1000,		280, 		5, 		30,			6, 		70 },
+		new int[]{ 1001,		300, 		6, 		70,			7, 		20,		8,		10 }
 	  };
-	
-	// 몬스터 테이블 
+
+	// 몬스터 관련 정보 테이블 
+	public int[,] infoForMon = new int[,]
 //			lv,		hp,		hitPlusScore
-	public int[,] monsterInfo = new int[,]
 	{ 	{	1,		100,	50 	},
 		{	2,		300,	100	},
 		{	3,		500,	150	},
@@ -61,16 +62,16 @@ public class GameData: MonoBehaviour
 		{	8,		1500,	400	}
 	};
 
-	public string[,] monsterSprName = new string[,]
-//		
-	{	{"dragon_01_body", "dragon_01_eye_1", "dragon_01_eye_1", "dragon_01_wing"},
-		{"dragon_02_body", "dragon_01_eye_1", "dragon_01_eye_1", "dragon_02_wing"},
-		{"dragon_03_body", "dragon_01_eye_1", "dragon_01_eye_1", "dragon_03_wing"},
-		{"dragon_04_body", "dragon_01_eye_1", "dragon_01_eye_1", "dragon_04_wing"},
-		{"dragon_05_body", "dragon_01_eye_1", "dragon_01_eye_1", "dragon_05_wing"},
-		{"dragon_06_body", "dragon_01_eye_1", "dragon_01_eye_1", "dragon_06_wing"},
-		{"dragon_07_body", "dragon_01_eye_1", "dragon_01_eye_1", "dragon_07_wing"},
-		{"dragon_08_body", "dragon_01_eye_1", "dragon_01_eye_1", "dragon_08_wing"},
+	// 몬스터 스프라이트 이름 저장
+	public string[,] infoForMonSprName = new string[,]
+	{	{"dragon_01_body", "dragon_01_eye_1", "dragon_01_eye_2", "dragon_01_wing"},
+		{"dragon_02_body", "dragon_01_eye_1", "dragon_01_eye_2", "dragon_02_wing"},
+		{"dragon_03_body", "dragon_03_eye_1", "dragon_01_eye_2", "dragon_03_wing"},
+		{"dragon_04_body", "dragon_04_eye_1", "dragon_04_eye_2", "dragon_04_wing"},
+		{"dragon_05_body", "dragon_05_eye_1", "dragon_05_eye_2", "dragon_05_wing"},
+		{"dragon_06_body", "dragon_01_eye_1", "dragon_06_eye_2", "dragon_06_wing"},
+		{"dragon_07_body", "dragon_07_eye_1", "dragon_07_eye_2", "dragon_07_wing"},
+		{"dragon_08_body", "dragon_08_eye_1", "dragon_08_eye_2", "dragon_08_wing"},
 	};
 
 	void Awake()

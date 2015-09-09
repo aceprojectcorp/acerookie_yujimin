@@ -1,8 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameData.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MonsterObj.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameData.cs" Line="6" Column="1" />
+      <File FileName="Assets/Scripts/MonsterObj.cs" Line="75" Column="4" />
+      <File FileName="Assets/Scripts/GameManager.cs" Line="66" Column="89" />
+      <File FileName="Assets/Scripts/GameData.cs" Line="37" Column="48" />
+      <File FileName="Assets/Scripts/DrawBG.cs" Line="20" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

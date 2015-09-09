@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class PlayerObj : MonoBehaviour {
 
 	Vector3 playerPos 		= new Vector3(0,0,0);	// 플레이어 초기 위치 셋팅 
 	Vector3 clickPrePos 	= new Vector3(0,0,0);	// 바로 이전프레임의 클릭 위치 

@@ -12,6 +12,8 @@ public class DrawBG : MonoBehaviour {
 	
 	public UISprite selectBg1;								// 스크롤할 배경 객체 
 	public UISprite selectBg2;
+
+	float bgSpeed = 0;										// bg move speed 
 	
 	// 두번째 배경객체에 세로 크기 만큼 y 위치값 추가, play씬일때만 배경 이미지 랜덤 변경. 
 	void Start () 
@@ -42,8 +44,8 @@ public class DrawBG : MonoBehaviour {
 			selectBg2.spriteName = "BG01";
 		}
 
-		selectBg1.gameObject.SetActive (true);
-		selectBg2.gameObject.SetActive (true);
+		selectBg1.gameObject.SetActive (true); 
+		selectBg2.gameObject.SetActive (true); 
 
 		bgPos1 = selectBg1.transform.localPosition;
 
@@ -51,10 +53,11 @@ public class DrawBG : MonoBehaviour {
 	}
 
 	void Update () 
-	{
+	{ 
 		// 배경 이동. - 먼저 이동시킬 위치 바꿔 주고 나서 해당 배경 이동하기.------------------- 
-		bgPos1.y -= GameData.Instance.bgSpeed * Time.deltaTime;
-		bgPos2.y -= GameData.Instance.bgSpeed * Time.deltaTime;
+		bgSpeed = GameData.Instance.nowGameSpeed * GameData.Instance.framePerSec; 
+		bgPos1.y -= bgSpeed * Time.deltaTime;
+		bgPos2.y -= bgSpeed * Time.deltaTime;
 
 		if( Mathf.Abs( bgPos1.y ) >= GameData.Instance.screenHeight )		
 			bgPos1.y = bgPos2.y + selectBg2.localSize.y - 2; 		// -2씩 안해주면 눈에 보이는 크랙 발생. 

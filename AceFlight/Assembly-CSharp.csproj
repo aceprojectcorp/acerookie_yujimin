@@ -186,11 +186,12 @@
      <Compile Include="Assets\Scripts\BtnScript.cs" />
      <Compile Include="Assets\Scripts\DrawBG.cs" />
      <Compile Include="Assets\Scripts\DrawScore.cs" />
+     <Compile Include="Assets\Scripts\DrawScoreInPlayScene.cs" />
+     <Compile Include="Assets\Scripts\DrawScoreInResultScene.cs" />
      <Compile Include="Assets\Scripts\GameData.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\Player.cs" />
-     <Compile Include="Assets\Scripts\PrintScoreInPlay.cs" />
-     <Compile Include="Assets\Scripts\PrintScoreInResult.cs" />
+     <Compile Include="Assets\Scripts\MonsterObj.cs" />
+     <Compile Include="Assets\Scripts\PlayerObj.cs" />
      <None Include="Assets\NGUI\Examples\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\NGUI\ReadMe - 3.9.2.txt" />
      <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Masked 1.shader" />
