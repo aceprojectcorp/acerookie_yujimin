@@ -19,6 +19,7 @@ public class MonsterObj : MonoBehaviour {
 		makeLv ();
 		monPos = gameObject.transform.localPosition;
 		monDestoryPosY		= -544 ; 
+		transform.FindChild ("MonHpBar").gameObject.SetActive (false);
 	}
 
 	void makeLv()
@@ -78,7 +79,7 @@ public class MonsterObj : MonoBehaviour {
 	void changeSprOfMon( string objName, int i, int j )
 	{
 		transform.FindChild( objName ).GetComponent<UISprite>().spriteName
-													= GameData.Instance.infoForMonSprName[i,j];		
+														= GameData.Instance.monSprNames[i,j];		
 		transform.FindChild( objName ).GetComponent<UISprite>().MakePixelPerfect();
 
 		if ( objName == "EyeR" ) 
@@ -120,13 +121,28 @@ public class MonsterObj : MonoBehaviour {
 			Destroy (gameObject); 	 
 		//-------------------------------------------------------------------------------// 
 
-		// 초기 monHp값에서 변동이 있을 경우 눈 이미지 변환 
+		// 초기 monHp값에서 변동이 있을 경우 눈 이미지 변환 + hp image!!!!!
 		if( monHp < GameData.Instance.infoForMon[ monLv-1, 1 ] )
 		{
 			changeSprOfMon( "EyeL", 	monLv-1, 2 );
 			changeSprOfMon( "EyeR", 	monLv-1, 2 );
+//			transform.FindChild("MonHpBar").GetComponent<UISlider>().value = monHp ;
+			transform.FindChild("MonHpBar").GetComponent<UISlider>().value = (monHp * 1f) / GameData.Instance.infoForMon [ monLv-1, 1 ] ;
+			transform.FindChild ("MonHpBar").gameObject.SetActive (true);
 		}
 
+		if (monHp <= 0)
+			Destroy (gameObject); 
 	}
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.transform.tag == "Missile")
+		{
+			// hp down,
+			monHp -= other.GetComponent<MissileObj>().m_msiPower ;
+		}
+	}
+
 
 }

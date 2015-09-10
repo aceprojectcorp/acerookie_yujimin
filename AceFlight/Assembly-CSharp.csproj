@@ -190,6 +190,8 @@
      <Compile Include="Assets\Scripts\DrawScoreInResultScene.cs" />
      <Compile Include="Assets\Scripts\GameData.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\MissileEnter.cs" />
+     <Compile Include="Assets\Scripts\MissileObj.cs" />
      <Compile Include="Assets\Scripts\MonsterEnter.cs" />
      <Compile Include="Assets\Scripts\MonsterObj.cs" />
      <Compile Include="Assets\Scripts\PlayerObj.cs" />

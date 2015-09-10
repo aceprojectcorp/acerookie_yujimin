@@ -3,6 +3,7 @@ using System.Collections;
 
 // 게임 씬 상태 
 public enum GameSceneState { init, title, play, result, loading }
+public enum PlayerState { play, dead } 
 
 // << 게임에서 저장되어 사용되는 데이터들 >>
 public class GameData: MonoBehaviour
@@ -17,17 +18,19 @@ public class GameData: MonoBehaviour
 	}
 
 	// 점수 관련 
-	public int scGoldFromStage = 0;		// 스테이지 획득골드
-	public int scHitMonFromStage = 0;	// 스테이지 몬스터 타격에 대한 점수 
-	public int scDistFromStage = 0 ;	// 스테이지 이동거리에 대한 점수 . meter 
-	public int maxScore = 0 ; 			// 최대 점수 (지금까지 했던 점수 중 최대 점수 저장... 나중에 시간되면..^^..) 
+	public int scGoldFromStage 	= 0;	// 스테이지 획득골드
+	public int scHitMonFromStage= 0;	// 스테이지 몬스터 타격에 대한 점수 
+	public int scDistFromStage 	= 0 ;	// 스테이지 이동거리에 대한 점수 . meter 
+	public int maxScore 		= 0 ; 	// 최대 점수 (지금까지 했던 점수 중 최대 점수 저장... 나중에 시간되면..^^..) 
 
 	// 속도 관련 
 	public int 	 pixelPerFrame 	= 2;	 
 	public int 	 pixelPerMeter 	= 10;	// 거리 측정 기준.	 
 	public int 	 framePerSec 	= 60;
 	public float nowGameSpeed 	= 2f;	// 현재 게임 속도.  
-	public float createMonMeter = 30 ; 
+	public float createMonMeter = 30 ;
+
+	public float msiMovePixelPerFrame = 64;
 
 	public float screenWidth = 0f;
 	public float screenHeight = 0f;
@@ -35,10 +38,11 @@ public class GameData: MonoBehaviour
 	public GameSceneState nowScene ;	// = GameSceneState.init ; //-->> 완성하고 주석 제거. 
 
 	public int idxCM = 0;  
+	public int idxMsiPower = 0 ; 
 
 	// 스크롤 속도/ 몬스터 배치 테이블 
 	public int[][] infoForChangeMeter = new int[][]
-//		거리(m)		스크롤속도		레벨		<-등장확률		레벨		<- 등장확률 
+//					거리(m)		스크롤속도		레벨		<-등장확률		레벨		<- 등장확률 
 	  { new int[]{ 100, 		100, 		1, 		70,			2, 		30 },
 		new int[]{ 200, 		120, 		1, 		30,			2, 		70 },
 		new int[]{ 300, 		140, 		2, 		70,			3, 		30 },
@@ -66,7 +70,7 @@ public class GameData: MonoBehaviour
 	};
 
 	// 몬스터 스프라이트 이름 저장
-	public string[,] infoForMonSprName = new string[,]
+	public string[,] monSprNames = new string[,]
 	{	{"dragon_01_body", "dragon_01_eye_1", "dragon_01_eye_2", "dragon_01_wing"},
 		{"dragon_02_body", "dragon_01_eye_1", "dragon_01_eye_2", "dragon_02_wing"},
 		{"dragon_03_body", "dragon_03_eye_1", "dragon_01_eye_2", "dragon_03_wing"},
@@ -76,6 +80,29 @@ public class GameData: MonoBehaviour
 		{"dragon_07_body", "dragon_07_eye_1", "dragon_07_eye_2", "dragon_07_wing"},
 		{"dragon_08_body", "dragon_08_eye_1", "dragon_08_eye_2", "dragon_08_wing"},
 	};
+
+	// player sprite name
+	public string[,] playerSprNames = new string[,]
+	{	{ "sunny_01_body", "sunny_01_wing" },
+		{ "sunny_02_body", "sunny_02_wing" },
+		{ "sunny_03_body", "sunny_03_wing" },
+		{ "sunny_04_body", "sunny_04_wing" }
+	};
+
+	// missile sprite name
+	public string[] msiSprNames = new string[]
+	{ "missile_01_01", "missile_01_02", "missile_01_03", "missile_01_04" };
+
+	// missile 
+	public int[,] infoMsiPowerPerMeter = new int[,]
+	// 	meter, 	missilePower
+	{ 	{ 300,	50	},
+		{ 500, 	300	},
+		{ 700, 	500 },
+		{ 701, 1000 }
+	};
+
+
 
 	void Awake()
 	{
@@ -111,4 +138,5 @@ public class GameData: MonoBehaviour
 	void Update()
 	{
 	}
+	
 }

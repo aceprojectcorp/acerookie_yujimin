@@ -8,12 +8,13 @@ public class MonsterEnter : MonoBehaviour {
 
 	Vector3 monFirstPos 		= Vector3.zero ;
 	float[] monStartPosX 		= { -255, -128, 0, 128, 255 };
-	float 	monStartPosY 		= 544; 		// == gameObject.GetComponent<Collider> ().transform.localScale.y + GameData.Instance.screenHeight )/2 ; 
+	float 	monStartPosY 		= 0; 	
 	bool 	monEnterSwc 		= false; 	// 몬스터 등장 스위치 
 	int 	scDistFromStagePre  = 0 ;		// 거리값이 변경 됐을때만, 몬스터 생성여부 판단하기 위해 이전 거리값 저장  
 	
 	void Start ()  
 	{
+		monStartPosY = 544; 	// == gameObject.GetComponent<Collider> ().transform.localScale.y + GameData.Instance.screenHeight )/2 ;  
 		scDistFromStagePre = GameData.Instance.scDistFromStage ;
 		createMonsters();
 	}
@@ -49,4 +50,6 @@ public class MonsterEnter : MonoBehaviour {
 			// 위와 같이 사용시, 객체가 잠깐 중앙(0,0,0)에 위치 했다가 자신의 위치로 이동함. 
 		}
 	}
+
+
 }
