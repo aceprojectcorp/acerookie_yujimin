@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// << 버튼 클릭 처리, 현재 씬값 변경 >> 
 public class BtnScript : MonoBehaviour {
 	
 	// Use this for initialization

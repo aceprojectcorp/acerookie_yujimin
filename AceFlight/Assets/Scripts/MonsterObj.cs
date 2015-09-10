@@ -1,34 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// << 몬스터 객체에 대한 정보 셋팅 및 변경 >>
 public class MonsterObj : MonoBehaviour {
+
 
 	public int monLv 			= 0;
 	public int monHp 			= 0;
-	public int monHitScore 		= 0 ; 
-
-	Vector3 monPos 	= new Vector3( 0, 0, 0 );				
-
+	public int monHitScore 		= 0; 
 	public float moveSpeed 		= 0;
+	public float monStartPosX 	= 0; 
+ 	float monDestoryPosY		= 0; 
+	Vector3 monPos 				= Vector3.zero;	
 
-	public float monStartPosX 	= 0 ; 
- 	float monStartPosY = 544 ; 
-
-	void Awake()
-	{
-//		Debug.Log (gameObject.transform.localPosition);
-//		gameObject.SetActive ( false );  
-
-		//Debug.Log (monPos);
-	}
-	// Use this for initialization 
 	void Start () 
 	{
 		// 배치 확률에 따라 몬스터 레벨 생성. 레벨 생성 후 레벨에 따른 몬스터 정보 셋팅 (MoninfoInit()) 
 		makeLv ();
 		monPos = gameObject.transform.localPosition;
-
-
+		monDestoryPosY		= -544 ; 
 	}
 
 	void makeLv()
@@ -42,7 +32,7 @@ public class MonsterObj : MonoBehaviour {
 		int randMonsLv = Random.Range( 1, 101 );	// 1~100
 
 		// 등장확률 비교 
-		if ( GameData.Instance.infoForChangeMeter [GameData.Instance.idxCM ][ 3] > GameData.Instance.infoForChangeMeter [GameData.Instance.idxCM ][ 5] ) 
+		if ( GameData.Instance.infoForChangeMeter [ GameData.Instance.idxCM ][ 3 ] > GameData.Instance.infoForChangeMeter [ GameData.Instance.idxCM ][ 5 ] ) 
 		{
 			highNum = GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][ 3 ] ;
 			lowNum = GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][ 5 ] ;
@@ -126,7 +116,7 @@ public class MonsterObj : MonoBehaviour {
 		moveSpeed = GameData.Instance.nowGameSpeed * GameData.Instance.framePerSec; 
 		monPos.y -= moveSpeed * Time.deltaTime;		
 		gameObject.transform.localPosition = monPos;
-		if ( monPos.y <= -1 * monStartPosY )		
+		if ( monPos.y <= monDestoryPosY )		
 			Destroy (gameObject); 	 
 		//-------------------------------------------------------------------------------// 
 

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// 게임 씬 상태 
 public enum GameSceneState { init, title, play, result, loading }
 
+// << 게임에서 저장되어 사용되는 데이터들 >>
 public class GameData: MonoBehaviour
 {
 	private static GameData m_instance;
@@ -30,7 +32,7 @@ public class GameData: MonoBehaviour
 	public float screenWidth = 0f;
 	public float screenHeight = 0f;
 	
-	public GameSceneState nowScene ;
+	public GameSceneState nowScene ;	// = GameSceneState.init ; //-->> 완성하고 주석 제거. 
 
 	public int idxCM = 0;  
 
@@ -83,6 +85,8 @@ public class GameData: MonoBehaviour
 			Destroy (this.gameObject);
 			return;
 		}
+		// 완성하고 위에 if문 문장 없어져도됨. 맨 초기에 한번 생기고 더이상 생성되지 않으니까 
+		
 		if( m_instance == null )
 			m_instance = this;
 
@@ -100,6 +104,7 @@ public class GameData: MonoBehaviour
 
 	void Start()
 	{
+//		nowScene = GameSceneState.title;	//-->> 완성하고 주석 제거.
 //		Application.LoadLevel ("Title");	//-->> 완성하고 주석 제거. 지금은 테스트를 위해 gamedata프리팹 씬마다 복사해놓음 
 	}
 

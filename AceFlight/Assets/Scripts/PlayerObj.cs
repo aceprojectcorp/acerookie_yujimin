@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// 플레이어 객체에 관련된 스크립트 - 이동, 초기화 
 public class PlayerObj : MonoBehaviour {
 
 	Vector3 playerPos 		= new Vector3(0,0,0);	// 플레이어 초기 위치 셋팅 

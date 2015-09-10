@@ -2,20 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// [ GameManager 하는일 ] 
+//  - 이동거리 계산 
+//  - gamedata의 scDistFromStagePre에 빠른 참조를 위해 세로 인덱스 값인 idxCM를 이동거리에 따라 변경, 
+//  - 이동 거리에 따라 게임속도 변경 (gamedata의 scDistFromStagePre 참조) 
+//  - gamePlayScene에 필요한 값들 초기화 
 public class GameManager : MonoBehaviour {
 	
-	public GameObject MonsterObj ;
-
-	Vector3 monFirstPos 	= new Vector3( 0, 0, 0 );
-	Quaternion mlFirstAngle = Quaternion.Euler(0, 0, 0);
-
-	float[] monStartPosX = { -255, -128, 0, 128, 255 };
-	float monStartPosY 	 = 544;
-		//gameObject.GetComponent<Collider> ().transform.localScale.y + GameData.Instance.screenHeight )/2 ;
-	float frameCnt 		 = 0; 			// 프레임 카운트  
-	bool monEnterSwc 	 = false; 	// monster enter switch 
-	int idxPreVal 		 = 0 ; 
-
+	float totalPixelMoved   = 0 ;		
+	int scDistFromStagePre  = 0 ; 
+	int idxPreVal 		 	= 0 ; 
 
 	void Awake()
 	{
@@ -30,24 +26,20 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{ 
-		// 맨 첫 줄 몬스터 등장용 
-		if (frameCnt == 0)
-			monEnterSwc = true;
-		else
-			monEnterSwc = false; 
+		// 이동 거리 계산 
+		scDistFromStagePre = GameData.Instance.scDistFromStage ;
+		totalPixelMoved += (GameData.Instance.nowGameSpeed * GameData.Instance.framePerSec) * Time.deltaTime ;  
+		GameData.Instance.scDistFromStage = (int)( totalPixelMoved / 10.0f );
 
-		frameCnt++;
-
-		// 이동 거리에 따라 거리 점수, idxCM값변경, 게임속도 변경 ----  	// 프레임 갯수는 쪼갤 수가 없어서 int형으로 변환해서 사용. // 속도 10 이상 x 
-		if( frameCnt % (int)( GameData.Instance.pixelPerMeter / GameData.Instance.nowGameSpeed ) == 0 )
+		// 1m씩 증가할 때마다 거리 점수, 이동 거리에 해당하는 idxCM값 변경 여부 결정, 게임속도 변경 ---------------------------------------------------
+		if( GameData.Instance.scDistFromStage != scDistFromStagePre )
 		{
-			monEnterSwc = true;
-			GameData.Instance.scDistFromStage++;
+			scDistFromStagePre = GameData.Instance.scDistFromStage ;
 
-			// 이동 거리 구간에 따라 infoForChangeMeter를 참조할 인덱스번호인 idxCM 구하고, idxCM값 변경 시 게임 속도 변경 
-			if( GameData.Instance.idxCM != GameData.Instance.infoForChangeMeter.GetLength(0) -1 ) 
+			// 이동 거리 구간에 따라 infoForChangeMeter를 참조할 세로 인덱스번호인 idxCM 구하고, idxCM값 변경 시 게임 속도 변경 
+			if( GameData.Instance.idxCM != GameData.Instance.infoForChangeMeter.GetLength(0) -1 )  
 			{
-				for( int i=0 ; i < GameData.Instance.infoForChangeMeter.GetLength(0); i++ )//scSpeedAndMonPlace
+				for( int i=0 ; i < GameData.Instance.infoForChangeMeter.GetLength(0); i++ )
 				{				
 					if( GameData.Instance.scDistFromStage < GameData.Instance.infoForChangeMeter[i][0])
 					{
@@ -63,40 +55,18 @@ public class GameManager : MonoBehaviour {
 				{
 					GameData.Instance.nowGameSpeed = 
 						GameData.Instance.pixelPerFrame * 
-						(GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM][1]*1f) / 100 ;			 	
+						( GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][1]*1f ) / 100 ;			 	
 					idxPreVal = GameData.Instance.idxCM;
 				}
 			}
 		}
 		//			Debug.Log("GetLength(0) : " + GameData.Instance.infoForChangeMeter.GetLength(0) );	// 11
-		//-----------------------------------------------
+		//--------------------------------------------------------------------------------------------------------
 
-
-		// 몬스터 등장 _ 일단 몬스터 등장 후 좌표 재지정으로 해놓고.. 광재님 오시면 여쭙기 ㅠㅠ 몬스터 객체 생성때 부터 위치 지정 하는걸로 바꿔 주기 
-		if( GameData.Instance.scDistFromStage % GameData.Instance.createMonMeter == 0 && monEnterSwc == true )
-		{
-			for( int i=0 ; i < 5 ; i++ )
-			{			
-/*				GameObject monInst = (GameObject) Instantiate( Resources.Load("MonsterObj") ) as GameObject;
-			monInst.transform.localPosition = monFirstPos;
-				monInst.GetComponent<MonsterObj>().monStartPosX = monStartPosX[i];
-*/
-
-				monFirstPos.x = monStartPosX[i];
-				monFirstPos.y = monStartPosY;
-				//GameObject monInst = (GameObject) Instantiate( MonsterObj, monFirstPos, mlFirstAngle );
-				GameObject monInst = Instantiate(MonsterObj) as GameObject;
-				monInst.transform.parent = GameObject.Find("UI Root").transform;
-				monInst.transform.localScale = Vector3.one;
-				monInst.transform.localPosition = monFirstPos;
-
-//				Debug.Log (monFirstPos + " " + monInst.transform.localPosition);
-			}
-		}
 
 	}
 
-	// 게임결과창 에서 다시 게임 할때, 처음 게임할때 초기화해야할 변수들 생각해서 만들기 ㄴ
+	// 게임결과창 에서 다시 게임 할때, 처음 게임할때 초기화해야할 변수들 생각해서 만들기 
 	void InitPlayScene()
 	{
 		GameData.Instance.scGoldFromStage = 0;
