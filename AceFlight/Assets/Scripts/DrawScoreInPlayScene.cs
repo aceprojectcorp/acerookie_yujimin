@@ -15,7 +15,6 @@ public class DrawScoreInPlayScene : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
 		totalScore.text = GameData.Instance.scDistFromStage.ToString();
 		hitScore.text 	= GameData.Instance.scHitMonFromStage.ToString();
 		goldScore.text 	= GameData.Instance.scGoldFromStage.ToString();	

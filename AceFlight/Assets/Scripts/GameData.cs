@@ -20,8 +20,8 @@ public class GameData: MonoBehaviour
 	// 점수 관련 
 	public int scGoldFromStage 	= 0;	// 스테이지 획득골드
 	public int scHitMonFromStage= 0;	// 스테이지 몬스터 타격에 대한 점수 
-	public int scDistFromStage 	= 0 ;	// 스테이지 이동거리에 대한 점수 . meter 
-	public int maxScore 		= 0 ; 	// 최대 점수 (지금까지 했던 점수 중 최대 점수 저장... 나중에 시간되면..^^..) 
+	public int scDistFromStage 	= 0;	// 스테이지 이동거리에 대한 점수 . meter 
+	public int scMaxTotal 		= 0; 	// 최대 점수 (지금까지 했던 점수 중 최대 점수 저장... 나중에 시간되면..^^..) 
 
 	// 속도 관련 
 	public int 	 pixelPerFrame 	= 2;	 
@@ -36,6 +36,7 @@ public class GameData: MonoBehaviour
 	public float screenHeight = 0f;
 	
 	public GameSceneState nowScene ;	// = GameSceneState.init ; //-->> 완성하고 주석 제거. 
+	public PlayerState playerState = PlayerState.play;
 
 	public int idxCM = 0;  
 	public int idxMsiPower = 0 ; 
@@ -58,7 +59,7 @@ public class GameData: MonoBehaviour
 
 	// 몬스터 관련 정보 테이블 
 	public int[,] infoForMon = new int[,]
-//			lv,		hp,		hitPlusScore
+//			lv,		hp,		hitPlusScore 
 	{ 	{	1,		100,	50 	},
 		{	2,		300,	100	},
 		{	3,		500,	150	},

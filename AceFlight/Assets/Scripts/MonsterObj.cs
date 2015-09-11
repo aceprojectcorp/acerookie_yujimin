@@ -10,8 +10,10 @@ public class MonsterObj : MonoBehaviour {
 	public int monHitScore 		= 0; 
 	public float moveSpeed 		= 0;
 	public float monStartPosX 	= 0; 
+	public int secMonDeadEffect = 0;
  	float monDestoryPosY		= 0; 
 	Vector3 monPos 				= Vector3.zero;	
+	bool monDeadSw				= false; 
 
 	void Start () 
 	{
@@ -20,6 +22,7 @@ public class MonsterObj : MonoBehaviour {
 		monPos = gameObject.transform.localPosition;
 		monDestoryPosY		= -544 ; 
 		transform.FindChild ("MonHpBar").gameObject.SetActive (false);
+		secMonDeadEffect = 1; 
 	}
 
 	void makeLv()
@@ -111,28 +114,42 @@ public class MonsterObj : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () 
+	void Update ()  
 	{
-		// 몬스터 -y 방향으로 이동-------------------------------------------------------------//
-		moveSpeed = GameData.Instance.nowGameSpeed * GameData.Instance.framePerSec; 
-		monPos.y -= moveSpeed * Time.deltaTime;		
-		gameObject.transform.localPosition = monPos;
-		if ( monPos.y <= monDestoryPosY )		
-			Destroy (gameObject); 	 
-		//-------------------------------------------------------------------------------// 
-
-		// 초기 monHp값에서 변동이 있을 경우 눈 이미지 변환 + hp image!!!!!
-		if( monHp < GameData.Instance.infoForMon[ monLv-1, 1 ] )
+		if( monHp > 0 )
 		{
-			changeSprOfMon( "EyeL", 	monLv-1, 2 );
-			changeSprOfMon( "EyeR", 	monLv-1, 2 );
-//			transform.FindChild("MonHpBar").GetComponent<UISlider>().value = monHp ;
-			transform.FindChild("MonHpBar").GetComponent<UISlider>().value = (monHp * 1f) / GameData.Instance.infoForMon [ monLv-1, 1 ] ;
-			transform.FindChild ("MonHpBar").gameObject.SetActive (true);
-		}
+			// 몬스터 -y 방향으로 이동-------------------------------------------------------------//
+			moveSpeed = GameData.Instance.nowGameSpeed * GameData.Instance.framePerSec; 
+			monPos.y -= moveSpeed * Time.deltaTime;		
+			gameObject.transform.localPosition = monPos;
+			if ( monPos.y <= monDestoryPosY )		
+				Destroy (gameObject); 	 
+			//-------------------------------------------------------------------------------// 
 
-		if (monHp <= 0)
-			Destroy (gameObject); 
+			// 초기 monHp값에서 변동이 있을 경우 눈 이미지 변환 + hp image!!!!!
+			if( monHp < GameData.Instance.infoForMon[ monLv-1, 1 ] )
+			{
+				changeSprOfMon( "EyeL", 	monLv-1, 2 );
+				changeSprOfMon( "EyeR", 	monLv-1, 2 );
+				transform.FindChild("MonHpBar").GetComponent<UISlider>().value = (monHp * 1f) / GameData.Instance.infoForMon [ monLv-1, 1 ] ;
+				transform.FindChild ("MonHpBar").gameObject.SetActive (true);
+			}
+		}
+		else
+		{
+			gameObject.GetComponent<UIPanel>().alpha -= secMonDeadEffect * Time.deltaTime ; 		// secMonDeadEffect == 1
+
+			if( monDeadSw == false )
+			{
+				monDeadSw = true;
+				GameData.Instance.scHitMonFromStage += GameData.Instance.infoForMon[ monLv - 1 , 2 ];
+				transform.FindChild ("MonHpBar").gameObject.SetActive (false);
+
+				Destroy ( gameObject.GetComponent<Rigidbody> () );
+				Destroy ( gameObject.GetComponent<BoxCollider>() );
+				Destroy ( gameObject, 1.0f ) ; 
+			}
+		}
 	}
 
 	void OnTriggerEnter(Collider other)

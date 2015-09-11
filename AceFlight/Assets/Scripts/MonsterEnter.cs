@@ -16,7 +16,7 @@ public class MonsterEnter : MonoBehaviour {
 	{
 		monStartPosY = 544; 	// == gameObject.GetComponent<Collider> ().transform.localScale.y + GameData.Instance.screenHeight )/2 ;  
 		scDistFromStagePre = GameData.Instance.scDistFromStage ;
-		createMonsters();
+		CreateMonsters(); 
 	}
 
 	void Update () 
@@ -31,11 +31,11 @@ public class MonsterEnter : MonoBehaviour {
 		if( GameData.Instance.scDistFromStage % GameData.Instance.createMonMeter == 0 && monEnterSwc == true )
 		{
 			monEnterSwc = false;
-			createMonsters();
+			CreateMonsters();
 		}
 	}
 
-	void createMonsters()
+	void CreateMonsters()
 	{
 		for( int i=0 ; i < 5 ; i++ )
 		{			

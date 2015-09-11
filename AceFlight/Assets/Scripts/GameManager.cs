@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
 	int scDistFromStagePre  = 0 ; 
 	int idxPreVal 		 	= 0 ; 
 
+
 	void Awake()
 	{
 		Application.targetFrameRate = GameData.Instance.framePerSec; //60;	// 초당 프레임수 고정 
@@ -20,63 +21,69 @@ public class GameManager : MonoBehaviour {
 
 	void Start () 
 	{
-		InitPlayScene ();
+		GameData.Instance.scGoldFromStage = 0;
+		GameData.Instance.scHitMonFromStage = 0;
+		GameData.Instance.scDistFromStage = 0 ;
+		GameData.Instance.idxMsiPower = 0; 
+		GameData.Instance.idxCM = 0;  
+		idxPreVal = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{ 
-		// 이동 거리 계산 
-		scDistFromStagePre = GameData.Instance.scDistFromStage ;
-		totalPixelMoved += (GameData.Instance.nowGameSpeed * GameData.Instance.framePerSec) * Time.deltaTime ;  
-		GameData.Instance.scDistFromStage = (int)( totalPixelMoved / 10.0f );
+		if ( GameData.Instance.playerState == PlayerState.play ) {
+			// 이동 거리 계산 
+			scDistFromStagePre = GameData.Instance.scDistFromStage;
+			totalPixelMoved += (GameData.Instance.nowGameSpeed * GameData.Instance.framePerSec) * Time.deltaTime;  
+			GameData.Instance.scDistFromStage = (int)(totalPixelMoved / 10.0f);
 
-		// 1m씩 증가할 때마다 거리 점수, 이동 거리에 해당하는 idxCM값 변경 여부 결정, 게임속도 변경 ---------------------------------------------------
-		if( GameData.Instance.scDistFromStage != scDistFromStagePre )
-		{
-			scDistFromStagePre = GameData.Instance.scDistFromStage ;
+			// 1m씩 증가할 때마다 거리 점수, 이동 거리에 해당하는 idxCM값 변경 여부 결정, 게임속도 변경 ---------------------------------------------------
+			if (GameData.Instance.scDistFromStage != scDistFromStagePre) {
+				scDistFromStagePre = GameData.Instance.scDistFromStage;
 
-			// 이동 거리 구간에 따라 infoForChangeMeter를 참조할 세로 인덱스번호인 idxCM 구하고, idxCM값 변경 시 게임 속도 변경 
-			if( GameData.Instance.idxCM != GameData.Instance.infoForChangeMeter.GetLength(0) -1 )  
-			{
-				for( int i=0 ; i < GameData.Instance.infoForChangeMeter.GetLength(0); i++ )
-				{				
-					if( GameData.Instance.scDistFromStage < GameData.Instance.infoForChangeMeter[i][0])
-					{
-						GameData.Instance.idxCM = i ;
-						break;
+				// 이동 거리 구간에 따라 infoForChangeMeter를 참조할 세로 인덱스번호인 idxCM 구하고, idxCM값 변경 시 게임 속도 변경 
+				if (GameData.Instance.idxCM != GameData.Instance.infoForChangeMeter.GetLength (0) - 1) {
+					for (int i=0; i < GameData.Instance.infoForChangeMeter.GetLength(0); i++) {				
+						if (GameData.Instance.scDistFromStage < GameData.Instance.infoForChangeMeter [i] [0]) {
+							GameData.Instance.idxCM = i;
+							break;
+						}
+						// 거리가 1000미터 이상일 경우, ( 테이블에서 마지막 줄에 해당 )  
+						GameData.Instance.idxCM = GameData.Instance.infoForChangeMeter.GetLength (0) - 1;
 					}
-					// 거리가 1000미터 이상일 경우, ( 테이블에서 마지막 줄에 해당 )  
-					GameData.Instance.idxCM = GameData.Instance.infoForChangeMeter.GetLength(0) -1 ;
-				}
 				
-				// 인덱스값 변경시 게임 속도 변경  
-				if( idxPreVal != GameData.Instance.idxCM )
-				{
-					GameData.Instance.nowGameSpeed = 
+					// 인덱스값 변경시 게임 속도 변경  
+					if (idxPreVal != GameData.Instance.idxCM) {
+						GameData.Instance.nowGameSpeed = 
 						GameData.Instance.pixelPerFrame * 
-						( GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][1]*1f ) / 100 ;			 	
-					idxPreVal = GameData.Instance.idxCM;
+							(GameData.Instance.infoForChangeMeter [GameData.Instance.idxCM] [1] * 1f) / 100;			 	
+						idxPreVal = GameData.Instance.idxCM;
+					}
 				}
 			}
+			//			Debug.Log("GetLength(0) : " + GameData.Instance.infoForChangeMeter.GetLength(0) );	// 11
+			//--------------------------------------------------------------------------------------------------------
 		}
-		//			Debug.Log("GetLength(0) : " + GameData.Instance.infoForChangeMeter.GetLength(0) );	// 11
-		//--------------------------------------------------------------------------------------------------------
+		// GameData.Instance.playerState == PlayerState.dead
+		else 
+		{
+			GameData.Instance.nowGameSpeed = 0 ; 
+			Invoke( "DeadPlayer", 5f );
+		}
 
+	}	 
 
-	}
-
-	// 게임결과창 에서 다시 게임 할때, 처음 게임할때 초기화해야할 변수들 생각해서 만들기 
-	void InitPlayScene()
+	void DeadPlayer()
 	{
-		GameData.Instance.scGoldFromStage = 0;
-		GameData.Instance.scHitMonFromStage = 0;
-		GameData.Instance.scDistFromStage = 0 ;
-		GameData.Instance.idxCM = 0;  
-		idxPreVal = 0;
+		if (GameData.Instance.scDistFromStage + GameData.Instance.scHitMonFromStage > GameData.Instance.scMaxTotal)
+			GameData.Instance.scMaxTotal = GameData.Instance.scDistFromStage + GameData.Instance.scHitMonFromStage;
 
+		GameData.Instance.nowGameSpeed = GameData.Instance.pixelPerFrame ;
+		GameData.Instance.playerState = PlayerState.play ;
+		GameData.Instance.nowScene = GameSceneState.result;
+		Application.LoadLevel ("GameResult");
 	}
-	 
 
 	//			Debug.Log("RANK : " + GameData.Instance.infoForChangeMeter.Rank);					// 2 (차원) 
 	//			Debug.Log("GetLength(0) : " + GameData.Instance.infoForChangeMeter.GetLength(0) );	// 11
