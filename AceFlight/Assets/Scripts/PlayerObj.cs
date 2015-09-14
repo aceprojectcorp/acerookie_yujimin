@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// 플레이어 객체에 관련된 스크립트 - 이동, 초기화 
+// 플레이어 객체에 관련된 스크립트 - 이동, 초기화, 죽음(효과, 씬 변경) 
 public class PlayerObj : MonoBehaviour {
 
 	Vector3 playerPos 		= new Vector3(0,0,0);	// 플레이어 초기 위치 셋팅 
@@ -10,15 +10,16 @@ public class PlayerObj : MonoBehaviour {
 	Vector3 clickNowPos 	= new Vector3(0,0,0);	// 현재 클릭 위치  
 	Vector3 changePlayerPos = new Vector3(0,0,0);	// 플레이어 위치의 최종 이동값 저장 
 
-	bool deadAlphaEffectSw  = false; 
+	bool deadAlphaEffectSw  = false; 				// 플레이어 죽음 상태시, 플레이어 객체의 알파값 감소 타이밍을 조절하는 스위치 
+	float secPlayerDeadEffect = 1.5f ; 				// 		"		  , 알파값 감소 시간 
 
 	void Awake()
 	{
-		GameData.Instance.nowScene = GameSceneState.play;		// test
+		GameData.Instance.nowScene = GameSceneState.play;
 	}
+	
 	void Start () 
 	{
-
 		// 플레이어 이미지 랜덤으로 변경 
 		int randIdx = Random.Range(0, GameData.Instance.playerSprNames.GetLength(0) );
 		ChangePlayerSpr( "Body", 	randIdx, 0 );
@@ -28,9 +29,7 @@ public class PlayerObj : MonoBehaviour {
 		// 플레이어 초기 세로 위치를 하단 1/4에 위치 시키기.  ----- // 0, -240 위치에 플레이어 캐릭터 등장 
 		playerPos = gameObject.transform.localPosition; 
 		playerPos.y -= ( GameData.Instance.screenHeight / 4f); 			// 플레이어 캐릭터 위치가 0,0 에서 시작하기 때문에 화면 가로크기 1/4만큼 빼줌 
-		gameObject.transform.localPosition = playerPos; //-----//
-		//		Debug.Log ( gameObject.transform.localPosition);	// localPosition은 -240으로 표현됨 
-		//		Debug.Log( gameObject.transform.position); 			// position은 -0.5 로 표현됨 
+		gameObject.transform.localPosition = playerPos;
 	}
 
 	void Update ()  
@@ -65,11 +64,11 @@ public class PlayerObj : MonoBehaviour {
 		{
 			if( deadAlphaEffectSw == true )
 			{
-				// secPlayerDeadEffect == 1 
-				transform.FindChild("Body").GetComponent<UISprite>().alpha -= 1 * (Time.deltaTime/2); ;
-				transform.FindChild("WingL").GetComponent<UISprite>().alpha -= 1 * (Time.deltaTime/2); ;
-				transform.FindChild("WingR").GetComponent<UISprite>().alpha -= 1 * (Time.deltaTime/2); ;
-//				gameObject.GetComponent<UIPanel>().alpha -= 1 * (Time.deltaTime/2); ;
+				// secPlayerDeadEffect == 1.5초 . 1.5초간 플레이어 객체들의 알파값 감소 
+				transform.FindChild("Body" ).GetComponent<UISprite>().alpha -= 1 * ( Time.deltaTime / secPlayerDeadEffect );
+				transform.FindChild("WingL").GetComponent<UISprite>().alpha -= 1 * ( Time.deltaTime / secPlayerDeadEffect );
+				transform.FindChild("WingR").GetComponent<UISprite>().alpha -= 1 * ( Time.deltaTime / secPlayerDeadEffect );
+//				gameObject.GetComponent<UIPanel>().alpha -= 1 * ( Time.deltaTime / 2 ); 
 			}
 		}
 
@@ -86,6 +85,7 @@ public class PlayerObj : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
+		// 몬스터와 충돌시 죽음상태 처리. 
 		if (other.transform.tag == "Monster") 
 		{
 			Destroy( transform.GetComponent<BoxCollider>() ); 
@@ -102,16 +102,16 @@ public class PlayerObj : MonoBehaviour {
 	void PlayerActiveOn()
 	{
 		gameObject.SetActive ( true );
-		Invoke ( "PlayerActiveOff", 0.2f );
+		Invoke ( "PlayerActiveOff", 0.1f );
 	}
 
 	void PlayerActiveOff()
 	{
 		gameObject.SetActive ( false );
-		Invoke ( "PlayerActiveOn", 0.2f );
+		Invoke ( "PlayerActiveOn", 0.1f );
 	}
 
-	void CancelInvokeAndNextEffectOn()
+	void CancelInvokeAndNextEffectOn() 
 	{
 		CancelInvoke();
 		gameObject.SetActive ( true );

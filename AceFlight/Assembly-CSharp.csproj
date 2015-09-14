@@ -185,7 +185,6 @@
      <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
      <Compile Include="Assets\Scripts\BtnScript.cs" />
      <Compile Include="Assets\Scripts\DrawBG.cs" />
-     <Compile Include="Assets\Scripts\DrawScore.cs" />
      <Compile Include="Assets\Scripts\DrawScoreInPlayScene.cs" />
      <Compile Include="Assets\Scripts\DrawScoreInResultScene.cs" />
      <Compile Include="Assets\Scripts\GameData.cs" />

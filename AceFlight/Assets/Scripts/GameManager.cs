@@ -76,8 +76,8 @@ public class GameManager : MonoBehaviour {
 
 	void DeadPlayer()
 	{
-		if (GameData.Instance.scDistFromStage + GameData.Instance.scHitMonFromStage > GameData.Instance.scMaxTotal)
-			GameData.Instance.scMaxTotal = GameData.Instance.scDistFromStage + GameData.Instance.scHitMonFromStage;
+		if (GameData.Instance.scDistFromStage + GameData.Instance.scHitMonFromStage > GameData.Instance.scBestHighTotal)
+			GameData.Instance.scBestHighTotal = GameData.Instance.scDistFromStage + GameData.Instance.scHitMonFromStage;
 
 		GameData.Instance.nowGameSpeed = GameData.Instance.pixelPerFrame ;
 		GameData.Instance.playerState = PlayerState.play ;

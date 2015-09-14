@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 // 게임 씬 상태 
 public enum GameSceneState { init, title, play, result, loading }
@@ -21,7 +22,7 @@ public class GameData: MonoBehaviour
 	public int scGoldFromStage 	= 0;	// 스테이지 획득골드
 	public int scHitMonFromStage= 0;	// 스테이지 몬스터 타격에 대한 점수 
 	public int scDistFromStage 	= 0;	// 스테이지 이동거리에 대한 점수 . meter 
-	public int scMaxTotal 		= 0; 	// 최대 점수 (지금까지 했던 점수 중 최대 점수 저장... 나중에 시간되면..^^..) 
+	public int scBestHighTotal 		= 0; 	// 최대 점수 (지금까지 했던 점수 중 최대 점수 저장... 나중에 시간되면..^^..) 
 
 	// 속도 관련 
 	public int 	 pixelPerFrame 	= 2;	 
@@ -56,6 +57,9 @@ public class GameData: MonoBehaviour
 		new int[]{ 1000,		280, 		5, 		30,			6, 		70 },
 		new int[]{ 1001,		300, 		6, 		70,			7, 		20,		8,		10 }
 	  };
+
+	//test. make class about infoForChangeMeter 
+	public List<PlaceRateOfMonsterLv> g_monPlaceRateList = new List<PlaceRateOfMonsterLv>() ; 
 
 	// 몬스터 관련 정보 테이블 
 	public int[,] infoForMon = new int[,]
@@ -103,8 +107,6 @@ public class GameData: MonoBehaviour
 		{ 701, 1000 }
 	};
 
-
-
 	void Awake()
 	{
 		// 인스턴스 중복생성 방지 ( 아래 if문 안쓰면 타이틀씬 들어올 때 마다 Gamedata 객체 생성됨. ) 
@@ -125,8 +127,6 @@ public class GameData: MonoBehaviour
 			GameData.Instance.screenHeight = UIRootObj.GetComponent<UIRoot>().manualHeight ; 
 			GameData.Instance.screenWidth = UIRootObj.GetComponent<UIRoot>().manualWidth ;
 		}
-
-
 		DontDestroyOnLoad (gameObject);
 	}
 
@@ -134,10 +134,103 @@ public class GameData: MonoBehaviour
 	{
 //		nowScene = GameSceneState.title;	//-->> 완성하고 주석 제거.
 //		Application.LoadLevel ("Title");	//-->> 완성하고 주석 제거. 지금은 테스트를 위해 gamedata프리팹 씬마다 복사해놓음 
+
+		// test
+		//PlaceRateOfMonsterLv prMonsterLv = new PlaceRateOfMonsterLv (100, 1, 70, 2, 30);
+		//g_monPlaceRateList.Add (prMonsterLv);
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 100,	1, 70, 2, 30 		)); 
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 200, 1, 70, 2, 30 		));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 300, 2, 70, 3, 30 		));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 400, 2, 70, 3, 30 		));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 500, 3, 70, 4, 30 		));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 600, 3, 70, 4, 30 		));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 700, 4, 70, 5, 30 		));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 800, 4, 70, 5, 30 		));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 900, 5, 70, 6, 30 		));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 1000,5, 70, 6, 30 		));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( 1001,6, 70, 7, 20, 8, 10 ));
+
+		Debug.Log (g_monPlaceRateList.Count);
 	}
 
 	void Update()
 	{
 	}
 	
+}
+
+public class PlaceRateOfMonsterLv
+{
+	public int m_distUnder  = 0 ; 
+	public int m_Mon1LvRate = 0 ;
+	public int m_Mon2LvRate = 0 ;
+	public int m_Mon3LvRate = 0 ;
+	public int m_Mon4LvRate = 0 ;
+	public int m_Mon5LvRate = 0 ;
+	public int m_Mon6LvRate = 0 ;
+	public int m_Mon7LvRate = 0 ;
+	public int m_Mon8LvRate = 0 ;
+
+	public List<int> m_inputLvList = new List<int>();	// 입력된 레벨 저장
+
+	public PlaceRateOfMonsterLv( int dis, int lvInput1, int lvRateInput1 )
+	{
+		if ( lvRateInput1 != 100 ) 
+		{
+			Debug.Log("입력값의 확률 다시 확인!!!! "); 
+			return;
+		}
+		m_distUnder = dis ; 
+		inputLvAndLvRate (lvInput1, lvRateInput1 );
+	}
+
+	public PlaceRateOfMonsterLv( int dis, int lvInput1, int lvRateInput1, int lvInput2, int lvRateInput2 )
+	{
+		if ( lvRateInput1 + lvRateInput2 != 100 ) 
+		{
+			Debug.Log("입력값의 확률 다시 확인!!!! "); 
+			return;
+		}
+		m_distUnder = dis ; 
+		inputLvAndLvRate (lvInput1, lvRateInput1 ); 
+		inputLvAndLvRate (lvInput2, lvRateInput2 ); 
+	}
+
+	public PlaceRateOfMonsterLv( int dis, int lvInput1, int lvRateInput1, int lvInput2, int lvRateInput2, int lvInput3, int lvRateInput3 )
+	{
+		if ( lvRateInput1 + lvRateInput2 + lvRateInput3 != 100 ) 
+		{
+			Debug.Log("입력값의 확률 다시 확인!!!! "); 
+			return;
+		}
+
+		m_distUnder = dis ; 
+		inputLvAndLvRate ( lvInput1, lvRateInput1 ); 
+		inputLvAndLvRate ( lvInput2, lvRateInput2 ); 
+		inputLvAndLvRate ( lvInput3, lvRateInput3 ); 
+	}
+
+	void inputLvAndLvRate( int lvInput, int lvRateInput )
+	{
+		if( lvInput == 1 )
+			m_Mon1LvRate = lvRateInput ;	
+		else if( lvInput == 2 ) 
+			m_Mon2LvRate = lvRateInput ;
+		else if( lvInput == 3 ) 
+			m_Mon3LvRate = lvRateInput ;
+		else if( lvInput == 4 ) 
+			m_Mon4LvRate = lvRateInput ;
+		else if( lvInput == 5 ) 
+			m_Mon5LvRate = lvRateInput ;
+		else if( lvInput == 6 ) 
+			m_Mon6LvRate = lvRateInput ;
+		else if( lvInput == 7 ) 
+			m_Mon7LvRate = lvRateInput ;
+		else if( lvInput == 8 ) 
+			m_Mon8LvRate = lvRateInput ;
+		else
+			Debug.LogError("PlaceRateOfMonsterLv - 입력된 레벨값이 맞지 않음 !!"); 
+
+		m_inputLvList.Add (lvInput);
+	}
 }

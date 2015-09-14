@@ -1,43 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// 미사일 이동, 파괴( 몬스터와 부딪히거나, 이동 중 일정 위치에 도달할 경우)
 public class MissileObj : MonoBehaviour {
 
-	public int m_msiPower = 0 ;
+	public int msiPower 	= 0 ;				// 이 미사일 객체의 파워 
+	Vector3 msiMovePos 	= Vector3.zero;		// 미사일 이동 위치 
+	float msiDestoryPosY	= 0; 				// 미사일을 파괴할 위치의 y좌표 
 
-	Vector3 m_msiMovePos 	= Vector3.zero;
-	float m_msiDestoryPosY	= 0; 
-	int m_idxThisMsiPower 	= 0 ; 
-
-	// Use this for initialization
+	// Use this for initialization 
 	void Start () 
 	{
-		m_idxThisMsiPower = GameData.Instance.idxMsiPower;
-		m_msiPower = GameData.Instance.infoMsiPowerPerMeter[ m_idxThisMsiPower, 1];
-		m_msiMovePos = gameObject.transform.localPosition; 
-		m_msiDestoryPosY = ( gameObject.GetComponent<UIWidget>().localSize.y + GameData.Instance.screenHeight ) /2 ; 
+		msiPower 		 = GameData.Instance.infoMsiPowerPerMeter[ GameData.Instance.idxMsiPower, 1];
+		msiMovePos 	 = gameObject.transform.localPosition; 
+		msiDestoryPosY = ( gameObject.GetComponent<UIWidget>().localSize.y + GameData.Instance.screenHeight ) /2 ; 
 	}
 	
 	// Update is called once per frame 
 	void Update () 
 	{
-		if (GameData.Instance.playerState == PlayerState.play) 
+		if ( GameData.Instance.playerState == PlayerState.play ) 
 		{
 			// move ( 1frame, 64px move ) 
-			m_msiMovePos.y += (GameData.Instance.msiMovePixelPerFrame * GameData.Instance.framePerSec) * Time.deltaTime; 
-			gameObject.transform.localPosition = m_msiMovePos; 
+			msiMovePos.y += ( GameData.Instance.msiMovePixelPerFrame * GameData.Instance.framePerSec ) * Time.deltaTime; 
+			gameObject.transform.localPosition = msiMovePos; 
 		}
 
 		// gameobject destory
-		if ( gameObject.transform.localPosition.y > m_msiDestoryPosY )
+		if ( gameObject.transform.localPosition.y > msiDestoryPosY )
 			Destroy ( gameObject ); 
 	}
 
 	void OnTriggerEnter( Collider other )
 	{
-		if ( other.transform.tag == "Monster")
+		if ( other.transform.tag == "Monster" )
 		{
-			Destroy(gameObject);
+			Destroy( gameObject );
 		}
 	}
 
