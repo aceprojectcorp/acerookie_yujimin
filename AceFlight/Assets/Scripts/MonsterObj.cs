@@ -40,7 +40,7 @@ public class MonsterObj : MonoBehaviour {
 		if( monHp > 0 )
 		{
 			// 몬스터 -y 방향으로 이동-------------------------------------------------------------//
-			moveSpeed = GameData.Instance.g_nowGameSpeed * GameData.Instance.g_framePerSec * 200/100 ; 
+			moveSpeed = GameData.Instance.g_nowGameSpeed * GameData.Instance.g_framePerSec * 250/100 ; 
 			monPos.y -= moveSpeed * Time.deltaTime;		
 			gameObject.transform.localPosition = monPos; 
 			if ( monPos.y <= monDestoryPosY )		

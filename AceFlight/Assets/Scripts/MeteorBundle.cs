@@ -43,9 +43,9 @@ public class MeteorBundle : MonoBehaviour {
 				ragerPos.x = playerPos.x ; 
 			// 레이저 위치가 플레이어 위치보다 오른쪽에 위치  
 			else if( playerPos.x < transform.FindChild("MeteorRager").transform.localPosition.x )
-				ragerPos.x -= (moveRagerPxPerFrame * GameData.Instance.g_framePerSec) * Time.deltaTime;
+				ragerPos.x -= ( moveRagerPxPerFrame * GameData.Instance.g_framePerSec ) * Time.deltaTime;
 			else if( playerPos.x > transform.FindChild("MeteorRager").transform.localPosition.x ) 
-				ragerPos.x += (moveRagerPxPerFrame * GameData.Instance.g_framePerSec) * Time.deltaTime;
+				ragerPos.x += ( moveRagerPxPerFrame * GameData.Instance.g_framePerSec ) * Time.deltaTime;
 
 			transform.FindChild("MeteorRager").transform.localPosition = ragerPos ; 
 			//-----------------------------------------------------------------------

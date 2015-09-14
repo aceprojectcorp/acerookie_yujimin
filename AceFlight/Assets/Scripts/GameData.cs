@@ -31,7 +31,7 @@ public class GameData: MonoBehaviour
 	public int 	 g_pixelPerMeter 	= 10;	// 거리 측정 기준.	 
 	public int 	 g_framePerSec 		= 60;
 	public float g_nowGameSpeed 	= 2f;	// 현재 게임 속도.  
-	public float g_createMonMeter 	= 30 ; 
+	public float g_createMonMeter 	= 60 ;  
 
 	// 미사일 
 	public float g_msiMovePixelPerFrame = 64;	// 미사일 1프레임당 이동 픽셀 
@@ -63,7 +63,7 @@ public class GameData: MonoBehaviour
 //	동전				분홍보석			초록보석			파랑보석
 	{ "item_coin", 	"item_gem", 	"item_gem_02", 	"item_gem_03" };
 	
-	// 스크롤 속도/ 몬스터 배치 테이블. 현재 거리에 따른 스크롤 속도만 사용중.
+	// 누적 거리에 따른 스크롤 속도 테이블 
 	public int[][] g_infoForChangeMeter = new int[][]
 //					거리(m)		스크롤속도		레벨		<-등장확률	레벨		<- 등장확률 
 	{ 	new int[]{ 100, 		100},//, 		1, 		70,			2, 		30 					},
@@ -76,7 +76,11 @@ public class GameData: MonoBehaviour
 		new int[]{ 800, 		240},//, 		4, 		30,			5, 		70 					},
 		new int[]{ 900, 		260},//, 		5, 		70,			6, 		30 					},
 		new int[]{ 1000,		280},//, 		5, 		30,			6, 		70 					},
-		new int[]{ 1001,		300}//, 		6, 		70,			7, 		20,		8,		10 	}
+		new int[]{ 1500,		300},//, 		6, 		70,			7, 		20,		8,		10 	}
+		new int[]{ 2000,		350},//, 		6, 		70,			7, 		20,		8,		10 	}
+		new int[]{ 2500,		400},//, 		6, 		70,			7, 		20,		8,		10 	}
+		new int[]{ 3000,		450},//, 		6, 		70,			7, 		20,		8,		10 	}
+		new int[]{ 3001,		500}//, 		6, 		70,			7, 		20,		8,		10 	}
 	  };
 
 	// 클래스 리스트. infoForChangeMeter 정보에서 몬스터 객체 생성에 필요한 자료만 저장.
@@ -85,14 +89,14 @@ public class GameData: MonoBehaviour
 	// 몬스터 관련 정보 테이블 
 	public int[,] g_infoForMon = new int[,]
 //			lv,		hp,		hitPlusScore 
-	{ 	{	1,		100,	50 	},
+	{ 	{	1,		150,	50 	},
 		{	2,		300,	100	},
 		{	3,		500,	150	},
 		{	4,		700,	200	},
 		{	5,		900,	250	},
-		{	6,		1100,	300	},
-		{	7,		1300,	350	},
-		{	8,		1500,	400	}
+		{	6,		1300,	300	},
+		{	7,		2000,	350	},
+		{	8,		4000,	500	}
 	};
 
 	// 몬스터 스프라이트 이름 저장
@@ -111,7 +115,7 @@ public class GameData: MonoBehaviour
 	public string[,] g_playerSprNames = new string[,]
 	{	{ "sunny_01_body", "sunny_01_wing" },
 		{ "sunny_02_body", "sunny_02_wing" },
-		{ "sunny_03_body", "sunny_03_wing" },
+		{ "sunny_03_body", "sunny_03_wing" }, 
 		{ "sunny_04_body", "sunny_04_wing" }
 	};
 
@@ -122,10 +126,10 @@ public class GameData: MonoBehaviour
 	// 미사일 미터당 파워 정보 저장 
 	public int[,] g_infoMsiPowerPerMeter = new int[,]
 	// 	meter, 	missilePower 
-	{ 	{ 300,	50	},
-		{ 500, 	300	},
-		{ 700, 	500 },
-		{ 701, 1000 }
+	{ 	{ 500,		50	},
+		{ 1000, 	100	},
+		{ 1500, 	150 },
+		{ 1501, 	300  }
 	};
 
 	void Awake()
@@ -151,7 +155,11 @@ public class GameData: MonoBehaviour
 		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( new int[]{ 800,	0,	0,	0,	30,	70,	0,	0,	0 } ));
 		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( new int[]{ 900,	0,	0,	0,	0,	70,	30,	0,	0 } ));
 		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( new int[]{ 1000,	0,	0,	0,	0,	30,	70,	0,	0 } ));
-		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( new int[]{ 1001,	0,	0,	0,	0,	0,	70,	20,	10 } ));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( new int[]{ 1500,	0,	0,	0,	0,	0,	70,	30,	0 } ));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( new int[]{ 2000,	0,	0,	0,	0,	0,	50,	50,	00 } ));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( new int[]{ 2500,	0,	0,	0,	0,	0,	40,	30,	30 } ));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( new int[]{ 3000,	0,	0,	0,	0,	0,	30,	40,	30 } ));
+		g_monPlaceRateList.Add( new PlaceRateOfMonsterLv ( new int[]{ 3001,	0,	0,	0,	0,	0,	0,	50,	50 } ));
 	}
 
 	void Update()
