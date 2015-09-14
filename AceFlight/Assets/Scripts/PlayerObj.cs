@@ -87,9 +87,9 @@ public class PlayerObj : MonoBehaviour {
 		// 몬스터or운석과 충돌시 죽음상태 처리. 
 		if ( other.transform.tag == "Monster" || other.transform.tag == "Meteor" ) 
 		{
+			GameData.Instance.g_playerState = PlayerState.dead ;
 			AudioSource.PlayClipAtPoint(sndPlayerDie, Vector3.zero);
 			Destroy( transform.GetComponent<CapsuleCollider>() ); 
-			GameData.Instance.g_playerState = PlayerState.dead ;
 			transform.FindChild("Missiles").parent = GameObject.Find("UI Root").transform;
 			Destroy( transform.FindChild("WingL").GetComponent<TweenRotation>() );
 			Destroy( transform.FindChild("WingR").GetComponent<TweenRotation>() );

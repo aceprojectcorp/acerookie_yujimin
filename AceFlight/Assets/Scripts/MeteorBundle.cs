@@ -18,7 +18,6 @@ public class MeteorBundle : MonoBehaviour {
 	
 	Vector3 meteorInitPos = new Vector3(0, 2, 0);	// 운석 맨 위에 위치할때의 위치값 저장 
 
-
 	// Use this for initialization
 	void Start () 
 	{
@@ -38,17 +37,18 @@ public class MeteorBundle : MonoBehaviour {
 		{
 			// 레이저 이동 (초기 플레이어 위치에서 현재 플레이어 위치로 계속 쫓아감)----------------
 			playerPos.x = GameObject.Find("Player").transform.localPosition.x ;
-			
+
+			// 레이저와 플레이어 위치가 크게 차이 나지 않으면 플레이어 위치 값 넣어줌. 아래 문장을 빼면 레이저가 플레이어 위치를 제대로 못잡아서 흔들거림.
+			if( Mathf.Abs( Mathf.Abs(playerPos.x) - Mathf.Abs( transform.FindChild("MeteorRager").transform.localPosition.x ) ) <= 5 )
+				ragerPos.x = playerPos.x ; 
 			// 레이저 위치가 플레이어 위치보다 오른쪽에 위치  
-			if( playerPos.x < transform.FindChild("MeteorRager").transform.localPosition.x )
+			else if( playerPos.x < transform.FindChild("MeteorRager").transform.localPosition.x )
 				ragerPos.x -= (moveRagerPxPerFrame * GameData.Instance.g_framePerSec) * Time.deltaTime;
 			else if( playerPos.x > transform.FindChild("MeteorRager").transform.localPosition.x ) 
 				ragerPos.x += (moveRagerPxPerFrame * GameData.Instance.g_framePerSec) * Time.deltaTime;
-			else
-				ragerPos.x = ragerPos.x;
-			
+
 			transform.FindChild("MeteorRager").transform.localPosition = ragerPos ; 
-			//------------------------------------
+			//-----------------------------------------------------------------------
 			
 			// 알림마크 - 레이저 위치로 알림마크 위치이동, 깜빡임 처리 ---------------------------  
 			accureNotifyTime += Time.deltaTime ; 
@@ -63,15 +63,16 @@ public class MeteorBundle : MonoBehaviour {
 				transform.FindChild("NotifyMarkMeteor").gameObject.SetActive(false);
 			else
 				transform.FindChild("NotifyMarkMeteor").gameObject.SetActive(true);
-			
 			//---------------------------------------------------------------------------
 		}
 		// 플레이어 죽으면 레이저, 알림마크 숨기기 
 		else if( GameData.Instance.g_playerState == PlayerState.dead && isNotifyTime == true )
 		{
-			transform.FindChild("MeteorRager").gameObject.SetActive(false);
-			transform.FindChild("NotifyMarkMeteor").gameObject.SetActive(false);
+			isNotifyTime = false;
+			Destroy( transform.FindChild("MeteorRager").gameObject );
+			Destroy( transform.FindChild("NotifyMarkMeteor").gameObject );
 		}
+
 	}
 
 	//secNotifyTime(3초)후, 레이저/알림마크 파괴, 운석생성 
