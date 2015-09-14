@@ -11,26 +11,29 @@ public class MissileObj : MonoBehaviour {
 	// Use this for initialization 
 	void Start () 
 	{
-		msiPower 		 = GameData.Instance.infoMsiPowerPerMeter[ GameData.Instance.idxMsiPower, 1];
+		msiPower 		 = GameData.Instance.g_infoMsiPowerPerMeter[ GameData.Instance.g_idxMsiPower, 1];
 		msiMovePos 	 = gameObject.transform.localPosition; 
-		msiDestoryPosY = ( gameObject.GetComponent<UIWidget>().localSize.y + GameData.Instance.screenHeight ) /2 ; 
+		msiDestoryPosY = ( gameObject.GetComponent<UIWidget>().localSize.y + GameData.Instance.g_screenHeight ) /2 ; 
 	}
 	
 	// Update is called once per frame 
 	void Update () 
-	{
-		if ( GameData.Instance.playerState == PlayerState.play ) 
+	{ 
+
+		// 플레이어 죽음시, 이미 발사된 총알은 앞으로 날라가게 
+//		if ( GameData.Instance.g_playerState == PlayerState.play ) 
 		{
-			// move ( 1frame, 64px move ) 
-			msiMovePos.y += ( GameData.Instance.msiMovePixelPerFrame * GameData.Instance.framePerSec ) * Time.deltaTime; 
+			// Move msi ( 1frame, 64px move ) 
+			msiMovePos.y += ( GameData.Instance.g_msiMovePixelPerFrame * GameData.Instance.g_framePerSec ) * Time.deltaTime; 
 			gameObject.transform.localPosition = msiMovePos; 
 		}
 
-		// gameobject destory
+		// Destory msi
 		if ( gameObject.transform.localPosition.y > msiDestoryPosY )
 			Destroy ( gameObject ); 
 	}
 
+	// 충돌체의 태그를 이용한 충돌 처리 
 	void OnTriggerEnter( Collider other )
 	{
 		if ( other.transform.tag == "Monster" )

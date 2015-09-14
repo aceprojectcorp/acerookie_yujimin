@@ -8,125 +8,147 @@ public class MonsterEnter : MonoBehaviour {
 
 	Vector3 monFirstPos 		= Vector3.zero ;
 	float[] monStartPosX 		= { -255, -128, 0, 128, 255 };
-	float 	monStartPosY 		= 0; 	
+	float 	monStartPosY 		= 544 ; 	
 	bool 	monEnterSwc 		= false; 	// 몬스터 등장 스위치 
 	int 	scDistFromStagePre  = 0 ;		// 거리값이 변경 됐을때만, 몬스터 생성여부 판단하기 위해 이전 거리값 저장  
-	int 	monLv				= 0 ;
-	int 	monHp				= 0 ;
-	int 	monHitScore 		= 0 ;
+
 
 	void Start ()  
 	{
-		monStartPosY = 544; 	// == gameObject.GetComponent<Collider> ().transform.localScale.y + GameData.Instance.screenHeight )/2 ;  
+		monStartPosY = 544; 	// == gameObject.GetComponent<Collider> ().transform.localScale.y + GameData.Instance.g_screenHeight )/2 ;  
 		CreateMonsters(); 		// 시작과 동시에 몬스터 1줄 생성. 
-		scDistFromStagePre = GameData.Instance.scDistFromStage ;
+		scDistFromStagePre = GameData.Instance.g_scDistFromStage ;
 	}
 
 	void Update () 
 	{
-		if( scDistFromStagePre != GameData.Instance.scDistFromStage )
+		if( scDistFromStagePre != GameData.Instance.g_scDistFromStage )
 		{
 			monEnterSwc = true;
-			scDistFromStagePre = GameData.Instance.scDistFromStage ;
+			scDistFromStagePre = GameData.Instance.g_scDistFromStage ;
 		}
 
 		// 누적 이동 거리가 몬스터 생성의 거리 기준 만큼 누적된 경우 몬스터 생성   
-		if( GameData.Instance.scDistFromStage % GameData.Instance.createMonMeter == 0 && monEnterSwc == true )
+		if( GameData.Instance.g_scDistFromStage % GameData.Instance.g_createMonMeter == 0 && monEnterSwc == true )
 		{
 			monEnterSwc = false;
 			CreateMonsters();
 		}
 	}
 
+	// 몬스터 객체 생성. 위치, 부모, 크기, 객체내 변수, 이미지 모두 초기화해줌. 
 	void CreateMonsters()
 	{
+		int monLv = 0 ;
 		for( int i=0 ; i < 5 ; i++ )
 		{			
 			monFirstPos.x = monStartPosX[i];
 			monFirstPos.y = monStartPosY;
 			GameObject monInst = Instantiate(MonsterObj) as GameObject;
-			monInst.transform.parent = GameObject.Find("Monsters").transform;
+			monInst.transform.parent = GameObject.Find("MonsterManager").transform;
 			monInst.transform.localScale = Vector3.one;
 			monInst.transform.localPosition = monFirstPos;
-			monInst.GetComponent<MonsterObj>().monLv = makeLv() ; 
-			monInst.GetComponent<MonsterObj>().monHp = GameData.Instance.infoForMon[ monLv-1, 1 ] ;
-			monInst.GetComponent<MonsterObj>().monHitScore = GameData.Instance.infoForMon[ monLv-1, 2 ] ;
-			changeSprOfMon( monInst, "Body", 	monLv-1, 0 );
-			changeSprOfMon( monInst, "EyeL", 	monLv-1, 1 );
-			changeSprOfMon( monInst, "EyeR", 	monLv-1, 1 );
-			changeSprOfMon( monInst, "WingR", 	monLv-1, 3 );
-			changeSprOfMon( monInst, "WingL", 	monLv-1, 3 );	
+			monLv = MakeLv() ;
+			monInst.GetComponent<MonsterObj>().monLv = monLv; 
+			monInst.GetComponent<MonsterObj>().monHp = GameData.Instance.g_infoForMon[ monLv-1, 1 ] ;
+			monInst.GetComponent<MonsterObj>().monHitScore = GameData.Instance.g_infoForMon[ monLv-1, 2 ] ;
+			ChangeSprOfMon( monInst, "Body", 	monLv-1, 0 );
+			ChangeSprOfMon( monInst, "EyeL", 	monLv-1, 1 );
+			ChangeSprOfMon( monInst, "EyeR", 	monLv-1, 1 );
+			ChangeSprOfMon( monInst, "WingR", 	monLv-1, 3 );
+			ChangeSprOfMon( monInst, "WingL", 	monLv-1, 3 );	
 
 			//GameObject monInst = (GameObject) Instantiate( MonsterObj, monFirstPos, mlFirstAngle );	
 			// 위와 같이 사용시, 객체가 잠깐 중앙(0,0,0)에 위치 했다가 자신의 위치로 이동함. 
 		}
 	}
 
-	int makeLv()
+	// 배치 확률에 따라 몬스터 레벨 설정 [ GameData의 g_monPlaceRateList 참고 ]
+	int MakeLv()
+	{ 
+		int rand1to100		= Random.Range( 1, 101 );	// 1~100		
+		int selectPlaceRate = 0;
+		
+		for( int i=1 ; i < GameData.Instance.g_monPlaceRateList[ GameData.Instance.g_idxCM ].m_PlaceRatesList.Count ; i++ )
+		{
+			selectPlaceRate += GameData.Instance.g_monPlaceRateList[ GameData.Instance.g_idxCM ].m_PlaceRatesList[i] ;
+			if( selectPlaceRate >= rand1to100 )
+				return i ; 
+		}
+		return 1;
+	}
+	// MakeLv()문
+	// GameData.Instance.g_monPlaceRateList[ GameData.Instance.g_idxCM ].m_PlaceRatesList.Count == 이동거리에 해당하는 리스트에 접근. 
+	/** ex) g_monPlaceRateList에 {1001,	0,	0,	0,	0,	0,	70,	20,	10} 입력되어있고,  rand1to100= 98일 경우.
+	 * 1) i=6일때, selectPlaceRate는 누적되어 70 됨 (+70)
+	 *  -> rand1to100값이 1~70인 경우에.70% 해당.	=> x
+	 * 2) i=7일때, selectPlaceRate는 누적되어 90이 됨 (+20)
+	 *  -> rand1to100값이 71~90인 경우에 20%에 해당. => x 
+	 *  -> (1~70일 경우는 해당하지 않음. i=6일때 증명됨)
+	 * 3) i=8일때, selectPlaceRate는 누적되어 100이 됨 (+10)
+	 *  -> rand1to100값이 91~100인 경우 10%에 해당 => o
+	 * /
+
+	/*
+	// 배치 확률에 따라 몬스터 레벨 생성 [ GameData의 infoForChangeMeter 참고 ]
+	int MakeLv()
 	{
 		int highNum 	 = 0;	// 더 높은 확률값 저장 (70%)
 		int lowNum 		 = 0;
 		int idxOfHighNum = 0;	// 더 높은 확률값의 테이블 인덱스 번호 
 		int idxOfLowNum  = 0;
+		int makeMonLv 	 = 0;
 		
 		// 테이블보고 랜덤 돌려서 레벨 설정, 이미지 설정 
 		int randMonsLv = Random.Range( 1, 101 );	// 1~100
 		
 		// 등장확률 비교 
-		if ( GameData.Instance.infoForChangeMeter [ GameData.Instance.idxCM ][ 3 ] > GameData.Instance.infoForChangeMeter [ GameData.Instance.idxCM ][ 5 ] ) 
+		if ( GameData.Instance.g_infoForChangeMeter [ GameData.Instance.g_idxCM ][ 3 ] > GameData.Instance.g_infoForChangeMeter [ GameData.Instance.g_idxCM ][ 5 ] ) 
 		{
-			highNum = GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][ 3 ] ;
-			lowNum = GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][ 5 ] ;
+			highNum = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ 3 ] ;
+			lowNum = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ 5 ] ;
 			idxOfHighNum = 3 ;
 			idxOfLowNum  = 5 ;
 		} 
 		else 
 		{
-			highNum = GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][ 5 ] ;
-			lowNum = GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][ 3 ] ;
+			highNum = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ 5 ] ;
+			lowNum = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ 3 ] ;
 			idxOfHighNum = 5 ;
 			idxOfLowNum  = 3 ;
 		}
 		
 		// 70%  -> randMonsLv의 숫자가 1~70 이면, 
 		if ( randMonsLv <= highNum ) 
-			monLv = GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][ idxOfHighNum-1 ] ; 
+			makeMonLv = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ idxOfHighNum-1 ] ; 
 		
 		// 30%
 		else
 		{
 			// 이동거리 0~1000m 사이
-			if ( GameData.Instance.idxCM != GameData.Instance.infoForChangeMeter.GetLength(0)-1 )	
-				monLv = GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][ idxOfLowNum-1 ] ;
+			if ( GameData.Instance.g_idxCM != GameData.Instance.g_infoForChangeMeter.GetLength(0)-1 )	
+				makeMonLv = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ idxOfLowNum-1 ] ;
 			
 			// 이동거리 1000m 이상 (제일 빠른 속도)
 			else
 			{
 				//20% 71~90
 				if ( randMonsLv > highNum && randMonsLv <= highNum+lowNum ) 
-					monLv = GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][ idxOfLowNum-1 ] ;
+					makeMonLv = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ idxOfLowNum-1 ] ;
 				//10% 91~100 
 				else
-					monLv = GameData.Instance.infoForChangeMeter[ GameData.Instance.idxCM ][ idxOfLowNum+1 ] ;
+					makeMonLv = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ idxOfLowNum+1 ] ;
 			}
 		}
-		
-		//		int lvOfbestHighRate 	 = 0;
-		//		int lvRateOfbestHighRate = 0;
-		//		GameData.Instance.g_monPlaceRateList[ GameData.Instance.idxCM ]
-		//		Debug.Log ( GameData.Instance.g_monPlaceRateList[ GameData.Instance.idxCM ].inputLvList.Count );
-		//		Debug.Log (GameData.Instance.g_monPlaceRateList.[ GameData.Instance.idxCM ] );
-		//		Debug.Log(		GameData.Instance.g_monPlaceRateList[ GameData.Instance.idxCM ].m_distUnder ); 
-		//		for( int i=0 ; i < GameData.Instance.g_monPlaceRateList[ GameData.Instance.idxCM ].inputLvList.Count ; i++)
-
-		return monLv;
+		return makeMonLv;
 	}
+	*/
 
 	// 레벨에 해당하는 몬스터의 이미지 관련 정보 변경 
-	void changeSprOfMon( GameObject monInst, string objName, int i, int j )
+	void ChangeSprOfMon( GameObject monInst, string objName, int i, int j )
 	{
 		monInst.transform.FindChild( objName ).GetComponent<UISprite>().spriteName
-			= GameData.Instance.monSprNames[i,j];		
+			= GameData.Instance.g_monSprNames[i,j];		
 		monInst.transform.FindChild( objName ).GetComponent<UISprite>().MakePixelPerfect();
 		
 		if ( objName == "EyeR" ) 

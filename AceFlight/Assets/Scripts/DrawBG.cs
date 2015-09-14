@@ -23,17 +23,12 @@ public class DrawBG : MonoBehaviour {
 	// 두번째 배경객체에 세로 크기 만큼 y 위치값 추가, play씬일때만 배경 이미지 랜덤 변경. 
 	void Start () 
 	{
-		// test!!!!!
-		GameObject UIRootObj = GameObject.Find ("UI Root");
-		GameData.Instance.screenHeight = UIRootObj.GetComponent<UIRoot>().manualHeight ; 
-		GameData.Instance.screenWidth = UIRootObj.GetComponent<UIRoot>().manualWidth ;
-
 		bgPos2.y += selectBg1.localSize.y - 2;
 		selectBg2.transform.localPosition = bgPos2;
 
 		GameObject darkBg = transform.Find ("BG_Dark").gameObject;
 
-		if ( GameData.Instance.nowScene == GameSceneState.play ) 
+		if ( GameData.Instance.g_nowScene == GameSceneState.play ) 
 		{
 			darkBg.SetActive(false);
 			int randListIdx = Random.Range(0, BgList.Count);
@@ -56,20 +51,18 @@ public class DrawBG : MonoBehaviour {
 	void Update () 
 	{ 
 		// 배경 이동. - 먼저 이동시킬 위치 바꿔 주고 나서 해당 배경 이동하기.------------------- 
-		bgSpeed = GameData.Instance.nowGameSpeed * GameData.Instance.framePerSec; 
+		bgSpeed = GameData.Instance.g_nowGameSpeed * GameData.Instance.g_framePerSec; 
 		bgPos1.y -= bgSpeed * Time.deltaTime;
 		bgPos2.y -= bgSpeed * Time.deltaTime;
 
-		if( Mathf.Abs( bgPos1.y ) >= GameData.Instance.screenHeight )		
+		if( Mathf.Abs( bgPos1.y ) >= GameData.Instance.g_screenHeight )		
 			bgPos1.y = bgPos2.y + selectBg2.localSize.y - 2; 		// -2씩 안해주면 눈에 보이는 크랙 발생. 
 	
-		if( Mathf.Abs( bgPos2.y ) >= GameData.Instance.screenHeight )
+		if( Mathf.Abs( bgPos2.y ) >= GameData.Instance.g_screenHeight )
 			bgPos2.y = bgPos1.y + selectBg1.localSize.y - 2; 
 
 		selectBg1.transform.localPosition = bgPos1;
 		selectBg2.transform.localPosition = bgPos2;
-
-
 		//------------------------------------------------------------------------
 	}
 }

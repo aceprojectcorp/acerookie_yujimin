@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// << play씬에서 점수들 그려줌 >>
 public class DrawScoreInPlayScene : MonoBehaviour {
 	
-	public UILabel totalScore;
+	public UILabel distScore;
 	public UILabel hitScore;
 	public UILabel goldScore ;
 
@@ -13,8 +14,8 @@ public class DrawScoreInPlayScene : MonoBehaviour {
 	
 	void Update () 
 	{
-		totalScore.text = GameData.Instance.scDistFromStage.ToString();
-		hitScore.text 	= GameData.Instance.scHitMonFromStage.ToString();
-		goldScore.text 	= GameData.Instance.scGoldFromStage.ToString();	
+		distScore.text = GameData.Instance.g_scDistFromStage.ToString();
+		hitScore.text 	= GameData.Instance.g_scHitMonFromStage.ToString();
+		goldScore.text 	= GameData.Instance.g_scGoldFromStage.ToString();	
 	}
 }

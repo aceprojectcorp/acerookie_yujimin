@@ -27,38 +27,38 @@ public class MissileEnter : MonoBehaviour {
 	{
 		// update idxMsiPower. 
 		// idxMsiPower는 미사일 공격력 테이블의 세로 인덱스값을 저장하는 int형 글로벌 변수. 쉽고 빠른 참조를 위해 저장하여 사용 
-		if( scDistFromStagePre != GameData.Instance.scDistFromStage )
+		if( scDistFromStagePre != GameData.Instance.g_scDistFromStage )
 		{
-			scDistFromStagePre = GameData.Instance.scDistFromStage ;
+			scDistFromStagePre = GameData.Instance.g_scDistFromStage ;
 
-			for ( int i=0 ; i < GameData.Instance.infoMsiPowerPerMeter.GetLength(0) ; i++ )
+			for ( int i=0 ; i < GameData.Instance.g_infoMsiPowerPerMeter.GetLength(0) ; i++ )
 			{
 				// 현재 이동한 거리 < 미사일 테이블[i]의 공격력 기준 거리  == 미사일 파워를 바꿀 타이밍 !  
-				if( GameData.Instance.scDistFromStage < GameData.Instance.infoMsiPowerPerMeter[ i,0 ] )
+				if( GameData.Instance.g_scDistFromStage < GameData.Instance.g_infoMsiPowerPerMeter[ i,0 ] )
 				{
-					GameData.Instance.idxMsiPower = i ;
+					GameData.Instance.g_idxMsiPower = i ;
 					break; 
 				}
 				// 최대 파월 
-				GameData.Instance.idxMsiPower = GameData.Instance.infoMsiPowerPerMeter.GetLength(0)-1 ;
+				GameData.Instance.g_idxMsiPower = GameData.Instance.g_infoMsiPowerPerMeter.GetLength(0)-1 ;
 			}
 		}
 	
 
 		// Make missile 
-		if (GameData.Instance.playerState == PlayerState.play) 
+		if (GameData.Instance.g_playerState == PlayerState.play) 
 		{
 			frmCnt++; 				 
 			// 매 프레임마다 발사하면.... 플레이어 용 입에 불달고 다님 ... 2프레임당 하나씩으로 수정 해봄. 
 			if (frmCnt % 2 == 0) {
 				GameObject msiInst = Instantiate (MissileObj) as GameObject;
 				msiInst.transform.parent = GameObject.Find ("Missiles").transform;
-				msiInst.GetComponent<UISprite> ().spriteName = GameData.Instance.msiSprNames [GameData.Instance.idxMsiPower];						 
+				msiInst.GetComponent<UISprite> ().spriteName = GameData.Instance.g_msiSprNames [GameData.Instance.g_idxMsiPower];						 
 				msiInst.GetComponent<UISprite> ().MakePixelPerfect ();
 				msiInst.transform.localPosition = new Vector3 (-0.5f, 60f, 0f);
-				msiInst.GetComponent<BoxCollider> ().size = new Vector3 (msiColliderSizes [GameData.Instance.idxMsiPower, 0],
-			                                                     	msiColliderSizes [GameData.Instance.idxMsiPower, 1],
-			                                                     	msiColliderSizes [GameData.Instance.idxMsiPower, 2]);
+				msiInst.GetComponent<BoxCollider> ().size = new Vector3 (msiColliderSizes [GameData.Instance.g_idxMsiPower, 0],
+			                                                     	msiColliderSizes [GameData.Instance.g_idxMsiPower, 1],
+			                                                     	msiColliderSizes [GameData.Instance.g_idxMsiPower, 2]);
 			}
 		}
 	
