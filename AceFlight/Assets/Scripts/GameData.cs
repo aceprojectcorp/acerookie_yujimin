@@ -164,15 +164,6 @@ public class GameData: MonoBehaviour
 public class PlaceRateOfMonsterLv
 {
 	public int m_distUnder  = 0 ; 	// 누적 거리 기준값. 해당값의 이하값임 (ex : m_distUnder == 100이면, 100m 이하일때 라는 뜻이 됨 ) 
-	public int m_Mon1LvRate = 0 ;	// lv1의 배치 확률 
-	public int m_Mon2LvRate = 0 ;
-	public int m_Mon3LvRate = 0 ;
-	public int m_Mon4LvRate = 0 ;
-	public int m_Mon5LvRate = 0 ;
-	public int m_Mon6LvRate = 0 ;
-	public int m_Mon7LvRate = 0 ;
-	public int m_Mon8LvRate = 0 ;
-
 	public int m_inputValErr = 0 ; 	// 입력된 레벨 확률값을 모두 더해서, 100이 되는지 확인. 
 	
 	public List<int> m_PlaceRatesList = new List<int>();	// 입력된 배치 확률 값들 모두 리스트로 저장, 인덱스 0은 거리, 1은  1번째 배치비율 ~ 이후 반복 
@@ -186,14 +177,6 @@ public class PlaceRateOfMonsterLv
 		}
 
 		m_distUnder  = inputArr[0] ;
-		m_Mon1LvRate = inputArr[1] ;	
-		m_Mon2LvRate = inputArr[2] ;
-		m_Mon3LvRate = inputArr[3] ;
-		m_Mon4LvRate = inputArr[4] ;
-		m_Mon5LvRate = inputArr[5] ;
-		m_Mon6LvRate = inputArr[6] ;
-		m_Mon7LvRate = inputArr[7] ;
-		m_Mon8LvRate = inputArr[8] ;
 
 		for( int i = 0 ; i < inputArr.Length ; i++ )
 		{
@@ -201,6 +184,7 @@ public class PlaceRateOfMonsterLv
 			if( i != 0 )
 				m_inputValErr += inputArr[i];
 		}
+
 		if( m_inputValErr != 100 )
 		{
 			Debug.LogError("누적거리당 몬스터 배치확률의 입력된 레벨당 배치확률값이 유효하지 않음");

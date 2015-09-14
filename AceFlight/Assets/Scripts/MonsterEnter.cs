@@ -87,63 +87,9 @@ public class MonsterEnter : MonoBehaviour {
 	 *  -> (1~70일 경우는 해당하지 않음. i=6일때 증명됨)
 	 * 3) i=8일때, selectPlaceRate는 누적되어 100이 됨 (+10)
 	 *  -> rand1to100값이 91~100인 경우 10%에 해당 => o
-	 * /
+	 */
 
-	/*
-	// 배치 확률에 따라 몬스터 레벨 생성 [ GameData의 infoForChangeMeter 참고 ]
-	int MakeLv()
-	{
-		int highNum 	 = 0;	// 더 높은 확률값 저장 (70%)
-		int lowNum 		 = 0;
-		int idxOfHighNum = 0;	// 더 높은 확률값의 테이블 인덱스 번호 
-		int idxOfLowNum  = 0;
-		int makeMonLv 	 = 0;
-		
-		// 테이블보고 랜덤 돌려서 레벨 설정, 이미지 설정 
-		int randMonsLv = Random.Range( 1, 101 );	// 1~100
-		
-		// 등장확률 비교 
-		if ( GameData.Instance.g_infoForChangeMeter [ GameData.Instance.g_idxCM ][ 3 ] > GameData.Instance.g_infoForChangeMeter [ GameData.Instance.g_idxCM ][ 5 ] ) 
-		{
-			highNum = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ 3 ] ;
-			lowNum = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ 5 ] ;
-			idxOfHighNum = 3 ;
-			idxOfLowNum  = 5 ;
-		} 
-		else 
-		{
-			highNum = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ 5 ] ;
-			lowNum = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ 3 ] ;
-			idxOfHighNum = 5 ;
-			idxOfLowNum  = 3 ;
-		}
-		
-		// 70%  -> randMonsLv의 숫자가 1~70 이면, 
-		if ( randMonsLv <= highNum ) 
-			makeMonLv = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ idxOfHighNum-1 ] ; 
-		
-		// 30%
-		else
-		{
-			// 이동거리 0~1000m 사이
-			if ( GameData.Instance.g_idxCM != GameData.Instance.g_infoForChangeMeter.GetLength(0)-1 )	
-				makeMonLv = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ idxOfLowNum-1 ] ;
-			
-			// 이동거리 1000m 이상 (제일 빠른 속도)
-			else
-			{
-				//20% 71~90
-				if ( randMonsLv > highNum && randMonsLv <= highNum+lowNum ) 
-					makeMonLv = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ idxOfLowNum-1 ] ;
-				//10% 91~100 
-				else
-					makeMonLv = GameData.Instance.g_infoForChangeMeter[ GameData.Instance.g_idxCM ][ idxOfLowNum+1 ] ;
-			}
-		}
-		return makeMonLv;
-	}
-	*/
-
+	
 	// 레벨에 해당하는 몬스터의 이미지 관련 정보 변경 
 	void ChangeSprOfMon( GameObject monInst, string objName, int i, int j )
 	{
@@ -156,6 +102,5 @@ public class MonsterEnter : MonoBehaviour {
 			monInst.transform.FindChild( objName ).rotation = Quaternion.Euler( 0, 180, 0 ) ;
 		}
 	}
-
 
 }
