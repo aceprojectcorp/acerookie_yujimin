@@ -72,7 +72,7 @@ public class PlayerObj : MonoBehaviour {
 				}
 				
 				gameObject.transform.localPosition = new Vector3(pos.x, transform.localPosition.y, transform.localPosition.z);
-				Debug.Log(pos.x + " " + Input.mousePosition.x);
+//				Debug.Log(pos.x + " " + Input.mousePosition.x);
 			//}//---------------------------------------------------------//
 		}
 		else
