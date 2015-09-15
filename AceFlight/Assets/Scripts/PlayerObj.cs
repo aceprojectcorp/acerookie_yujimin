@@ -34,14 +34,15 @@ public class PlayerObj : MonoBehaviour {
 		{
 			// ---- 캐릭터 이동 ----------------------------------------------------//
 			// 가로 55~850 위치의 터치 받음. 마우스 입력 위치는 좌측 하단부터 0,0 시작. 전부 양수 
-			if ( Input.mousePosition.y < GameData.Instance.g_screenHeight &&
-				 Input.mousePosition.y > 55f) {
-				if (Input.GetMouseButtonDown (0) == true) 
+			//if ( Input.mousePosition.y < GameData.Instance.g_screenHeight &&
+			//	 Input.mousePosition.y > 55f) 
+			//{
+				/*if (Input.GetMouseButtonDown (0) == true) 
 				{
 					clickPrePos = clickNowPos = Input.mousePosition;
 				}
-			// 바로 이전 프레임 위치값과 현재 위치값의 차이를 이용해서 캐릭터 x좌표 이동 
-			else if ( Input.GetMouseButton (0) == true ) 
+				// 바로 이전 프레임 위치값과 현재 위치값의 차이를 이용해서 캐릭터 x좌표 이동 
+				else if ( Input.GetMouseButton (0) == true ) 
 				{	
 					clickPrePos = clickNowPos;
 					clickNowPos = Input.mousePosition;
@@ -56,8 +57,23 @@ public class PlayerObj : MonoBehaviour {
 					{	
 						gameObject.transform.localPosition = changePlayerPos;
 					}
+				}*/
+
+				Vector3 pos = Input.mousePosition;
+				//pos.x -= GameData.Instance.g_screenWidth / 2.0f;
+				pos.x -= Screen.width / 2.0f;
+				if(pos.x >= 300.0f)
+				{
+					pos.x = 300.0f;
 				}
-			}//---------------------------------------------------------//
+				if(pos.x <= -300.0f)
+				{
+					pos.x = -300.0f;
+				}
+				
+				gameObject.transform.localPosition = new Vector3(pos.x, transform.localPosition.y, transform.localPosition.z);
+				Debug.Log(pos.x + " " + Input.mousePosition.x);
+			//}//---------------------------------------------------------//
 		}
 		else
 		{
