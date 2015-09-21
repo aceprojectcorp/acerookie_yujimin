@@ -13,11 +13,9 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 	public float spPGFullTime 	= 1.0f;	// 프로그래스바 변경을 보여줄 시간(초)
 	float spPGAccTime 	= 0 ; 			// 프로그래스바 현재 누적된 시간 
 	bool spIsEndMessageTime = false;	// 팝업에서 결과 화면 띄울 타이밍으로 전환하는 스위치 
-	bool spIsDrawTimeOfBtn = false ; 	// 팝업에서 결과 화면 전환시, 버튼 활성화. 딱 한번만 처리하기 위한 스위치. 
 	string spMsgContent = null;
-	string spMsgTitleInit = "시뮬레이션 실행\n중" ;	
+	string spMsgTitleInit = "시뮬레이션 실행중" ;	
 	string spMsgTitleResult = " << 게 임 결 과 >>" ;	
- 
 
 	// 활성화 될때마다 값 초기화. 
 	void OnEnable()
@@ -28,8 +26,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 		// 시간, 스위치 초기화 및 총 플레이 게임수 증가. 
 		spPGAccTime 		= 0 ; 			
 		spIsEndMessageTime 	= false;
-		spIsDrawTimeOfBtn 	= false ; 
-		
+
 		// 버튼 비/활성화 
 		spOkBtn.SetActive (false); 
 		spPGBar.SetActive (true); 		
@@ -44,7 +41,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 		int rand1to100 = Random.Range (1, 101);
 		// HeadlingWin/Lose()에서 승패에 따른 결과 메세지 변경, 
 		// 각팀 객체에 승패결과 알려줌(객체내에서 상대팀과의 전적 저장), 연승연패 계산 및 누적   
-		if ( rand1to100 >= 50 ) 
+		if ( rand1to100 >= 1 ) 
 			HeadlingWin();
 		else
 			HeadlingLose();		
@@ -57,7 +54,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 		GameData.Instance.infoOfMyTeam.PlayResult(true);
 
 		GameData.Instance.numOfStraightLoss = 0;
-		GameData.Instance.numOfStraightWin++;
+//		GameData.Instance.numOfStraightWin++;
 	}
 
 	void HeadlingLose()
@@ -90,26 +87,27 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 				spPGAccTime = 0 ; 
 				spIsEndMessageTime = true ;
 				spPGBar.SetActive( false ) ; 
+				spOkBtn.SetActive ( true );
+
+				spTitleLabel.GetComponent<UILabel> ().text = spMsgTitleResult;
+				spContentLabel.GetComponent<UILabel> ().text = spMsgContent;
 			}
 		} 
-		else 
-		{
-			if( spIsDrawTimeOfBtn == false )
-			{
-				spIsDrawTimeOfBtn = true ; 
-				spOkBtn.SetActive ( true );
-			}
-			spTitleLabel.GetComponent<UILabel> ().text = spMsgTitleResult;
-			spContentLabel.GetComponent<UILabel> ().text = spMsgContent;
-
-		}
 	} 
 
 	public void OnClickOkBtnOfSmPu() 
 	{
 		// 다음팀으로 넘어가야 하는지 확인. 모든 팀 리스트내에서 플레이어의 팀이 아닌 다른 팀으로 변경됨 
 		CheckFightTime ();
+
 		GameData.Instance.numOfTotalPlay++;
+
+		if ( GameData.Instance.numOfStraightLoss == 0 ) 
+		{
+			GameData.Instance.numOfTotalWin++;
+			GameData.Instance.numOfStraightWin++;
+		}
+
 		spCamera03.SetActive ( false );
 	}
 

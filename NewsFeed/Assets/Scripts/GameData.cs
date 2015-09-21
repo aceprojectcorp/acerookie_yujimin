@@ -19,9 +19,11 @@ public class GameData : MonoBehaviour
 	public int idxFightTeam = 0 ;  				// 현재 대결 팀의 배열 인덱스 번호 
 
 	public int numOfTotalPlay 		= 0;		// 총 게임 횟수 
+	public int numOfTotalWin 		= 0;		// 
 	public int numOfStraightWin 	= 0;		// 연승 횟수
 	public int numOfStraightLoss 	= 0;		// 연패 횟수 
 	//-----------------------// 
+	public bool isSucssesTodayMs 	= false;
 
 	public string nameOfMyTeam = "MyTeam" ;		// 우리 팀 이름 
 	public string[] teamNamesArr ; 				// 전체 팀 이름 
@@ -57,9 +59,9 @@ public class GameData : MonoBehaviour
 		infoOfNowFightTeam = infoAllTeam[idxFightTeam];
 		nameOfNowFightTeam = teamNamesArr [idxFightTeam];
 
-		missionList.Add (new missionData ( "3 연승을 하세요.", 		1  ));
-		missionList.Add (new missionData ( "10 승을 하세요.", 		10 ));
-		missionList.Add (new missionData ( "20 경기를 진행하세요 ", 	20 )); 
+		missionList.Add ( new missionData ( "3 연승을 하세요.", 		1  ));
+		missionList.Add ( new missionData ( "10 승을 하세요.", 		5 ));
+		missionList.Add ( new missionData ( "20 경기를 진행하세요 ", 	5 )); 
 	}
 
 	// Use this for initialization
@@ -85,18 +87,18 @@ public class TeamRecord
 
 	public TeamRecord( string OppoTeamName, int myWinRec, int myLoseRec )
 	{
-		this.OppoTeamName  = OppoTeamName ;
-		this.myWinRec  = myWinRec ;
-		this.myLoseRec = myLoseRec ;  
+		this.OppoTeamName   = OppoTeamName ;
+		this.myWinRec  		= myWinRec ;
+		this.myLoseRec 		= myLoseRec ;  
 	}
 }
 
 // 자신의팀 이름과 상대팀과의 전적을 저장함. 자신의 전적 리스트 안의 인덱스 번호를 검색하여 접근한다. 
 public class InfoOfTeam
 {
-	public string myTeamName 		= null;							// 객체 당사자 팀 이름 
+	public string myTeamName 			= null;						// 객체 당사자 팀 이름 
 	public List <TeamRecord> teamRecord = new List<TeamRecord>();	// 자신을 제외한 상대 팀들과의 전적 
-	public int idxOfNowTeamListNum = 0;								// 현재 대결 팀의 리스트 인덱스 번호 
+	public int idxOfNowTeamListNum 		= 0;						// 현재 대결 팀의 리스트 인덱스 번호 
 
 	public InfoOfTeam( string myTeamName, string[] otherTeamNames  )
 	{
@@ -158,8 +160,8 @@ public class InfoOfTeam
 public class missionData
 {
 	public string missionContent = null ; 
-	public int fullSuccVal = 0 ;
-	public int nowSuccVal	= 0 ; 
+	public int fullSuccVal 		 = 0 ;
+	public int nowSuccVal  		 = 0 ; 
 
 	public missionData( string missionContent, int fullSuccVal )
 	{

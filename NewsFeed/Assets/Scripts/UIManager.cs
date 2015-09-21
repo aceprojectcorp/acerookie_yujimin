@@ -44,8 +44,7 @@ public class UIManager : MonoBehaviour {
 
 
 	}
-
-	//um... add todaymission?...um....
+	
 	void ResetNewsFeedList()
 	{
 		for(int i = 0 ; i < allFeedList.Count ; i++ )
@@ -54,8 +53,21 @@ public class UIManager : MonoBehaviour {
 		}
 
 		nowEnableFeedList.Clear ();
-		nowEnableFeedList.Add ( allFeedList[0] );	// add todayMission
-		SettingFeed ( nowEnableFeedList [0], 0 );
+
+		if( GameData.Instance.isSucssesTodayMs == false )
+		{
+			nowEnableFeedList.Add ( allFeedList[0] );	// add todayMission
+			SettingFeed ( nowEnableFeedList [0], 0 );
+		}
+	}
+
+	// 피드들 위치만 초기화 
+	public void ResetOnlyFeedPos()
+	{
+		for(int i=0 ; i < nowEnableFeedList.Count ; i++ )
+		{
+			SettingFeed( nowEnableFeedList[i], i );
+		}
 	}
 
 	// set posision,.....um...
