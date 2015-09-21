@@ -22,29 +22,36 @@ public class UIManager : MonoBehaviour {
 	
 	}
 
+	// 피드목록 재구성 
 	public void UpdateFeedList()
 	{
 		// Clear nowEnableFeedList -> nowEnableFeedList.Add ( allFeedList[0] ); (TodayFeed).
 		ResetNewsFeedList ();
 
 		// add nowEnableFeedList 
-		int idx = 1; 
+		// 오늘의 미션이 완료 유무에 따라 인덱스 시작 번호가 달라짐 
+		int idxFeedList = 0 ;
+		if( GameData.Instance.isSucssesTodayMs == false )
+			idxFeedList = 1 ; 
+		else
+			idxFeedList = 0 ;
 
-		// add MVP Feed - 100%
+		// MVP Feed 추가 현재 승리하면 - 100% 나옴 
 		if( GameData.Instance.numOfStraightWin >= 1 )
 		{
 			nowEnableFeedList.Add ( allFeedList [1] ) ; // allFeedList[ SearchFeedFromAllFeedList("FeedOfMVP") ] ); //allFeedList [1] );
-			SettingFeed ( nowEnableFeedList [idx], idx );
-			idx++;
+			SettingFeed ( nowEnableFeedList [idxFeedList], idxFeedList );
+			idxFeedList++;
 		}
 
 		// Power Analysis
 		nowEnableFeedList.Add ( allFeedList [allFeedList.Count - 1] );
-		SettingFeed ( nowEnableFeedList [idx], idx );
+		SettingFeed ( nowEnableFeedList [idxFeedList], idxFeedList );
 
 
 	}
 	
+	// 모든 피드들 비활성화 후, 오늘의미션피드가 완료되지 않았다면 추가.
 	void ResetNewsFeedList()
 	{
 		for(int i = 0 ; i < allFeedList.Count ; i++ )
@@ -70,7 +77,7 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	// set posision,.....um...
+	// 피드들 활성화 및 위치 값 조정 
 	void SettingFeed( GameObject obj, int myIdx )
 	{
 		obj.SetActive (true);
@@ -86,6 +93,7 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
+	// 해당이름의 피드를 찾아서 인덱스 값 반환 
 	int SearchFeedFromAllFeedList( string feedName )
 	{
 		for( int i=0 ; i < allFeedList.Count ; i++ ) 

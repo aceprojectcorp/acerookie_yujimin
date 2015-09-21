@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// << 오늘의 미션 피드 출력 및 상태에 따른 배경이미지 변경 >>
 public class HandlingMissionToday : MonoBehaviour 
 {	
 	public GameObject msTitleContentColor;
@@ -33,12 +34,11 @@ public class HandlingMissionToday : MonoBehaviour
 	string msgMissionClear = "wowowowowow";
 	string msgMsReward = "[FF6868FF]Receive Reward ! [-]";
 
-	bool isClearTM = false;
+	bool isClearTM = false; 
 
 	// Use this for initialization
 	void Start () 
 	{
-		Debug.Log ( msPortSpr.transform.localPosition );
 		ms1ContentLabel.GetComponent<UILabel>().text = GameData.Instance.missionList [0].missionContent;
 		ms2ContentLabel.GetComponent<UILabel>().text = GameData.Instance.missionList [1].missionContent;
 		ms3ContentLabel.GetComponent<UILabel>().text = GameData.Instance.missionList [2].missionContent;
@@ -53,6 +53,7 @@ public class HandlingMissionToday : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		// 3가지 미션 모두 완료 
 		if( GameData.Instance.numOfStraightWin  >= 3 && 
 		    GameData.Instance.numOfTotalWin 	>= GameData.Instance.missionList[1].fullSuccVal && 
 		    GameData.Instance.numOfTotalPlay 	>= GameData.Instance.missionList[2].fullSuccVal )
@@ -105,8 +106,9 @@ public class HandlingMissionToday : MonoBehaviour
 		}
 	}
 
+	// 보상 받기전 화면 처리 - 미션들 비활성화, 보상받기 버튼 활성화, 메인 라벨 텍스트 변경, 배경 이미지 크기 변경 및 피드리스트 위치 재구성 
 	void BeforeRewardAtClearTM()
-	{
+	{		 
 		msObj1.SetActive (false);
 		msObj2.SetActive (false);
 		msObj3.SetActive (false); 
@@ -119,7 +121,6 @@ public class HandlingMissionToday : MonoBehaviour
 		tmpPos = msBackgroundSpr.GetComponent<UISprite>().localSize;
 
 		tmpPos.y = ( Mathf.Abs (msPortSpr.transform.localPosition.y) + msPortSpr.GetComponent<UISprite> ().localSize.y + 20f );
-		Debug.Log (tmpPos);
 		msBackgroundSpr.GetComponent<UISprite>().height = (int)tmpPos.y; 
 
 		tmpPos = msTitleContentUp.transform.localPosition; 
@@ -131,6 +132,7 @@ public class HandlingMissionToday : MonoBehaviour
 		msTitleContentUp.GetComponent<UILabel> ().text = msgMissionClear;
 	}
 
+	// 보상버튼 누를 경우 처리 
 	public void OnClickReceiveRewardBtn()
 	{
 		msTitleContentDown.GetComponent<UILabel> ().text = msgMsReward;
