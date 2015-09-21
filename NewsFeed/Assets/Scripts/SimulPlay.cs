@@ -20,9 +20,6 @@ public class SimulPlay : MonoBehaviour {
 
 	public void OnClickSimulBtn()  
 	{
-		
-
-
 		puCamera03.SetActive (true); 
 	}
 }

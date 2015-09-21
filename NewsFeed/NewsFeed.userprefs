@@ -1,11 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameData.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/HandlingMissionToday.cs">
     <Files>
-      <File FileName="Assets/Scripts/SimulPopUpControl.cs" Line="31" Column="72" />
-      <File FileName="Assets/Scripts/GameData.cs" Line="19" Column="33" />
-      <File FileName="../AceFlight/Assets/Scripts/GameData.cs" Line="174" Column="32" />
-      <File FileName="Assets/Scripts/SimulPlay.cs" Line="29" Column="1" />
+      <File FileName="Assets/Scripts/GameData.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HandlingSimulPlayAndResult.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UIManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/SimulPlay.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/HandlingMissionToday.cs" Line="8" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
