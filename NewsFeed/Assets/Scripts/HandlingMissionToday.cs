@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// TODO : 오늘의 미션 순서 수정해주기. 무조건 1번은 아니고... 그냥 인덱스값 순서에 따라 바뀔 수 있게 수정하기  
 // << 오늘의 미션 피드 출력 및 상태에 따른 배경이미지 변경 >>
 public class HandlingMissionToday : MonoBehaviour 
 {	

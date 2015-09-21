@@ -9,7 +9,8 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 	public GameObject spCamera03 ; 
 	public GameObject spTitleLabel ;
 	public GameObject spContentLabel ;
-	
+	public GameObject UIManager ;  
+
 	public float spPGFullTime 	= 1.0f;	// 프로그래스바 변경을 보여줄 시간(초)
 	float spPGAccTime 	= 0 ; 			// 프로그래스바 현재 누적된 시간 
 	bool spIsEndMessageTime = false;	// 팝업에서 결과 화면 띄울 타이밍으로 전환하는 스위치 
@@ -107,7 +108,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 			GameData.Instance.numOfTotalWin++;
 			GameData.Instance.numOfStraightWin++;
 		}
-
+		UIManager.GetComponent<UIManager> ().UpdateFeedList ();	// add
 		spCamera03.SetActive ( false );
 	}
 

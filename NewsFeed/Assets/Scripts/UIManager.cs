@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// TODO : 모든 피드 리스트를 처음부터 가지지 말고 조건이 만족할 경우 피드 생성하기 
 // << 화면에 보일 피드 리스트를 조건에 따라 재구성 >> 
 public class UIManager : MonoBehaviour {
 
@@ -31,10 +32,13 @@ public class UIManager : MonoBehaviour {
 		// add nowEnableFeedList 
 		// 오늘의 미션이 완료 유무에 따라 인덱스 시작 번호가 달라짐 
 		int idxFeedList = 0 ;
+
 		if( GameData.Instance.isSucssesTodayMs == false )
-			idxFeedList = 1 ; 
-		else
-			idxFeedList = 0 ;
+		{
+			nowEnableFeedList.Add ( allFeedList[idxFeedList] );	// add todayMission
+			SettingFeed ( nowEnableFeedList [idxFeedList], idxFeedList );
+			idxFeedList++;
+		}
 
 		// MVP Feed 추가 현재 승리하면 - 100% 나옴 
 		if( GameData.Instance.numOfStraightWin >= 1 )

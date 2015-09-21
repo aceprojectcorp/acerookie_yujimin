@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// TODO : 팀 인덱스값 사용안함. 초기에 한번 FindIndex 메소드들 돌려주기. 
+// 인덱스이름 바꾸기, 변수이름 좀 쉽게 바꾸기 허허..
 // << 플레이정보. 승패객체, 팀별 객체 >>
 public class GameData : MonoBehaviour 
 {
@@ -33,7 +35,7 @@ public class GameData : MonoBehaviour
 	public InfoOfTeam infoOfMyTeam ;			// 내 팀 정보 객체 
 	public InfoOfTeam infoOfNowFightTeam;		// 현재 대결 팀 객체 (계속 바뀜. infoAllTeam안에서) 
 	public List <InfoOfTeam> infoAllTeam = new List<InfoOfTeam> ();		// 전체 팀 객체
-	public List <missionData> missionList = new List<missionData>();
+	public List <MissionData> missionList = new List<MissionData>();
 
 
 
@@ -57,11 +59,11 @@ public class GameData : MonoBehaviour
 		}
 
 		infoOfNowFightTeam = infoAllTeam[idxFightTeam];
-		nameOfNowFightTeam = teamNamesArr [idxFightTeam];
+		nameOfNowFightTeam = teamNamesArr [idxFightTeam]; //pass
 
-		missionList.Add ( new missionData ( "3 연승을 하세요.", 		1  ));
-		missionList.Add ( new missionData ( "10 승을 하세요.", 		5 ));
-		missionList.Add ( new missionData ( "20 경기를 진행하세요 ", 	5 )); 
+		missionList.Add ( new MissionData ( "3 연승을 하세요.", 		1  ));
+		missionList.Add ( new MissionData ( "10 승을 하세요.", 		5 ));
+		missionList.Add ( new MissionData ( "20 경기를 진행하세요 ", 	5 )); 
 	}
 
 	// Use this for initialization
@@ -157,13 +159,13 @@ public class InfoOfTeam
 	}
 }
 
-public class missionData
+public class MissionData
 {
 	public string missionContent = null ; 
 	public int fullSuccVal 		 = 0 ;
 	public int nowSuccVal  		 = 0 ; 
 
-	public missionData( string missionContent, int fullSuccVal )
+	public MissionData( string missionContent, int fullSuccVal )
 	{
 		this.missionContent = missionContent; 
 		this.fullSuccVal = fullSuccVal; 
