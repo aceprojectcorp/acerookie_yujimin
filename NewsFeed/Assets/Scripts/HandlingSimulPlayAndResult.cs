@@ -125,6 +125,8 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 		Debug.Log ( GameData.Instance.nameOfNowFightTeam+ " Win : " + GameData.Instance.infoOfNowFightTeam.teamRecord[GameData.Instance.infoOfNowFightTeam.idxOfNowTeamListNum].myWinRec );
 		Debug.Log ( GameData.Instance.nameOfNowFightTeam+ " lose : " + GameData.Instance.infoOfNowFightTeam.teamRecord[GameData.Instance.infoOfNowFightTeam.idxOfNowTeamListNum].myLoseRec );
 
+		GameData.Instance.numOfNowFightTeam = 0; 
+
 		GameData.Instance.idxFightTeam++; 
 		if( GameData.Instance.infoAllTeam[ GameData.Instance.idxFightTeam ].myTeamName == GameData.Instance.nameOfMyTeam )
 			GameData.Instance.idxFightTeam++; 

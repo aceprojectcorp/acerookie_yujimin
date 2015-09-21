@@ -27,7 +27,7 @@ public class GameData : MonoBehaviour
 	public string[] teamNamesArr ; 				// 전체 팀 이름 
 	//	= new string[]{ "A", 	"B", 	"C", 	"D", 	"E", 	"F", 	"G", 	"H", 	"I", 	"J", nameOfMyTeam };
 	public string nameOfNowFightTeam = null ;	// 현재 대결 팀의 이름 
-	
+	 
 	public InfoOfTeam infoOfMyTeam ;			// 내 팀 정보 객체 
 	public InfoOfTeam infoOfNowFightTeam;		// 현재 대결 팀 객체 (계속 바뀜. infoAllTeam안에서) 
 	public List <InfoOfTeam> infoAllTeam = new List<InfoOfTeam> ();		// 전체 팀 객체
