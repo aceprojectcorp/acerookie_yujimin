@@ -1,21 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BtnScript.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../NewsFeed/Assets/Scripts/UIManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/GameData.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/MeteorBundle.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/DrawScoreInPlayScene.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/DrawBG.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/MonsterObj.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/BtnScript.cs" Line="40" Column="3" />
-      <File FileName="Assets/Scripts/MissileEnter.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/MonsterEnter.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PlayerObj.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/DrawScoreInResultScene.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/MissileObj.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/MeteorEnter.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PlaySceneAudio.cs" Line="1" Column="1" />
+      <File FileName="../NewsFeed/Assets/Scripts/HandlingMissionToday.cs" Line="43" Column="41" />
+      <File FileName="../NewsFeed/Assets/Scripts/UIDrawMission.cs" Line="44" Column="58" />
+      <File FileName="../NewsFeed/Assets/Scripts/UIManager.cs" Line="44" Column="71" />
+      <File FileName="../NewsFeed/Assets/Scripts/GameData.cs" Line="80" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

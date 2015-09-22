@@ -2,6 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum MissionType
+{
+	MISSION_TYPE_STRAIGHT_WIN,
+	MISSION_TYPE_TOTAL_WIN,
+	MISSION_TYPE_TOTAL_PLAY,
+}
+
 // TODO : 팀 인덱스값 사용안함. 초기에 한번 FindIndex 메소드들 돌려주기. 
 // 인덱스이름 바꾸기, 변수이름 좀 쉽게 바꾸기 허허..
 // << 플레이정보. 승패객체, 팀별 객체 >>
@@ -17,28 +24,62 @@ public class GameData : MonoBehaviour
 	}
 
 	//---- 내 기준 플레이 정보 ----//
-	public int numOfNowFightTeam = 0 ; 			// 현재 대결 팀과 경기 횟수
-	public int idxFightTeam = 0 ;  				// 현재 대결 팀의 배열 인덱스 번호 
+	public int playFightTeamCnt	= 0 ;		// 현재 대결 팀과 경기 횟수
+	public int idxFightTeam 	= 0 ;  		// 현재 대결 팀의 배열 인덱스 번호 
 
-	public int numOfTotalPlay 		= 0;		// 총 게임 횟수 
-	public int numOfTotalWin 		= 0;		// 
-	public int numOfStraightWin 	= 0;		// 연승 횟수
-	public int numOfStraightLoss 	= 0;		// 연패 횟수 
+	public int totalPlayCnt 	= 0;		// 총 게임 횟수 
+	public int totalWinCnt	 	= 0;		// x
+	public int straightWinCnt	= 0;		// 연승 횟수
+	public int straightLoseCnt	= 0;		// 연패 횟수 
 	//-----------------------// 
-	public bool isSucssesTodayMs 	= false;
 
-	public string nameOfMyTeam = "MyTeam" ;		// 우리 팀 이름 
-	public string[] teamNamesArr ; 				// 전체 팀 이름 
+	// feed
+	public bool isOffTodayMissionFeed 		= false;	// todayMission feed on/off 
+	public bool isSuccessAllTodayMission	= false;	// all success todaymission ?
+
+	// team 
+	public string nameMyTeam = "MyTeam" ;	// 우리 팀 이름 
+	public string[] arrStrTeamName; 		// 전체 팀 이름
+//	public List<string> listStrTeamNames = new List<string> ();
 	//	= new string[]{ "A", 	"B", 	"C", 	"D", 	"E", 	"F", 	"G", 	"H", 	"I", 	"J", nameOfMyTeam };
-	public string nameOfNowFightTeam = null ;	// 현재 대결 팀의 이름 
+//	public string nameOfNowFightTeam = null ;	// 현재 대결 팀의 이름 
 	 
-	public InfoOfTeam infoOfMyTeam ;			// 내 팀 정보 객체 
-	public InfoOfTeam infoOfNowFightTeam;		// 현재 대결 팀 객체 (계속 바뀜. infoAllTeam안에서) 
-	public List <InfoOfTeam> infoAllTeam = new List<InfoOfTeam> ();		// 전체 팀 객체
-	public List <MissionData> missionList = new List<MissionData>();
+	public InfoOfTeam myTeamObj ;			// 내 팀 정보 객체 
+	public InfoOfTeam fightTeamObj;			// 현재 대결 팀 객체 (계속 바뀜. infoAllTeam안에서) 
+	public List <InfoOfTeam> listAllTeam = new List<InfoOfTeam> ();		// 전체 팀 객체
+	public List <MissionData> listMission = new List<MissionData>();
 
+	//개별 미션 관련 변수 카운트 및 모든 미션 성공여부 확인
+	public void CheckMissionProgress()
+	{
+		// success all todaymission cnt! 
+		int successMissionCnt = 0; 
 
+		foreach( MissionData data in listMission ) // ( int i = 0 ; i < listMission.Count ; i++ )
+		{
+			switch( data.Type )
+			{
+			case MissionType.MISSION_TYPE_STRAIGHT_WIN : 
+				if( straightWinCnt >= 3 )
+					data.nowSuccVal++;
+				break;			
+			case MissionType.MISSION_TYPE_TOTAL_WIN : 
+				if( straightWinCnt > 0 )
+					data.nowSuccVal++;
+				break;
+			case MissionType.MISSION_TYPE_TOTAL_PLAY : 
+				if( totalPlayCnt > 0 )
+					data.nowSuccVal++;
+				break;
+			}
+			if( data.nowSuccVal >= data.fullSuccVal )
+				successMissionCnt++;
+		}
 
+		if ( successMissionCnt >= listMission.Count )
+			isSuccessAllTodayMission = true;
+	}
+	
 	void Awake()
 	{		
 		if( m_instance == null )
@@ -47,23 +88,24 @@ public class GameData : MonoBehaviour
 		DontDestroyOnLoad (gameObject);
 
 		// 전체 팀 이름 초기화  
-		teamNamesArr = new string[]
-		{ "A", 	"B", 	"C", 	"D", 	"E", 	"F", 	"G", 	"H", 	"I", 	"J", nameOfMyTeam };
+		arrStrTeamName = new string[]
+		{ "A", 	"B", 	"C", 	"D", 	"E", 	"F", 	"G", 	"H", 	"I", nameMyTeam };
 
 		// 전체 팀 객체 생성
-		for(int i=0 ; i < teamNamesArr.Length ; i++ ) 
+		for(int i=0 ; i < arrStrTeamName.Length ; i++ ) 
 		{
-			infoAllTeam.Add( new InfoOfTeam( teamNamesArr[i], teamNamesArr ) );	 
-			if( teamNamesArr[i] == nameOfMyTeam )
-				infoOfMyTeam = infoAllTeam[i];	// 내팀 객체 연결 
+			listAllTeam.Add( new InfoOfTeam( arrStrTeamName[i], arrStrTeamName ) );	 
+			if( arrStrTeamName[i] == nameMyTeam )
+				myTeamObj = listAllTeam[i];	// 내팀 객체 연결 
 		}
 
-		infoOfNowFightTeam = infoAllTeam[idxFightTeam];
-		nameOfNowFightTeam = teamNamesArr [idxFightTeam]; //pass
+		fightTeamObj = listAllTeam[idxFightTeam];
+		fightTeamObj.FindIdxOfNextFightTeam ();
+		myTeamObj.FindIdxOfNextFightTeam (fightTeamObj.myTeamName);
 
-		missionList.Add ( new MissionData ( "3 연승을 하세요.", 		1  ));
-		missionList.Add ( new MissionData ( "10 승을 하세요.", 		5 ));
-		missionList.Add ( new MissionData ( "20 경기를 진행하세요 ", 	5 )); 
+		listMission.Add ( new MissionData ( "3 연승을 하세요.", 		1,	MissionType.MISSION_TYPE_STRAIGHT_WIN  	));
+		listMission.Add ( new MissionData ( "10 승을 하세요.", 		5, 	MissionType.MISSION_TYPE_TOTAL_WIN 		));
+		listMission.Add ( new MissionData ( "20 경기를 진행하세요 ", 	5,	MissionType.MISSION_TYPE_TOTAL_PLAY 	)); 
 	}
 
 	// Use this for initialization
@@ -161,14 +203,15 @@ public class InfoOfTeam
 
 public class MissionData
 {
+	public MissionType Type;
 	public string missionContent = null ; 
 	public int fullSuccVal 		 = 0 ;
 	public int nowSuccVal  		 = 0 ; 
 
-	public MissionData( string missionContent, int fullSuccVal )
+	public MissionData( string missionContent, int fullSuccVal, MissionType Type )
 	{
 		this.missionContent = missionContent; 
 		this.fullSuccVal = fullSuccVal; 
+		this.Type = Type;
 	}
-
 }

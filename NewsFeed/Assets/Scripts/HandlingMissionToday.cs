@@ -1,143 +1,148 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 // TODO : 오늘의 미션 순서 수정해주기. 무조건 1번은 아니고... 그냥 인덱스값 순서에 따라 바뀔 수 있게 수정하기  
+// public minus!!!!!!!!!!!!!!!!!!!!!!! 
 // << 오늘의 미션 피드 출력 및 상태에 따른 배경이미지 변경 >>
 public class HandlingMissionToday : MonoBehaviour 
 {	
-	public GameObject msTitleContentColor;
-	public GameObject msTitleContentUp;
-	public GameObject msTitleContentDown;
-
-	public GameObject ms1ContentLabel ;
-	public GameObject ms2ContentLabel ;
-	public GameObject ms3ContentLabel ;
-
-	public GameObject ms1NowStateLabel ;
-	public GameObject ms2NowStateLabel ;
-	public GameObject ms3NowStateLabel ;
-
-	public GameObject ms1SucssesSpr ;
-	public GameObject ms2SucssesSpr ; 
-	public GameObject ms3SucssesSpr ;
-
-	public GameObject msObj1;
-	public GameObject msObj2;
-	public GameObject msObj3; 
-
-	public GameObject msReceiveRewardBtn ; 
-	public GameObject msPortSpr ;  
-
-	public GameObject msBackgroundSpr;
-
 	public GameObject UIManager ; 
+	
+	private UILabel TitleContentUp;
+	private UILabel TitleContentDown;
+	private UISprite BackgroundSpr;  
+	private UISprite PortSpr ;  
+
+	private GameObject TitleContentColor;
+	private GameObject ReceiveRewardBtn ; 
+	private GameObject Mission1;
+	private GameObject Mission2;
+	private GameObject Mission3;
+
+	private List<UIDrawMission> ListMission = new List<UIDrawMission>();
 
 	string msgMissionClear = "wowowowowow";
 	string msgMsReward = "[FF6868FF]Receive Reward ! [-]";
 
 	bool isClearTM = false; 
 
+	private void OnGetChildObject()
+	{
+		Transform[] transforms = gameObject.GetComponentsInChildren<Transform>();
+		
+		foreach (Transform child in transforms)
+		{
+			switch (child.name)
+			{
+			case "Title_Color_Label":
+				TitleContentColor = child.gameObject;
+				break;
+				
+			case "Title_ContentUp_Label" :
+				TitleContentUp = child.GetComponent<UILabel>();
+				break;
+				
+			case "Title_ContentDown_Label" :
+				TitleContentDown = child.GetComponent<UILabel>();
+				break;
+
+			case "ReceiveReword_Btn" :
+				ReceiveRewardBtn = child.gameObject;
+				break;
+
+			case "Portrait_Sprite" :
+				PortSpr = child.GetComponent<UISprite>();
+				break;
+
+			case "Clear_Sprite" :
+				BackgroundSpr = child.GetComponent<UISprite>();
+				break;
+
+			}
+		}
+	}
+
+
+
+	void Awake()
+	{
+		OnGetChildObject ();
+		BackgroundSpr = gameObject.GetComponent<UISprite> ();
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
-		ms1ContentLabel.GetComponent<UILabel>().text = GameData.Instance.missionList [0].missionContent;
-		ms2ContentLabel.GetComponent<UILabel>().text = GameData.Instance.missionList [1].missionContent;
-		ms3ContentLabel.GetComponent<UILabel>().text = GameData.Instance.missionList [2].missionContent;
+		OnGetChildMissionObject ();
+		//SetMission ();
 
-		ms1NowStateLabel.GetComponent<UILabel> ().text = GameData.Instance.missionList [0].nowSuccVal + "/" + GameData.Instance.missionList [0].fullSuccVal;
-		ms2NowStateLabel.GetComponent<UILabel> ().text = GameData.Instance.missionList [1].nowSuccVal + "/" + GameData.Instance.missionList [1].fullSuccVal;
-		ms3NowStateLabel.GetComponent<UILabel> ().text = GameData.Instance.missionList [2].nowSuccVal + "/" + GameData.Instance.missionList [2].fullSuccVal;
-
-		msReceiveRewardBtn.SetActive (false);
+		ReceiveRewardBtn.SetActive (false);
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		// 3가지 미션 모두 완료 
-		if( GameData.Instance.numOfStraightWin  >= 3 && 
-		    GameData.Instance.numOfTotalWin 	>= GameData.Instance.missionList[1].fullSuccVal && 
-		    GameData.Instance.numOfTotalPlay 	>= GameData.Instance.missionList[2].fullSuccVal )
+
+	}
+
+	private void OnGetChildMissionObject()
+	{
+		Transform[] transforms = gameObject.GetComponentsInChildren<Transform>();
+		
+		foreach (Transform child in transforms)
 		{
-			if( isClearTM == false )
+			switch ( child.name )
 			{
-				isClearTM = true ;
-				BeforeRewardAtClearTM();
+			case "Mission1":
+				Mission1 = child.gameObject;
+				ListMission.Add( child.GetComponent<UIDrawMission>() );
+				ListMission [ ListMission.Count-1 ].SetData ( GameData.Instance.listMission [ ListMission.Count-1 ] );
+				break;
+				
+			case "Mission2":
+				Mission2 = child.gameObject;
+				ListMission.Add( child.GetComponent<UIDrawMission>() );
+				ListMission [ ListMission.Count-1 ].SetData ( GameData.Instance.listMission [ ListMission.Count-1 ] );
+				break;
+				
+			case "Mission3" :
+				Mission3 = child.gameObject;
+				ListMission.Add( child.GetComponent<UIDrawMission>() );
+				ListMission [ ListMission.Count-1 ].SetData ( GameData.Instance.listMission [ ListMission.Count-1 ] );
+				break;
 			}
-		}
-		else
-		{
-			// mission 1 suc?
-			if( GameData.Instance.numOfStraightWin >= 3 )
-			{
-				ms1NowStateLabel.SetActive(false);
-				ms1SucssesSpr.SetActive(true); 
-			}
-			else
-			{
-				ms1NowStateLabel.GetComponent<UILabel> ().text = GameData.Instance.missionList [0].nowSuccVal + "/" + GameData.Instance.missionList [0].fullSuccVal;
-			}
-
-			// mission 2 suc?
-			if( GameData.Instance.numOfTotalWin >= GameData.Instance.missionList[1].fullSuccVal )
-			{
-				ms2NowStateLabel.SetActive(false);
-				ms2SucssesSpr.SetActive(true);
-			}
-			else
-			{
-				GameData.Instance.missionList [1].nowSuccVal = GameData.Instance.numOfTotalWin ; 
-				ms2NowStateLabel.GetComponent<UILabel> ().text = GameData.Instance.missionList [1].nowSuccVal + "/" + GameData.Instance.missionList [1].fullSuccVal;
-			}
-
-			// mission 3 suc?
-			if( GameData.Instance.numOfTotalPlay >= GameData.Instance.missionList[2].fullSuccVal )
-			{
-				ms3NowStateLabel.SetActive(false);
-				ms3SucssesSpr.SetActive(true);
-			}
-			else
-			{
-				GameData.Instance.missionList [2].nowSuccVal = GameData.Instance.numOfTotalPlay;
-				ms3NowStateLabel.GetComponent<UILabel> ().text = GameData.Instance.missionList [2].nowSuccVal + "/" + GameData.Instance.missionList [2].fullSuccVal;
-			}
-
-
-
+			
 		}
 	}
 
 	// 보상 받기전 화면 처리 - 미션들 비활성화, 보상받기 버튼 활성화, 메인 라벨 텍스트 변경, 배경 이미지 크기 변경 및 피드리스트 위치 재구성 
 	void BeforeRewardAtClearTM()
 	{		 
-		msObj1.SetActive (false);
-		msObj2.SetActive (false);
-		msObj3.SetActive (false); 
+		Destroy (Mission1);
+		Destroy (Mission2);
+		Destroy (Mission3);
 
-		msReceiveRewardBtn.SetActive (true);
+		ReceiveRewardBtn.SetActive (true);
 
-		msTitleContentColor.SetActive (false);
+		TitleContentColor.SetActive (false);
 
-		Vector3 tmpPos = Vector3.zero;
-		tmpPos = msBackgroundSpr.GetComponent<UISprite>().localSize;
+		BackgroundSpr.GetComponent<UISprite>().height = (int)( Mathf.Abs (PortSpr.transform.localPosition.y) + PortSpr.GetComponent<UISprite> ().localSize.y + 20f );
 
-		tmpPos.y = ( Mathf.Abs (msPortSpr.transform.localPosition.y) + msPortSpr.GetComponent<UISprite> ().localSize.y + 20f );
-		msBackgroundSpr.GetComponent<UISprite>().height = (int)tmpPos.y; 
-
-		tmpPos = msTitleContentUp.transform.localPosition; 
+		Vector3 tmpPos = TitleContentUp.transform.localPosition; 
 		tmpPos.x = 161f;
-		msTitleContentUp.transform.localPosition = tmpPos;
+		TitleContentUp.transform.localPosition = tmpPos;
 
 		UIManager.GetComponent<UIManager> ().ResetOnlyFeedPos ();
 
-		msTitleContentUp.GetComponent<UILabel> ().text = msgMissionClear;
+		TitleContentUp.GetComponent<UILabel> ().text = msgMissionClear;
 	}
 
 	// 보상버튼 누를 경우 처리 
 	public void OnClickReceiveRewardBtn()
 	{
-		msTitleContentDown.GetComponent<UILabel> ().text = msgMsReward;
-		GameData.Instance.isSucssesTodayMs = true;
-		msReceiveRewardBtn.SetActive (false);
+		TitleContentDown.GetComponent<UILabel> ().text = msgMsReward;
+		GameData.Instance.isOffTodayMissionFeed = true;
+		ReceiveRewardBtn.SetActive (false);
 	}
 }
