@@ -1,21 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// TODO : 앞/뒤에서 한번에 승패 관련 변수 처리해주기 - 앞에서 처리하게 변경중  
-// << 시뮬레이션 팝업 내용 출력 및 결과 데이터 저장 >>  
+// << 시뮬레이션 팝업 내용 출력 및 결과 데이터 저장(활성화 되는 순간 저장) >>  
 public class HandlingSimulPlayAndResult : MonoBehaviour   
 {
-	public GameObject UIManager ;  
 	public GameObject Camera03 ; 
 
-	private GameObject OkBtn ; 
-	private GameObject pgBar ; 	
-	private UILabel TitleLabel ;
-	private UILabel ContentLabel ;
-
-
-	public float pgFullTime	 = 1.0f;	// 프로그래스바 변경을 보여줄 시간(초)
-	float pgAccTime 		 = 0 ; 			// 프로그래스바 현재 누적된 시간 
+	private GameObject GoOkBtn ; 
+	private UIProgressBar pgSimulPlayTime ; 	
+	private UILabel lbTitle ;
+	private UILabel lbContent ;
+	
+	public float pgFullTime	 = 1.0f;	// 프로그래스바 변경을 보여줄 시간(초)	// 테스트 끝나면 public 없얘기 
+	float pgAccTime 		 = 0 ; 		// 프로그래스바 현재 누적된 시간 
 	bool isEndMessageTime 	 = false;	// 팝업에서 결과 화면 띄울 타이밍으로 전환하는 스위치 
 	string strMsgContent 	 = null;
 	string strMsgTitleInit 	 = "시뮬레이션 실행중" ;	
@@ -30,19 +27,19 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 			switch (child.name)
 			{
 			case "Ok_Btn":
-				OkBtn = child.gameObject;
+				GoOkBtn = child.gameObject;
 				break;
 				
 			case "Progress Bar" :
-				pgBar = child.gameObject;
+				pgSimulPlayTime = child.GetComponent<UIProgressBar>();
 				break;
 				
 			case "Title_Label" :
-				TitleLabel = child.GetComponent<UILabel>();
+				lbTitle = child.GetComponent<UILabel>();
 				break;
 				
 			case "Content_Label" :
-				ContentLabel = child.GetComponent<UILabel>();
+				lbContent = child.GetComponent<UILabel>();
 				break;				
 			}
 		}
@@ -54,24 +51,24 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 
 
 	// 활성화 될때마다 값 초기화. 
-	void OnEnable()
+	void OnEnable() 
 	{ 
-//		Debug.Log ( GameData.Instance.nameOfNextFightTeam+ " Win : " + GameData.Instance.infoOfNowFightTeam.teamRecord[GameData.Instance.infoOfNowFightTeam.idxOfNowTeamListNum].myWinRec );
-//		Debug.Log ( GameData.Instance.nameOfNextFightTeam+ " lose : " + GameData.Instance.infoOfNowFightTeam.teamRecord[GameData.Instance.infoOfNowFightTeam.idxOfNowTeamListNum].myLoseRec );
+//		Debug.Log ( GameData.Instance.nameOfNextFightTeam+ " Win : " + GameData.Instance.infoOfNowFightTeam.listTeamRecord[GameData.Instance.infoOfNowFightTeam.iIdxFightTeam].iMyWinCnt );
+//		Debug.Log ( GameData.Instance.nameOfNextFightTeam+ " lose : " + GameData.Instance.infoOfNowFightTeam.listTeamRecord[GameData.Instance.infoOfNowFightTeam.iIdxFightTeam].iMyLoseCnt );
 
 		// 시간, 스위치 초기화 및 총 플레이 게임수 증가. 
 		pgAccTime 		= 0 ; 			
 		isEndMessageTime 	= false;
 
 		// 버튼 비/활성화 
-		OkBtn.SetActive (false); 
-		pgBar.SetActive (true); 		
+		GoOkBtn.SetActive (false); 
+		pgSimulPlayTime.gameObject.SetActive (true); 		
 		
 		// 연결객체 값 초기화 
-		pgBar.GetComponent<UIProgressBar> ().value = 0; 
-		TitleLabel.text = strMsgTitleInit;
-		ContentLabel.text 
-			= GameData.Instance.nameMyTeam + " vs " + GameData.Instance.fightTeamObj.myTeamName;
+		pgSimulPlayTime.value = 0; 
+		lbTitle.text = strMsgTitleInit;
+		lbContent.text 
+			= GameData.Instance.strNameMyTeam + " vs " + GameData.Instance.fightTeamObj.strMyTeamName;
 		
 		// 승패 랜덤 결과에 따른 데이터 값 변경  
 		int rand1to100 = Random.Range (1, 101);
@@ -85,35 +82,16 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 		// 다음팀으로 넘어가야 하는지 확인. 모든 팀 리스트내에서 플레이어의 팀이 아닌 다른 팀으로 변경됨 
 		CheckFightTime ();
 
-		GameData.Instance.totalPlayCnt++;
+		GameData.Instance.iTotalPlayCnt++;
 	}
 
-	void HeadlingWin()
-	{
-		strMsgContent = "[ff0000]승   리[-]";
-		GameData.Instance.fightTeamObj.PlayResult(false);
-		GameData.Instance.myTeamObj.PlayResult(true);
-
-		GameData.Instance.straightLoseCnt = 0;
-		GameData.Instance.straightWinCnt++;
-	}
-
-	void HeadlingLose()
-	{
-		strMsgContent = "[0000ff]패   배[-]";
-		GameData.Instance.fightTeamObj.PlayResult(true);
-		GameData.Instance.myTeamObj.PlayResult(false);
-
-		GameData.Instance.straightWinCnt = 0;
-		GameData.Instance.straightLoseCnt++;
-	}
 
 	// Use this for initialization
 	void Start () 
 	{
 	
 	}
-	
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -122,54 +100,71 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 		if ( isEndMessageTime == false ) 
 		{
 			pgAccTime += Time.deltaTime; 
-			pgBar.GetComponent<UIProgressBar>().value = pgAccTime / pgFullTime  ; 
+			pgSimulPlayTime.value = pgAccTime / pgFullTime  ; 
 			if( pgAccTime >= pgFullTime )
 			{
 				pgAccTime = 0 ; 
 				isEndMessageTime = true ;
-				pgBar.SetActive( false ) ; 
-				OkBtn.SetActive ( true );
+				pgSimulPlayTime.gameObject.SetActive( false ) ; 
+				GoOkBtn.SetActive ( true );
 
-				TitleLabel.text = strMsgTitleResult;
-				ContentLabel.text = strMsgContent;
+				lbTitle.text = strMsgTitleResult;
+				lbContent.text = strMsgContent;
 			}
 		} 
 	} 
 
-	public void OnClickOkBtnOfSmPu() 
+	public void OnClickOkBtn() 
 	{
 		GameData.Instance.CheckMissionProgress ();
-//		UIManager.GetComponent<UIManager>().UpdateFeedList();	// add
-		UIManager.GetComponent<UIManager> ().UpdateFeedList ();
-		Camera03.SetActive ( false );
+		Camera03.SetActive ( false ); 
 	}
 
+	void HeadlingWin()
+	{
+		strMsgContent = "[ff0000]승   리[-]";
+		GameData.Instance.fightTeamObj.PlayResult(false);
+		GameData.Instance.myTeamObj.PlayResult(true);
+		
+		GameData.Instance.iStraightLoseCnt = 0;
+		GameData.Instance.iStraightWinCnt++;
+	}
+	
+	void HeadlingLose()
+	{
+		strMsgContent = "[0000ff]패   배[-]";
+		GameData.Instance.fightTeamObj.PlayResult(true);
+		GameData.Instance.myTeamObj.PlayResult(false);
+		
+		GameData.Instance.iStraightWinCnt = 0;
+		GameData.Instance.iStraightLoseCnt++;
+	}
+	
 	void CheckFightTime()
 	{
-		GameData.Instance.playFightTeamCnt++;
-		if ( GameData.Instance.playFightTeamCnt % 3 == 0 )
+		GameData.Instance.iPlayFightTeamCnt++;
+		if ( GameData.Instance.iPlayFightTeamCnt % 3 == 0 )
 			ChangeFightTeam ();
 	}
-
+	
 	void ChangeFightTeam()
 	{
-//		Debug.Log ( GameData.Instance.nameOfNowFightTeam+ " Win : " + GameData.Instance.fightTeamObj.teamRecord[GameData.Instance.fightTeamObj.idxOfNowTeamListNum].myWinRec );
-//		Debug.Log ( GameData.Instance.nameOfNowFightTeam+ " lose : " + GameData.Instance.fightTeamObj.teamRecord[GameData.Instance.fightTeamObj.idxOfNowTeamListNum].myLoseRec );
-
-		GameData.Instance.playFightTeamCnt = 0; 
-
-		GameData.Instance.idxFightTeam++; 
-		if( GameData.Instance.listAllTeam[ GameData.Instance.idxFightTeam ].myTeamName == GameData.Instance.nameMyTeam )
-			GameData.Instance.idxFightTeam++; 
-
-		if ( GameData.Instance.idxFightTeam >= GameData.Instance.arrStrTeamName.Length )
-			GameData.Instance.idxFightTeam = 0;
+		//		Debug.Log ( GameData.Instance.nameOfNowFightTeam+ " Win : " + GameData.Instance.fightTeamObj.listTeamRecord[GameData.Instance.fightTeamObj.iIdxFightTeam].iMyWinCnt );
+		//		Debug.Log ( GameData.Instance.nameOfNowFightTeam+ " lose : " + GameData.Instance.fightTeamObj.listTeamRecord[GameData.Instance.fightTeamObj.iIdxFightTeam].iMyLoseCnt );
 		
-//d		GameData.Instance.nameOfNowFightTeam = GameData.Instance.arrStrTeamName [ GameData.Instance.idxFightTeam ];
-		GameData.Instance.myTeamObj.FindIdxOfNextFightTeam ( GameData.Instance.fightTeamObj.myTeamName );
-		GameData.Instance.fightTeamObj = GameData.Instance.listAllTeam[ GameData.Instance.idxFightTeam ]; 
+		GameData.Instance.iPlayFightTeamCnt = 0; 
+		
+		GameData.Instance.iIdxFightTeam++; 
+		if( GameData.Instance.listAllTeam[ GameData.Instance.iIdxFightTeam ].strMyTeamName == GameData.Instance.strNameMyTeam )
+			GameData.Instance.iIdxFightTeam++; 
+		
+		if ( GameData.Instance.iIdxFightTeam >= GameData.Instance.arrStrTeamName.Length )
+			GameData.Instance.iIdxFightTeam = 0;
+		
+		GameData.Instance.myTeamObj.FindIdxOfNextFightTeam ( GameData.Instance.fightTeamObj.strMyTeamName );
+		GameData.Instance.fightTeamObj = GameData.Instance.listAllTeam[ GameData.Instance.iIdxFightTeam ]; 
 		GameData.Instance.fightTeamObj.FindIdxOfNextFightTeam ( );
-		GameData.Instance.myTeamObj.FindIdxOfNextFightTeam ( GameData.Instance.fightTeamObj.myTeamName );
-
+		GameData.Instance.myTeamObj.FindIdxOfNextFightTeam ( GameData.Instance.fightTeamObj.strMyTeamName );
 	}
+
 }

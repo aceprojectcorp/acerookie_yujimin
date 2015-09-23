@@ -1,11 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../NewsFeed/Assets/Scripts/UIManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../NewsFeed/Assets/Scripts/HandlingSimulPlayAndResult.cs">
     <Files>
-      <File FileName="../NewsFeed/Assets/Scripts/HandlingMissionToday.cs" Line="43" Column="41" />
-      <File FileName="../NewsFeed/Assets/Scripts/UIDrawMission.cs" Line="44" Column="58" />
-      <File FileName="../NewsFeed/Assets/Scripts/UIManager.cs" Line="44" Column="71" />
-      <File FileName="../NewsFeed/Assets/Scripts/GameData.cs" Line="80" Column="16" />
+      <File FileName="../NewsFeed/Assets/Scripts/HandlingMissionToday.cs" Line="30" Column="1" />
+      <File FileName="../NewsFeed/Assets/Scripts/UIDrawMission.cs" Line="28" Column="24" />
+      <File FileName="../NewsFeed/Assets/Scripts/UIManager.cs" Line="46" Column="4" />
+      <File FileName="../NewsFeed/Assets/Scripts/GameData.cs" Line="49" Column="35" />
+      <File FileName="../NewsFeed/Assets/Scripts/ObjectPool.cs" Line="23" Column="17" />
+      <File FileName="../NewsFeed/Assets/Scripts/HandlingSimulPlayAndResult.cs" Line="43" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
