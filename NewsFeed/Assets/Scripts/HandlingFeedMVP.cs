@@ -5,16 +5,17 @@ public class HandlingFeedMVP : MonoBehaviour
 {
 	UISprite sprBg ;
 	UISprite sprPortrait ; 
-	UILabel lbTitleMood;
 	UILabel lbResultContent;
 	UILabel lbResultMood;
 	UILabel lbBtnSelectUp;
 	UILabel lbBtnSelectDown;
+	UIButton btnSelectUp;		
+	UIButton btnSelectDown;
 
 	GameObject goBtnSelect ;
 
 	//edit name...
-	List <MVPData> listMvpData = new List<MVPData>();
+	List <MVPData> MvpDataList = new List<MVPData>();
 
 	float minusBgHeight = 20f;
 
@@ -26,21 +27,16 @@ public class HandlingFeedMVP : MonoBehaviour
 		{
 			switch ( child.name )
 			{
-
-			case "TitleMood_Label":
-				lbTitleMood = child.GetComponent<UILabel>();
+			case "Portrait_Sprite" :
+				sprPortrait = child.GetComponent<UISprite>();
 				break;
-			
+
 			case "ResultContent_Label" :
 				lbResultContent = child.GetComponent<UILabel>();
 				break;
 				
 			case "ResultMood_Label" :
 				lbResultMood = child.GetComponent<UILabel>();
-				break;
-
-			case "Portrait_Sprite" :
-				sprPortrait = child.GetComponent<UISprite>();
 				break;
 
 			case "SelectUp_Label" :
@@ -51,6 +47,14 @@ public class HandlingFeedMVP : MonoBehaviour
 				lbBtnSelectDown = child.GetComponent<UILabel>();
 				break;
 
+			case "SelectUp_Spr" :
+				btnSelectUp = child.GetComponent<UIButton>();
+				break; 
+				
+			case "SelectDown_Spr" :
+				btnSelectDown = child.GetComponent<UIButton>();
+				break;
+				
 			case "SelectBtn" :
 				goBtnSelect = child.gameObject;
 				break;		
@@ -68,8 +72,9 @@ public class HandlingFeedMVP : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		CreateListMvpData ( listMvpData );
-
+		CreateMvpDataList ( MvpDataList );
+		lbBtnSelectUp.text 	 = GameData.Instance.arrStrMsgBtnMvp [0];
+		lbBtnSelectDown.text = GameData.Instance.arrStrMsgBtnMvp [1];
 		lbResultContent.gameObject.SetActive (false);
 		lbResultMood.gameObject.SetActive (false);
 
@@ -81,10 +86,10 @@ public class HandlingFeedMVP : MonoBehaviour
 	
 	}
 
-	void CreateListMvpData ( List <MVPData> list )
+	void CreateMvpDataList ( List <MVPData> list )
 	{
-		list.Add (new MVPData ( GameData.Instance.arrStrMsgBtnMvp [0] ));
-		list.Add (new MVPData ( GameData.Instance.arrStrMsgBtnMvp [1] ));
+		list.Add ( new MVPData ( GameData.Instance.arrStrMsgBtnMvp [0] ));
+		list.Add ( new MVPData ( GameData.Instance.arrStrMsgBtnMvp [1] ));
 	}
 
 	void DownSizeHeightBg()
@@ -95,10 +100,8 @@ public class HandlingFeedMVP : MonoBehaviour
 
 	// 버튼 누를 경우 결과 처리 
 	// mvp버튼에서 버튼 클릭시 바로 이 함수 호출되게 이어놓음 ( 코딩x ) 
-	public void SetResultPressBtn()
+	void SetResultPressBtn()
 	{
-		lbResultContent.text = listMvpData[0].GetStrContent();
-
 		// mood result 
 		int iRand0to1 = Random.Range (0, 2);
 		if( iRand0to1 == 0 )
@@ -112,8 +115,20 @@ public class HandlingFeedMVP : MonoBehaviour
 
 		lbResultContent.gameObject.SetActive (true);
 		lbResultMood.gameObject.SetActive (true);
-		Destroy ( goBtnSelect );
+		Destroy ( goBtnSelect ); 
 		DownSizeHeightBg ();
 	}
+
+	public void OnClickBtnUp()
+	{
+		lbResultContent.text = GameData.Instance.arrStrMsgBtnMvp [0];
+		SetResultPressBtn ();
+	}
+	public void OnClickBtnDown()
+	{
+		lbResultContent.text = GameData.Instance.arrStrMsgBtnMvp [1];
+		SetResultPressBtn ();
+	}
+
 
 }
