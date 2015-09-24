@@ -6,7 +6,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 {
 	public GameObject Camera03 ; 
 
-	private GameObject GoOkBtn ; 
+	private GameObject goOkBtn ; 
 	private UIProgressBar pgSimulPlayTime ; 	
 	private UILabel lbTitle ;
 	private UILabel lbContent ;
@@ -27,7 +27,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 			switch (child.name)
 			{
 			case "Ok_Btn":
-				GoOkBtn = child.gameObject;
+				goOkBtn = child.gameObject;
 				break;
 				
 			case "Progress Bar" :
@@ -61,7 +61,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 		isEndMessageTime 	= false;
 
 		// 버튼 비/활성화 
-		GoOkBtn.SetActive (false); 
+		goOkBtn.SetActive (false); 
 		pgSimulPlayTime.gameObject.SetActive (true); 		
 		
 		// 연결객체 값 초기화 
@@ -106,7 +106,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 				pgAccTime = 0 ; 
 				isEndMessageTime = true ;
 				pgSimulPlayTime.gameObject.SetActive( false ) ; 
-				GoOkBtn.SetActive ( true );
+				goOkBtn.SetActive ( true );
 
 				lbTitle.text = strMsgTitleResult;
 				lbContent.text = strMsgContent;

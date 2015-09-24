@@ -50,9 +50,25 @@ public class GameData : MonoBehaviour
 	// 미션 데이터 객체 
 	public List <MissionData> listMission = new List<MissionData>();
 
+	// string color
+	public string[] arrStrColor = new string[]
+	{ "[FF6868FF]"/*red*/,	"[87C8FFFF]"/*blue*/,	"[FFFFFFFF]"/*white*/ };
+
 	// 선수 기분 배열 
 	public string[] arrStrMoodLevel = new string[]
 	{ "최상", "좋음", "보통", "나쁨", "최악" };
+
+	// MVP피드 버튼 메세지 
+	public string[] arrStrMsgBtnMvp = new string[]
+	{ 	"다른 선수들이 본받아야 하는 선수라 말한다.",
+		"이름값에 걸맞는 활약을 보이려면 아직 부족하다고 말한다."
+	};
+
+	// MVP피드 버튼 결과 메세지 
+	public string[] arrStrMsgResultBtnMvp = new string[]
+	{	"감독의 발언에 선수의 기분이 매우 좋아졌습니다.(기분상승)",
+		"감독의 발언에 선수가 겸연쩍어 합니다."	
+	};
 
 	//개별 미션 관련 변수 카운트 및 모든 미션 성공여부 확인
 	public void CheckMissionProgress()
@@ -95,7 +111,7 @@ public class GameData : MonoBehaviour
 
 		// 전체 팀 이름 초기화  
 		arrStrTeamName = new string[]
-		{ "AOA", 	"Beast", 	"CityOfTheDead[Ad:]", 	"D", 	"EHi", 	"F", 	"GirlsGeneration", 	"H", 	"IU", strNameMyTeam };
+		{ "AAAA", 	"BBB", 	"CC", 	"DDDDDDD", 	"EEEEEEEEE", 	"FFF", 	"GG", 	"H", 	"IIIII", strNameMyTeam };
 
 		// 전체 팀 객체 생성
 		for(int i=0 ; i < arrStrTeamName.Length ; i++ ) 
@@ -212,6 +228,7 @@ public class InfoOfTeam
 	}
 }
 
+// 오늘의 미션 피드에서 각각의 미션창이 받을 미션 내용 객체의 클래스
 public class MissionData
 {
 	public MissionType Type;
@@ -227,14 +244,87 @@ public class MissionData
 	}
 }
 
+// 전력분석 랜덤값 만들기 위한 클래스 
+public class PowerRandData
+{
+	private float	fRandomValue;
+	private float	fRate;
+	private float 	fMinValue;
+	private float 	fMaxValue;
+
+	public PowerRandData( float fMinValue, float fMaxValue, int iRound )
+	{
+		this.fMinValue = fMinValue;
+		this.fMaxValue = fMaxValue;
+
+		fRandomValue =	Random.Range( fMinValue, fMaxValue );
+
+		// 소수점 iRound자리 까지 반올림함.
+		float fRoundTmp = 1f; 
+		if (iRound == 2)
+			fRoundTmp = 100f;
+		else if (iRound == 3)
+			fRoundTmp = 1000f;
+
+		fRandomValue = ( Mathf.Round( fRandomValue	* fRoundTmp ) )/ fRoundTmp;
+
+		CreatePersentageVal ();
+	}
+
+	public PowerRandData( int iMinValue, int iMaxValue )
+	{
+		this.fMinValue = (float)iMinValue;
+		this.fMaxValue = (float)iMaxValue;
+		
+		fRandomValue = (float)(	Random.Range( iMinValue, iMaxValue+1 ) ); 
+		CreatePersentageVal ();
+	}
+
+	void CreatePersentageVal()
+	{
+		if ( fRandomValue - fMinValue == 0 )
+			fRate = 0 ;
+		else
+			fRate = ( fRandomValue - fMinValue )/( fMaxValue - fMinValue ) ; 
+	}
+
+	public float GetRate()
+	{
+		return fRate;
+	}
+	
+	public float GetRandomValue()
+	{
+		return fRandomValue;
+	}
+}
+
+// MVP 피드 내용 저장 
 public class MVPData
 {
-	public string strContent = null ;
-	public bool isSelect = false ;
+	private string strContent = null ;
+	private bool isSelect = false ;
 
 	public MVPData( string strContent )
 	{
 		this.strContent = strContent; 
 	}
 
+	public string GetStrContent()
+	{
+		return strContent;
+	}
+
+	public void SetIsSelect()
+	{
+		isSelect = true; 
+	}
+
+	public bool GetIsSelect()
+	{
+		return isSelect;
+	}
+
 }
+
+

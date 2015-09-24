@@ -183,14 +183,15 @@
      <Compile Include="Assets\NGUI\Scripts\UI\UITexture.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UITooltip.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
+     <Compile Include="Assets\Scripts\DrawMVPBtnTxt.cs" />
+     <Compile Include="Assets\Scripts\DrawMission.cs" />
+     <Compile Include="Assets\Scripts\DrawTableAnalysis.cs" />
      <Compile Include="Assets\Scripts\GameData.cs" />
      <Compile Include="Assets\Scripts\HandlingFeedMVP.cs" />
      <Compile Include="Assets\Scripts\HandlingFeedMissionToday.cs" />
      <Compile Include="Assets\Scripts\HandlingFeedPowerAnalysis.cs" />
      <Compile Include="Assets\Scripts\HandlingSimulPlayAndResult.cs" />
      <Compile Include="Assets\Scripts\ObjectPool.cs" />
-     <Compile Include="Assets\Scripts\UIDrawMission.cs" />
-     <Compile Include="Assets\Scripts\UIDrawMvpBtnTxt.cs" />
      <Compile Include="Assets\Scripts\UIFeedManager.cs" />
      <None Include="Assets\NGUI\Examples\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\NGUI\ReadMe - 3.9.2.txt" />

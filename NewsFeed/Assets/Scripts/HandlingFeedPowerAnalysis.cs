@@ -1,54 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-// label 추가!!!!, 가로data들 리스트로 저장해서 관리.. list add.. 
-// list??
+// TODO : 리스트 이름 다 바꿔주기[여기가 기준]!!! 변수이름, 클래스 이름도 다시 짧고 예쁘게 다듬기!!
+// << 전력분석 테이블의 랜덤 데이터 리스트 생성/관리/연결, 게임실행 버튼 연동, 상대팀 이름 라벨에 출력 및 이동 >>
 public class HandlingFeedPowerAnalysis : MonoBehaviour 
 {
-	// 화면 출력용 UI 객체들 
-	private UILabel lbTitleFightTeamName ;
+	private UILabel lbFightTeamName ;
 	private UILabel lbContentUp;
-	private UILabel lbTeamNameMine;
-	private UILabel lbTeamNameFightTeam;
-	private UILabel lbRecordMine;
-	private UILabel lbRecordFightTeam;
-	private UILabel lbNumDataMine;
-	private UILabel lbNumDataFightTeam;
+	
+	private List<DrawTableAnalysis> Analysis_ScriptList = new List<DrawTableAnalysis>();
 
-	private UIProgressBar pgBattingAverMine;
-	private UIProgressBar pgBattingAverFightTeam;
-	private UIProgressBar pgERAMine;
-	private UIProgressBar pgERAFightTeam;
-	private UIProgressBar pg4BallsMine;
-	private UIProgressBar pg4BallsFightTeam;
-	private UIProgressBar pgStealBaseMine;
-	private UIProgressBar pgStealBaseFightTeam;
-	private UIProgressBar pgHomeRunMine;
-	private UIProgressBar pgHomeRunFightTeam;
-
-	// 랜덤값 변수들 최대, 최소 범위 
-	float 	fMinValBattingAver 	= 0.1f;
-	float 	fMaxValBattingAver 	= 0.6f;
-	float 	fMinValERA 			= 1.5f;
-	float 	fMaxValERA 			= 7.5f;
-	int  	iMinVal4Balls 		= 0;
-	int 	iMaxVal4Balls 		= 10;
-	int 	iMinValStealBase 	= 0;
-	int		iMaxValStealBase 	= 10;
-	int 	iMinValHomeRun 		= 0;
-	int 	iMaxValHomeRun 		= 5;
-
-	// 랜덤값을 저장할 변수들 
-	float fValBattingAverMine;
-	float fValBattingAverFightTeam;
-	float fValERAMine;
-	float fValERAFightTeam;
-	int	iVal4BallsMine;
-	int iVal4BallsFightTeam;
-	int iValStealBaseMine;
-	int iValStealBaseFightTeam;
-	int iValHomeRunMine;
-	int iValHomeRunFightTeam;
+	// 전력 데이터 객체 생성 
+	private List<PowerRandData> PowerDataList_MyTeam 	= new List<PowerRandData>();
+	private List<PowerRandData> PowerDataList_FightTeam	= new List<PowerRandData>();
 
 	private void OnGetChildObject()
 	{
@@ -56,95 +21,36 @@ public class HandlingFeedPowerAnalysis : MonoBehaviour
 		
 		foreach (Transform child in transforms)
 		{
-			switch (child.name)
+			switch ( child.name )
 			{
-			//UILabel
 			case "Title_FightTeam_Label" :
-				lbTitleFightTeamName = child.GetComponent<UILabel>();
+				lbFightTeamName = child.GetComponent<UILabel>();
 				break;
 				
 			case "Title_ContentUp_Label" :
 				lbContentUp = child.GetComponent<UILabel>();
 				break;
-				
-			case "TeamName_Mine_Label" :
-				lbTeamNameMine = child.GetComponent<UILabel>();
-				break;
-				
-			case "TeamName_FightTeam_Label" :
-				lbTeamNameFightTeam = child.GetComponent<UILabel>();
-				break;
-				
-			case "Record_Mine_Label" :
-				lbRecordMine = child.GetComponent<UILabel>();
-				break;
-				
-			case "Record_FightTeam_Label" :
-				lbRecordFightTeam = child.GetComponent<UILabel>();
-				break;
 
-			case "NumOfData_MyTeam_Label" :
-				lbNumDataMine = child.GetComponent<UILabel>();
-				break;
-
-			case "NumOfData_FightTeam_Label" :
-				lbNumDataFightTeam = child.GetComponent<UILabel>();
-				break;
-
-			//UIProgressBar
-			case "BattingAver_Mine_Pg" :
-				pgBattingAverMine = child.GetComponent<UIProgressBar>();
+			case "MyTeam":
+				Analysis_ScriptList.Add( child.GetComponent<DrawTableAnalysis>() );
+				Analysis_ScriptList [ Analysis_ScriptList.Count-1 ].SetData ( PowerDataList_MyTeam, GameData.Instance.myTeamObj.strMyTeamName );
 				break;
 				
-			case "BattingAver_FightTeam_Pg" :
-				pgBattingAverFightTeam = child.GetComponent<UIProgressBar>();
+			case "FightTeam":
+				Analysis_ScriptList.Add( child.GetComponent<DrawTableAnalysis>() );
+				Analysis_ScriptList [ Analysis_ScriptList.Count-1 ].SetData ( PowerDataList_FightTeam, GameData.Instance.fightTeamObj.strMyTeamName );
 				break;
-				
-			case "ERA_Mine_Pg" :
-				pgERAMine = child.GetComponent<UIProgressBar>();
-				break;
-				
-			case "ERA_FightTeam_Pg" :
-				pgERAFightTeam = child.GetComponent<UIProgressBar>();
-				break;
-				
-			case "4Balls_Mine_Pg" :
-				pg4BallsMine = child.GetComponent<UIProgressBar>();
-				break;
-				
-			case "4Balls_FightTeam_Pg" :
-				pg4BallsFightTeam = child.GetComponent<UIProgressBar>();
-				break;
-				
-			case "StealBase_Mine_Pg" :
-				pgStealBaseMine = child.GetComponent<UIProgressBar>();
-				break;
-				 
-			case "StealBase_FightTeam_Pg" :
-				pgStealBaseFightTeam = child.GetComponent<UIProgressBar>();
-				break;
-				
-			case "HomeRun_Mine_Pg" :
-				pgHomeRunMine = child.GetComponent<UIProgressBar>();
-				break;
-				
-			case "HomeRun_FightTeam_Pg" :
-				pgHomeRunFightTeam = child.GetComponent<UIProgressBar>();
-				break;
-			}
+			}			
 		}
-	}
-
-	void Awake()
-	{
-		OnGetChildObject ();
 	}
 
 	void Start () 
 	{
-		SetRendVal ();		// 전력 관련 변수들에 최소,최대값 범위 안에서 랜덤값 생성하여 저장. 
-		SetPgTeamData ();	// UIProgressBar 객체에 값 변경 
-		SetLabelTeamData ();// UILabel 객체에 text값 변경 및 위치 이동 
+		SetPdata ( PowerDataList_MyTeam 	);
+		SetPdata ( PowerDataList_FightTeam	);
+
+		OnGetChildObject ();
+		SetLabelTeamData ();	// UILabel 객체에 text값 변경 및 위치 이동 ( 상대팀 이름 글자수에 따라 뒤에 라벨(lbContentUp)이 뒤로 밀림 )
 	}
 	
 	// Update is called once per frame
@@ -153,100 +59,33 @@ public class HandlingFeedPowerAnalysis : MonoBehaviour
 	
 	}
 
+	void SetPdata( List <PowerRandData> list )
+	{
+		list.Add ( new PowerRandData ( 0.1f,	0.6f,	3	) );	// [0] 타율
+		list.Add ( new PowerRandData ( 1.5f,	7.5f,	2	) );	// [1] 방어율 
+		list.Add ( new PowerRandData ( 0, 		10			) );	// [2] 볼넷 
+		list.Add ( new PowerRandData ( 0,		10			) );	// [3] 도루 
+		list.Add ( new PowerRandData ( 0,		5			) );	// [4] 홈런
+	}
+
 	// 게임실행 버튼 눌렀을때, 시뮬레이션 팝업 실행
 	public void OnClickPlayGame()
 	{
 		UIFeedManager.Instance.OnClickSimulBtn ();		
 	}
-
-	// 전력 관련 변수들에 최소,최대값 범위 안에서 랜덤값 생성하여 저장. 
-	void SetRendVal()
-	{
-		fValBattingAverMine 	 = Random.Range( fMinValBattingAver, 	fMaxValBattingAver 	);
-		fValBattingAverFightTeam = Random.Range( fMinValBattingAver, 	fMaxValBattingAver 	);
-		fValERAMine				 = Random.Range( fMinValERA, 			fMaxValERA 			);
-		fValERAFightTeam		 = Random.Range( fMinValERA, 			fMaxValERA 			);
-		iVal4BallsMine 			 = Random.Range( iMinVal4Balls, 		iMaxVal4Balls+1		);
-		iVal4BallsFightTeam		 = Random.Range( iMinVal4Balls, 		iMaxVal4Balls+1		);
-		iValStealBaseMine		 = Random.Range( iMinValStealBase, 		iMaxValStealBase+1 	);
-		iValStealBaseFightTeam	 = Random.Range( iMinValStealBase, 		iMaxValStealBase+1 	);
-		iValHomeRunMine	 		 = Random.Range( iMinValHomeRun, 		iMaxValHomeRun+1	);
-		iValHomeRunFightTeam	 = Random.Range( iMinValHomeRun, 		iMaxValHomeRun+1	);
-
-		// 소수점 2~3자리까지만 값을 가지게 변경 
-		fValBattingAverMine 	 = ( Mathf.Round( fValBattingAverMine 		* 1000f ) )/ 1000f;
-		fValBattingAverFightTeam = ( Mathf.Round( fValBattingAverFightTeam 	* 1000f ) )/ 1000f; 
-		fValERAMine				 = ( Mathf.Round( fValERAMine 				* 100f 	) )/ 100f; 
-		fValERAFightTeam		 = ( Mathf.Round( fValERAFightTeam 			* 100f 	) )/ 100f;
-	}
-
- 	// UILabel객체에 text값 변경 및 위치 이동 
+	
+ 	// UILabel객체에 text값 변경(상대팀 이름 주기) 및 위치 이동(상대팀 이름 가로 크기에 따라서 뒤에 라벨 뒤로 밀림)  
 	void SetLabelTeamData()
 	{ 
-		lbTitleFightTeamName.text 	= GameData.Instance.fightTeamObj.strMyTeamName;
-		lbTeamNameMine.text 	 	= GameData.Instance.myTeamObj.strMyTeamName;
-		lbTeamNameFightTeam.text 	= GameData.Instance.fightTeamObj.strMyTeamName;
-		
-		lbRecordMine.text		 	
-		= 	GameData.Instance.myTeamObj.listTeamRecord[ GameData.Instance.myTeamObj.iIdxFightTeam ].iMyWinCnt + "승 0무 " +
-			GameData.Instance.myTeamObj.listTeamRecord[ GameData.Instance.myTeamObj.iIdxFightTeam ].iMyLoseCnt + "패";
-		lbRecordFightTeam.text 	 	
-		=	GameData.Instance.fightTeamObj.listTeamRecord[ GameData.Instance.fightTeamObj.iIdxFightTeam ].iMyWinCnt + "승 0무 " +
-			GameData.Instance.fightTeamObj.listTeamRecord[ GameData.Instance.fightTeamObj.iIdxFightTeam ].iMyLoseCnt + "패";
-			
-		
-		lbNumDataMine.text		 	= 	fValBattingAverMine		+"\n"+
-										fValERAMine				+"\n"+
-										iVal4BallsMine			+"\n"+
-										iValStealBaseMine		+"\n"+
-										iValHomeRunMine;
-		lbNumDataFightTeam.text	 	= 	fValBattingAverFightTeam+"\n"+
-										fValERAFightTeam		+"\n"+
-										iVal4BallsFightTeam		+"\n"+
-										iValStealBaseFightTeam	+"\n"+
-										iValHomeRunFightTeam;
+		lbFightTeamName.text 	= GameData.Instance.fightTeamObj.strMyTeamName;
 		
 		// 팀 이름 가로크기에 따라 lbContentUp 위치 이동 
 		Vector3 lbContentPosTmp = lbContentUp.transform.localPosition; 
-		lbContentPosTmp.x = lbTitleFightTeamName.transform.localPosition.x +
-							lbTitleFightTeamName.width + 1;
+		lbContentPosTmp.x = lbFightTeamName.transform.localPosition.x +
+							lbFightTeamName.width + 1;
 		lbContentUp.transform.localPosition = lbContentPosTmp;
-
-
 	}
-	
-	// UIProgressBar 객체에 값 변경 
-	void SetPgTeamData()
-	{
-		pgBattingAverMine.value		 = GetPersentageVal ( fMinValBattingAver,	fMaxValBattingAver,	fValBattingAverMine 		); 
-		pgBattingAverFightTeam.value = GetPersentageVal ( fMinValBattingAver,	fMaxValBattingAver,	fValBattingAverFightTeam	); 
-		pgERAMine.value 			 = GetPersentageVal ( fMinValERA, 			fMaxValERA,			fValERAMine					); 
-		pgERAFightTeam.value 		 = GetPersentageVal ( fMinValERA,			fMaxValERA,			fValERAFightTeam			); 
-		pg4BallsMine.value 			 = GetPersentageVal ( iMinVal4Balls,		iMaxVal4Balls,		iVal4BallsMine				); 
-		pg4BallsFightTeam.value 	 = GetPersentageVal ( iMinVal4Balls,		iMaxVal4Balls,		iVal4BallsFightTeam 		); 
-		pgStealBaseMine.value  		 = GetPersentageVal ( iMinValStealBase,		iMaxValStealBase,	iValStealBaseMine			); 
-		pgStealBaseFightTeam.value	 = GetPersentageVal ( iMinValStealBase,		iMaxValStealBase,	iValStealBaseFightTeam		); 
-		pgHomeRunMine.value 		 = GetPersentageVal ( iMinValHomeRun,		iMaxValHomeRun,		iValHomeRunMine				); 
-		pgHomeRunFightTeam.value 	 = GetPersentageVal ( iMinValHomeRun,		iMaxValHomeRun,		iValHomeRunFightTeam		); 
-	}
-
-	// 전적관련 변수를 백분율로 변환하여 반환
-	float GetPersentageVal( float minVal, float maxVal, float randVal )
-	{
-		if ( randVal - minVal == 0 )
-			return 0;
-		else
-			return ( randVal - minVal )/( maxVal-minVal ) ; 
-	}
-
-	float GetPersentageVal( int minVal, int maxVal, int randVal ) 
-	{
-		if ( randVal - minVal == 0 )
-			return 0;
-		else
-			return (float)( randVal - minVal )/(float)( maxVal-minVal ) ; 
-	}
-
-	
 
 }
+
+

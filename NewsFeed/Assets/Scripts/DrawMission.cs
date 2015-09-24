@@ -2,7 +2,7 @@
 using System.Collections;
 
 // << 미션 내용을 받아 그려줌 >>
-public class UIDrawMission : MonoBehaviour 
+public class DrawMission : MonoBehaviour 
 {
 	private MissionData mData; 
 	private UILabel lbContent;
