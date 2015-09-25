@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// TODO : 왼쪽에 선수 이름 + 오른쪽에 내용 레이블 한줄에 가지는 애들, 오른쪽 내용 레이블 초기에 위치 재수정 해주는거 넣기 
+// TODO : 버튼 내용 배열들 이름들 MSG, CONTENT 섞여있음.. 정리해주기 
+// TODO : 아래 클래스들... 따로 빼서 다른 파일로 만들어주기 여기에 너무 많음
 public enum MissionType
 {
 	MISSION_TYPE_STRAIGHT_WIN,
@@ -32,16 +35,14 @@ public class GameData : MonoBehaviour
 	public int iStraightLoseCnt	= 0;		// 연패 횟수 
 	//-----------------------// 
 
-	// feed
+	// 오늘의 미션 피드 관련 변수 
 	public bool isOffTodayMissionFeed 		= false;	// TodayMission feed setActive on/off 
 	public bool isSuccessAllTodayMission	= false;	// Success all todaymissions ?
 
 	// team 
 	public string strNameMyTeam = "MyTeam" ;	// 우리 팀 이름 
 	public string[] arrStrTeamName; 		// 전체 팀 이름
-//	public List<string> listStrTeamNames = new List<string> ();
 	//		= new string[]{ "A", 	"B", 	"C", 	"D", 	"E", 	"F", 	"G", 	"H", 	"I", 	"J", nameOfMyTeam };
-//	public string nameOfNowFightTeam = null ;	// 현재 대결 팀의 이름 
 	 
 	public InfoOfTeam myTeamObj ;			// 내 팀 정보 객체 
 	public InfoOfTeam fightTeamObj;			// 현재 대결 팀 객체 (계속 바뀜. infoAllTeam안에서) 
@@ -50,15 +51,18 @@ public class GameData : MonoBehaviour
 	// 미션 데이터 객체 
 	public List <MissionData> listMission = new List<MissionData>();
 
-	// string color
-	public string[] arrStrColor = new string[]
-	{ "[FF6868FF]"/*red*/,	"[87C8FFFF]"/*blue*/,	"[FFFFFFFF]"/*white*/ };
+	// text color
+	public string[] arrStrTextColor = new string[]
+	{ "[FF6868FF]"/*red*/,	"[87C8FFFF]"/*blue*/,	"[FFFFFFFF]"/*white*/, "[C1C161FF]"/*bagie*/ };
+	public string strTextColorRed 		= "FF6868FF";
+	public string strTextColorBlue 		= "87C8FFFF";
+	public string strTextColorYellow 	= "C1C161FF";
 
 	// 선수 기분 배열 
 	public string[] arrStrMoodLevel = new string[]
 	{ "최상", "좋음", "보통", "나쁨", "최악" };
-
-	// MVP피드 버튼 메세지 
+	 
+	// MVP피드 버튼 내용 
 	public string[] arrStrMsgBtnMvp = new string[]
 	{ 	"다른 선수들이 본받아야 하는 선수라 말한다.",
 		"이름값에 걸맞는 활약을 보이려면 아직 부족하다고 말한다."
@@ -69,6 +73,44 @@ public class GameData : MonoBehaviour
 	{	"감독의 발언에 선수의 기분이 매우 좋아졌습니다.(기분상승)",
 		"감독의 발언에 선수가 겸연쩍어 합니다."	
 	};
+
+	// 인터뷰 피드 버튼 내용 (좌-승 / 우-패)
+	public string[,] arrStrContentInterview = new string[,]
+	{	{ "야수진, 투수진 모드 좋은 경기력을 보여줬다",	"너무 아쉬운 승부였다. 감독의 잘못이다."			},
+		{ "오늘은 운이 상당이 많이 따라준 경기였다.",		"집중력이 승패를 갈랐다. 우리가 질 경기를 했다." 	},
+		{ "이제야 팀이 조금은 정상궤도에 올라선 느낌이다.",	"할 말이 없다. 다음 경기 준비 잘하겠다."			}
+	}; 
+
+	// 인터뷰 피드 버튼 결과 메세지 
+	public string[] arrStrMsgResultInterview = new string[]
+	{	"감독의 인터뷰에 몇몇 선수의 기분이 좋아졌습니다.",
+		"감독의 인터뷰 내용은 크게 신경쓰지 않는 눈치입니다."	
+	};
+
+	// 연패 피드 버튼 내용 
+	public string[] arrStrContentStraightLose = new string[]
+	{	"선수들을 격려한다.",	"호통을 친다.",	"할말이 없다고 한다."	};
+
+	// 연패 피드 결과 메세지 
+	public string[] arrStrMsgResultStraightLose = new string[]
+	{	"선수들이 힘을 내보고자 으쌰으쌰 한다.",
+		"선수들의 기분이 나빠졌습니다."	
+	};
+
+	// UILabel에 글씨색 추가 
+	public string AddColorText( string inputStr, string colorName )
+	{
+		if ( colorName == "red" ) 
+			inputStr = arrStrTextColor [0] + inputStr + "[-]";
+
+		else if ( colorName == "blue" ) 
+			inputStr = arrStrTextColor [1] + inputStr + "[-]";
+
+		else if ( colorName == "white" ) 
+			inputStr = arrStrTextColor [2] + inputStr + "[-]";
+
+		return inputStr;
+	}
 
 	//개별 미션 관련 변수 카운트 및 모든 미션 성공여부 확인
 	public void CheckMissionProgress()
@@ -297,7 +339,7 @@ public class PowerRandData
 	{
 		return fRandomValue;
 	}
-}
+} 
 
 // MVP 피드 내용 저장 
 public class MVPData

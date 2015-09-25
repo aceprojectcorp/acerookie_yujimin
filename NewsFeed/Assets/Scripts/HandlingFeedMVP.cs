@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
 public class HandlingFeedMVP : MonoBehaviour 
 {
 	UISprite sprBg ;
@@ -9,12 +10,9 @@ public class HandlingFeedMVP : MonoBehaviour
 	UILabel lbResultMood;
 	UILabel lbBtnSelectUp;
 	UILabel lbBtnSelectDown;
-	UIButton btnSelectUp;		
-	UIButton btnSelectDown;
 
 	GameObject goBtnSelect ;
-
-	//edit name...
+	
 	List <MVPData> MvpDataList = new List<MVPData>();
 
 	float minusBgHeight = 20f;
@@ -45,14 +43,6 @@ public class HandlingFeedMVP : MonoBehaviour
 				
 			case "SelectDown_Label" :
 				lbBtnSelectDown = child.GetComponent<UILabel>();
-				break;
-
-			case "SelectUp_Spr" :
-				btnSelectUp = child.GetComponent<UIButton>();
-				break; 
-				
-			case "SelectDown_Spr" :
-				btnSelectDown = child.GetComponent<UIButton>();
 				break;
 				
 			case "SelectBtn" :
@@ -92,12 +82,6 @@ public class HandlingFeedMVP : MonoBehaviour
 		list.Add ( new MVPData ( GameData.Instance.arrStrMsgBtnMvp [1] ));
 	}
 
-	void DownSizeHeightBg()
-	{
-		sprBg.height = (int)( Mathf.Abs ( sprPortrait.transform.localPosition.y ) + sprPortrait.height + minusBgHeight );
-		UIFeedManager.Instance.ResetOnlyFeedPos ();
-	}
-
 	// 버튼 누를 경우 결과 처리 
 	// mvp버튼에서 버튼 클릭시 바로 이 함수 호출되게 이어놓음 ( 코딩x ) 
 	void SetResultPressBtn()
@@ -105,30 +89,24 @@ public class HandlingFeedMVP : MonoBehaviour
 		// mood result 
 		int iRand0to1 = Random.Range (0, 2);
 		if( iRand0to1 == 0 )
-		{
-			lbResultMood.text = GameData.Instance.arrStrColor[0] + GameData.Instance.arrStrMsgResultBtnMvp[0] + "[-]" ;
-		}
+			lbResultMood.text = GameData.Instance.AddColorText(GameData.Instance.arrStrMsgResultBtnMvp[0], "red") ; 
 		else
-		{
-			lbResultMood.text = GameData.Instance.arrStrColor[1] + GameData.Instance.arrStrMsgResultBtnMvp[1] + "[-]" ;
-		}
+			lbResultMood.text = GameData.Instance.AddColorText(GameData.Instance.arrStrMsgResultBtnMvp[1], "blue") ;
 
 		lbResultContent.gameObject.SetActive (true);
 		lbResultMood.gameObject.SetActive (true);
 		Destroy ( goBtnSelect ); 
-		DownSizeHeightBg ();
+		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, minusBgHeight );
 	}
-
+	 
 	public void OnClickBtnUp()
 	{
-		lbResultContent.text = GameData.Instance.arrStrMsgBtnMvp [0];
+		lbResultContent.text = MvpDataList [0].GetStrContent ();//GameData.Instance.arrStrMsgBtnMvp [0];
 		SetResultPressBtn ();
 	}
 	public void OnClickBtnDown()
 	{
-		lbResultContent.text = GameData.Instance.arrStrMsgBtnMvp [1];
+		lbResultContent.text = MvpDataList [1].GetStrContent (); //GameData.Instance.arrStrMsgBtnMvp [1];
 		SetResultPressBtn ();
 	}
-
-
 }

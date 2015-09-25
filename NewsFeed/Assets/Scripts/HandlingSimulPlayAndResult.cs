@@ -53,9 +53,6 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 	// 활성화 될때마다 값 초기화. 
 	void OnEnable() 
 	{ 
-//		Debug.Log ( GameData.Instance.nameOfNextFightTeam+ " Win : " + GameData.Instance.infoOfNowFightTeam.listTeamRecord[GameData.Instance.infoOfNowFightTeam.iIdxFightTeam].iMyWinCnt );
-//		Debug.Log ( GameData.Instance.nameOfNextFightTeam+ " lose : " + GameData.Instance.infoOfNowFightTeam.listTeamRecord[GameData.Instance.infoOfNowFightTeam.iIdxFightTeam].iMyLoseCnt );
-
 		// 시간, 스위치 초기화 및 총 플레이 게임수 증가. 
 		pgAccTime 		= 0 ; 			
 		isEndMessageTime 	= false;
@@ -74,7 +71,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 		int rand1to100 = Random.Range (1, 101);
 		// HeadlingWin/Lose()에서 승패에 따른 결과 메세지 변경, 
 		// 각팀 객체에 승패결과 알려줌(객체내에서 상대팀과의 전적 저장), 연승연패 계산 및 누적   
-		if ( rand1to100 >= 1 ) 
+		if ( rand1to100 > 50 ) 
 			HeadlingWin();
 		else
 			HeadlingLose();	

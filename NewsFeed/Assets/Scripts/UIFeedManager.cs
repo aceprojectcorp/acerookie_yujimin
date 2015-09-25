@@ -2,12 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// << 화면에 보일 피드 리스트를 조건에 따라 재구성 >> 
+// << 화면에 보일 피드 리스트를 조건에 따라 재구성, 피드 세로 크기 변경 >> 
 public class UIFeedManager : MonoBehaviour 
 {	
 	public GameObject goCamera03 ;		// 팝업창 활성화 하기 위해 연결 
 	public GameObject goScrollView ;	// 피드를 추가할때 부모 객체로 사용하기 위해 
-	
+
+	// 
+	private int iEnableRateMVP 		 = 50 ; 
+	private int iEnableRateInterview = 50 ; 
+	private int iEnableRateTiredness = 50 ; 
+	private int iEnableRateInjury 	 = 30 ; 
+
 	float fSpaceYBetweenFeed = 5f ;		// 피드간 세로 간격  
 	int iWidthBgFeed = 800 ;			// 피드의 가로 크기(고정) 	
 	
@@ -56,16 +62,49 @@ public class UIFeedManager : MonoBehaviour
 		if( GameData.Instance.isOffTodayMissionFeed == false )
 		{ 
 			CreateInsAndAddList( "FeedMissionToday", 270, idxFeedList ); 
-
 			idxFeedList++;
 		}
 
-		// MVP 피드 - 추가 현재 승리하면 - 100% 나옴 
-		if( GameData.Instance.iStraightWinCnt >= 1 )
+		if( GameData.Instance.iStraightWinCnt > 0 )
 		{
-			CreateInsAndAddList( "FeedMVP", 180, idxFeedList ); 
+			// MVP 피드 
+			int iRand1to100MVP = Random.Range (1, 101);
+			if( iEnableRateMVP >= iRand1to100MVP   )
+			{
+				CreateInsAndAddList( "FeedMVP", 180, idxFeedList ); 
+				idxFeedList++;
+			}
 
-			idxFeedList++;
+			// 인터뷰 피드
+			int iRand1to100Interview = Random.Range (1, 101);
+			if( iEnableRateInterview >= iRand1to100Interview )
+			{
+				CreateInsAndAddList( "FeedInterview", 210, idxFeedList ); 
+				idxFeedList++;
+			}
+
+			// 피곤함 피드
+			int iRand1to100Tiredness = Random.Range (1, 101);
+			if( iEnableRateTiredness >= iRand1to100Tiredness )
+			{
+				CreateInsAndAddList( "FeedTiredness", 170, idxFeedList ); 
+				idxFeedList++;
+			}
+
+			// 부상 피드
+			int iRand1to100Injury = Random.Range (1, 101);
+			if( iEnableRateInjury >= iRand1to100Injury )
+			{
+				CreateInsAndAddList( "FeedInjury", 170, idxFeedList ); 
+				idxFeedList++;
+			}
+
+			// 연패 피드
+			if( GameData.Instance.iStraightLoseCnt >= 3 )
+			{
+				CreateInsAndAddList( "FeedStraightLose", 230, idxFeedList ); 
+				idxFeedList++;
+			}
 		}
 
 		// 전력분석 피드 
@@ -112,6 +151,7 @@ public class UIFeedManager : MonoBehaviour
 	void SettingFeed( GameObject obj, int myIdx )
 	{
 		obj.SetActive (true);
+		// 맨 상단에 위치하는 피드가 아닐 경우, 부모 배경 이미지의 fSpaceYBetweenFeed만큼의 공백을 가지고 아래에 생성된다.
 		if( myIdx != 0 )
 		{
 			Vector3 objPos = ListEnableFeed [myIdx -1].transform.localPosition ;
@@ -129,18 +169,14 @@ public class UIFeedManager : MonoBehaviour
 	{
 		goCamera03.SetActive (true); 
 	}
-	
-	/*
-	// 해당이름의 피드를 찾아서 인덱스 값 반환 
-	int SearchFeedFromAllFeedList( string feedName )
-	{
-		for( int i=0 ; i < allFeedList.Count ; i++ ) 
-		{
-			if( allFeedList[i].name == feedName )
-				return i;
-		}
 
-		return 0;
+	// 피드의 배경이미지 세로 길이 변경. 초상화 밑 위치를 기준으로 minusHeightBg만큼 배경 세로 길이가 변경됨.
+	// 배경과 초상화 이미지의 pivot이 좌측 상단일 경우에만 사용가능. 
+	// minusHeightBg를 많이 줄 경우 오히려 배경 이미지 세로 길이가 더 늘어날 수 있음. 
+	public void DownSizeHeihgtBg( UISprite sprBg, UISprite sprPort, float minusHeightBg )
+	{
+		sprBg.height = (int)( Mathf.Abs ( sprPort.transform.localPosition.y ) + sprPort.height + minusHeightBg );
+		ResetOnlyFeedPos ();
 	}
-	*/
+	
 }
