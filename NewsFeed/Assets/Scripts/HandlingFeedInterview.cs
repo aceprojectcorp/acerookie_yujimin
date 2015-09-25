@@ -82,16 +82,16 @@ public class HandlingFeedInterview : MonoBehaviour
 		if( GameData.Instance.iStraightWinCnt > 0 )
 		{
 			lbRecordPlay.text = "(2 : 1 승리)";
-			lbBtnSelectUp.text 	 	= GameData.Instance.arrStrContentInterview [0,0];
-			lbBtnSelectCenter.text 	= GameData.Instance.arrStrContentInterview [1,0];
-			lbBtnSelectDown.text 	= GameData.Instance.arrStrContentInterview [2,0];
+			lbBtnSelectUp.text 	 	= GameData.Instance.arrStrMsgBtnInterview [0,0];
+			lbBtnSelectCenter.text 	= GameData.Instance.arrStrMsgBtnInterview [1,0];
+			lbBtnSelectDown.text 	= GameData.Instance.arrStrMsgBtnInterview [2,0];
 		}
 		else
 		{
 			lbRecordPlay.text = "(8 : 10 패배)";
-			lbBtnSelectUp.text 	 	= GameData.Instance.arrStrContentInterview [0,1];
-			lbBtnSelectCenter.text	= GameData.Instance.arrStrContentInterview [1,1];
-			lbBtnSelectDown.text 	= GameData.Instance.arrStrContentInterview [2,1];
+			lbBtnSelectUp.text 	 	= GameData.Instance.arrStrMsgBtnInterview [0,1];
+			lbBtnSelectCenter.text	= GameData.Instance.arrStrMsgBtnInterview [1,1];
+			lbBtnSelectDown.text 	= GameData.Instance.arrStrMsgBtnInterview [2,1];
 		}
 	}
 	

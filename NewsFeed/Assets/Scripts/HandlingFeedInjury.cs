@@ -46,7 +46,7 @@ public class HandlingFeedInjury : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		lbContentDown.text = GameData.Instance.AddColorText( "즉시 회복 시 6000AP가 소모됩니다.", "yellow") ;
+		lbContentDown.text = GameData.Instance.AddColorText( "즉시 회복 시 6000AP가 소모됩니다.", "yellow" ) ;
 	}
 
 	// Update is called once per frame

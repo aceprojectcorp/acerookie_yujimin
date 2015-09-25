@@ -113,7 +113,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 
 	public void OnClickOkBtn() 
 	{
-		GameData.Instance.CheckMissionProgress ();
+		UIFeedManager.Instance.CheckMissionProgress ();
 		Camera03.SetActive ( false ); 
 	}
 

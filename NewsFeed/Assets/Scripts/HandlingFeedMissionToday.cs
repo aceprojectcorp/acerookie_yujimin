@@ -85,7 +85,7 @@ public class HandlingFeedMissionToday : MonoBehaviour
 		OnGetChildObject ();
 
 		// success all mission?
-		if ( GameData.Instance.isSuccessAllTodayMission == false )		
+		if ( UIFeedManager.Instance.isSuccessAllMission == false )		
 			goBtnReceiveReward.SetActive (false);
 		else
 			BeforeRewardAtClearTM ();
@@ -125,7 +125,7 @@ public class HandlingFeedMissionToday : MonoBehaviour
 	{
 		lbTitleContentDown.gameObject.SetActive (true);
 		lbTitleContentDown.text = strMsgMissionReward;
-		GameData.Instance.isOffTodayMissionFeed = true;
+		UIFeedManager.Instance.isOffFeedMission = true;
 		goBtnReceiveReward.SetActive (false);
 	}
 }

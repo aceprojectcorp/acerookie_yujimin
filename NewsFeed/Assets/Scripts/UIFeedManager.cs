@@ -5,19 +5,23 @@ using System.Collections.Generic;
 // << 화면에 보일 피드 리스트를 조건에 따라 재구성, 피드 세로 크기 변경 >> 
 public class UIFeedManager : MonoBehaviour 
 {	
-	public GameObject goCamera03 ;		// 팝업창 활성화 하기 위해 연결 
-	public GameObject goScrollView ;	// 피드를 추가할때 부모 객체로 사용하기 위해 
+	public GameObject goCamera03 ;				// 팝업창 활성화 하기 위해 연결 
+	public GameObject goScrollView ;			// 피드를 추가할때 부모 객체로 사용하기 위해 
 
-	// 
+	// 오늘의 미션 피드 관련 변수 
+	public bool isOffFeedMission 	 = false;	// 오늘의 미션 활성화 여부
+	public bool isSuccessAllMission	 = false;	// 오늘의 미션이 모두 클리어 되었는지 여부
+
+	// 피드 활성화 확률
 	private int iEnableRateMVP 		 = 50 ; 
 	private int iEnableRateInterview = 50 ; 
 	private int iEnableRateTiredness = 50 ; 
 	private int iEnableRateInjury 	 = 30 ; 
 
-	float fSpaceYBetweenFeed = 5f ;		// 피드간 세로 간격  
-	int iWidthBgFeed = 800 ;			// 피드의 가로 크기(고정) 	
+	float 	fSpaceYBetweenFeed 		 = 5f ;		// 피드간 세로 간격  
+	int 	iWidthBgFeed 			 = 800 ;	// 피드의 가로 크기(고정) 	
 	
-	public List <GameObject> ListEnableFeed = new List<GameObject>();	// 조건에 따라 화면에 보일 피드들 저장 	// 테스트 끝나면 public 없얘주기 
+	List <GameObject> goFeedEnableList = new List<GameObject>();	// 조건에 따라 화면에 보일 피드들 저장
 	
 	private static UIFeedManager m_instance;
 	public static UIFeedManager Instance
@@ -52,14 +56,14 @@ public class UIFeedManager : MonoBehaviour
 		goScrollView.transform.localPosition = Vector3.zero;
 		goScrollView.GetComponent<UIPanel> ().clipOffset = Vector3.zero;
 
-		// ListEnableFeed내 객체를 destory()하고, ListEnableFeed를 Clear함.
+		// goFeedEnableList내 객체를 destory()하고, goFeedEnableList를 Clear함.
 		ResetNewsFeedList ();
 
-		// add ListEnableFeed (if문의 순서를 조정하면, 피드 리스트 안에서 순위를 바꿀 수 있음)
+		// add goFeedEnableList (if문의 순서를 조정하면, 피드 리스트 안에서 순위를 바꿀 수 있음)
 		int idxFeedList = 0 ;
 
 		// 오늘의미션 피드 
-		if( GameData.Instance.isOffTodayMissionFeed == false )
+		if( UIFeedManager.Instance.isOffFeedMission == false )
 		{ 
 			CreateInsAndAddList( "FeedMissionToday", 270, idxFeedList ); 
 			idxFeedList++;
@@ -113,7 +117,7 @@ public class UIFeedManager : MonoBehaviour
 
 	}
 
-	// 피드 인스턴스 추가 및 초기 셋팅 후, ListEnableFeed에 추가
+	// 피드 인스턴스 추가 및 초기 셋팅 후, goFeedEnableList에 추가
 	void CreateInsAndAddList( string prepabName, int height, int idx )
 	{
 		GameObject ins = Instantiate(Resources.Load(prepabName)) as GameObject;
@@ -123,27 +127,27 @@ public class UIFeedManager : MonoBehaviour
 		ins.GetComponent<UISprite>().height = height ;
 		SettingFeed ( ins, idx );
 		
-		ListEnableFeed.Add ( ins );
+		goFeedEnableList.Add ( ins );
 		
 	}
 
-	// 모든 피드들 파괴 및 ListEnableFeed 비움.
+	// 모든 피드들 파괴 및 goFeedEnableList 비움.
 	void ResetNewsFeedList()
 	{
-		for( int i=0 ; i < ListEnableFeed.Count ; i++ )
+		for( int i=0 ; i < goFeedEnableList.Count ; i++ )
 		{
-			Destroy( ListEnableFeed[i] );
+			Destroy( goFeedEnableList[i] );
 		}
 
-		ListEnableFeed.Clear ();
+		goFeedEnableList.Clear ();
 	}
 
 	// 피드들 활성화 및 위치만 초기화 
 	public void ResetOnlyFeedPos()
 	{
-		for(int i=0 ; i < ListEnableFeed.Count ; i++ )
+		for(int i=0 ; i < goFeedEnableList.Count ; i++ )
 		{
-			SettingFeed( ListEnableFeed[i], i );
+			SettingFeed( goFeedEnableList[i], i );
 		}
 	}
 
@@ -154,8 +158,8 @@ public class UIFeedManager : MonoBehaviour
 		// 맨 상단에 위치하는 피드가 아닐 경우, 부모 배경 이미지의 fSpaceYBetweenFeed만큼의 공백을 가지고 아래에 생성된다.
 		if( myIdx != 0 )
 		{
-			Vector3 objPos = ListEnableFeed [myIdx -1].transform.localPosition ;
-			objPos.y -= ListEnableFeed [myIdx -1].GetComponent<UISprite> ().height + fSpaceYBetweenFeed;
+			Vector3 objPos 	=  goFeedEnableList [myIdx -1].transform.localPosition ;
+			objPos.y 		-= goFeedEnableList [myIdx -1].GetComponent<UISprite> ().height + fSpaceYBetweenFeed;
 			obj.transform.localPosition = objPos;
 		}
 		else
@@ -177,6 +181,37 @@ public class UIFeedManager : MonoBehaviour
 	{
 		sprBg.height = (int)( Mathf.Abs ( sprPort.transform.localPosition.y ) + sprPort.height + minusHeightBg );
 		ResetOnlyFeedPos ();
+	}
+
+	//개별 미션 관련 변수 카운트 및 모든 미션 성공여부 확인
+	public void CheckMissionProgress()
+	{
+		// success all todaymission cnt! 
+		int successMissionCnt = 0; 
+		
+		foreach( MissionData data in GameData.Instance.listMission ) // ( int i = 0 ; i < listMission.Count ; i++ )
+		{
+			switch( data.Type )
+			{
+			case MissionType.MISSION_TYPE_STRAIGHT_WIN : 
+				if( GameData.Instance.iStraightWinCnt >= 3 )
+					data.nowSuccVal++;
+				break;			
+			case MissionType.MISSION_TYPE_TOTAL_WIN : 
+				if( GameData.Instance.iStraightWinCnt > 0 )
+					data.nowSuccVal++;
+				break;
+			case MissionType.MISSION_TYPE_TOTAL_PLAY : 
+				if( GameData.Instance.iTotalPlayCnt > 0 )
+					data.nowSuccVal++;
+				break;
+			}
+			if( data.nowSuccVal >= data.fullSuccVal )
+				successMissionCnt++; 
+		}
+		
+		if ( successMissionCnt >= GameData.Instance.listMission.Count )
+			isSuccessAllMission = true;
 	}
 	
 }

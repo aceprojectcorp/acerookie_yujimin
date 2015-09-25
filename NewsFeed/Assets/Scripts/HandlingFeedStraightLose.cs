@@ -78,9 +78,9 @@ public class HandlingFeedStraightLose : MonoBehaviour
 	{
 		lbContentUp.text 		= GameData.Instance.iStraightLoseCnt + "연패에 빠졌습니다.\n선수단의 분위기가 침체된 상태입니다.";
 		lbContentDown.text 		= "(래더 최근 "+ GameData.Instance.iStraightLoseCnt + "연패)";
-		lbBtnSelectUp.text 	 	= GameData.Instance.arrStrContentStraightLose [0];
-		lbBtnSelectCenter.text 	= GameData.Instance.arrStrContentStraightLose [1];
-		lbBtnSelectDown.text 	= GameData.Instance.arrStrContentStraightLose [2];
+		lbBtnSelectUp.text 	 	= GameData.Instance.arrStrMsgBtnStraightLose [0];
+		lbBtnSelectCenter.text 	= GameData.Instance.arrStrMsgBtnStraightLose [1];
+		lbBtnSelectDown.text 	= GameData.Instance.arrStrMsgBtnStraightLose [2];
 	}
  
 	// Update is called once per frame

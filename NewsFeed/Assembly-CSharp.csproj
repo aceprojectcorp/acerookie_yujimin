@@ -183,6 +183,7 @@
      <Compile Include="Assets\NGUI\Scripts\UI\UITexture.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UITooltip.cs" />
      <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
+     <Compile Include="Assets\Scripts\ClassFile.cs" />
      <Compile Include="Assets\Scripts\DrawMission.cs" />
      <Compile Include="Assets\Scripts\DrawTableAnalysis.cs" />
      <Compile Include="Assets\Scripts\GameData.cs" />
