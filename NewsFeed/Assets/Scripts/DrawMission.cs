@@ -17,9 +17,9 @@ public class DrawMission : MonoBehaviour
 		mData = data;
 
 		lbContent.text 		  = mData.strMissionContent;
-		lbSuccMissionCnt.text = mData.iNowSuccVal + "/" + mData.iFullSuccVal;
+		lbSuccMissionCnt.text = mData.iNowSuccCnt + "/" + mData.iFullSuccCnt;
 
-		if( mData.iFullSuccVal <= mData.iNowSuccVal )
+		if( mData.iFullSuccCnt <= mData.iNowSuccCnt )
 		{
 			isSuccessMission = true;
 		}

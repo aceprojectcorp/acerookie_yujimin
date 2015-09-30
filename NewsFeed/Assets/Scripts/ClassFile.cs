@@ -79,13 +79,13 @@ public class MissionData
 {
 	public MissionType 	mType;
 	public string 		strMissionContent 	 = null ; 
-	public int 			iFullSuccVal 		 = 0 ;
-	public int 			iNowSuccVal  		 = 0 ; 
+	public int 			iFullSuccCnt 		 = 0 ;
+	public int 			iNowSuccCnt  		 = 0 ; 
 	
-	public MissionData( string strMissionContent, int iFullSuccVal, MissionType mType )
+	public MissionData( string strMissionContent, int iFullSuccCnt, MissionType mType )
 	{
 		this.strMissionContent = strMissionContent; 
-		this.iFullSuccVal = iFullSuccVal; 
+		this.iFullSuccCnt = iFullSuccCnt; 
 		this.mType = mType;
 	}
 }

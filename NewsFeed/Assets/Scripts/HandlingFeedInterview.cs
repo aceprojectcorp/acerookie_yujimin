@@ -46,11 +46,11 @@ public class HandlingFeedInterview : MonoBehaviour
 				break; 
 				
 			case "SelectCenter_Spr" :
-				lbBtnSelectDown = child.FindChild("Select_Label").GetComponent<UILabel>();
+				lbBtnSelectCenter = child.FindChild("Select_Label").GetComponent<UILabel>();
 				break;
 
 			case "SelectDown_Spr" :
-				lbBtnSelectCenter = child.FindChild("Select_Label").GetComponent<UILabel>();
+				lbBtnSelectDown = child.FindChild("Select_Label").GetComponent<UILabel>();
 				break;
 				
 			case "SelectBtn" :
