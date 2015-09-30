@@ -105,10 +105,10 @@ public class HandlingFeedInterview : MonoBehaviour
 	{
 		// mood result 
 		int iRand0to1 = Random.Range (0, 2);
-		if( iRand0to1 == 0 )
-			lbResultMood.text = GameData.Instance.AddColorText( GameData.Instance.arrStrMsgResultInterview[0], "red" ) ; 
-		else
-			lbResultMood.text = GameData.Instance.AddColorText( GameData.Instance.arrStrMsgResultInterview[1], "blue" ) ;
+		if (iRand0to1 == 0) 
+			lbResultMood.text = GameData.Instance.AddColorText (GameData.Instance.arrStrMsgResultInterview [0], "red"); 
+		else 
+			lbResultMood.text = GameData.Instance.AddColorText (GameData.Instance.arrStrMsgResultInterview [1], "blue");
 
 		lbResultContent.gameObject.SetActive (true);
 		lbResultMood.gameObject.SetActive (true); 

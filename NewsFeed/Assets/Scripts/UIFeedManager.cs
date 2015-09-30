@@ -69,11 +69,11 @@ public class UIFeedManager : MonoBehaviour
 			idxFeedList++;
 		}
 
-		if( GameData.Instance.iStraightWinCnt > 0 )
+		if( GameData.Instance.iTotalPlayCnt > 0 )
 		{
 			// MVP 피드 
 			int iRand1to100MVP = Random.Range (1, 101);
-			if( iEnableRateMVP >= iRand1to100MVP   )
+			if( GameData.Instance.iStraightWinCnt > 0 && iEnableRateMVP >= iRand1to100MVP )
 			{
 				CreateInsAndAddList( "FeedMVP", 180, idxFeedList ); 
 				idxFeedList++;

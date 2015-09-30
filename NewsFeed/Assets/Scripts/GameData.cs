@@ -43,7 +43,7 @@ public class GameData : MonoBehaviour
 	// 라벨의 글씨색을 변경하기 위해 자주 사용하는 색들 16진수 값으로 저장. 글씨색을 변경해주는 함수인 AddColorText에서 사용.
 	public string[] arrStrTextColor = new string[]
 	{ "[FF6868FF]"/*red*/,	"[87C8FFFF]"/*blue*/,	"[C1C161FF]"/*bagie*/,	"[FFFFFFFF]"/*white*/ };
-	 
+
 	// MVP피드 버튼 내용 
 	public string[] arrStrMsgBtnMvp = new string[]
 	{ 	"다른 선수들이 본받아야 하는 선수라 말한다.",
@@ -66,7 +66,7 @@ public class GameData : MonoBehaviour
 	// 인터뷰 피드 버튼 결과 메세지 
 	public string[] arrStrMsgResultInterview = new string[]
 	{	"감독의 인터뷰에 몇몇 선수의 기분이 좋아졌습니다.",
-		"감독의 인터뷰 내용은 크게 신경쓰지 않는 눈치입니다."	
+		"감독의 인터뷰 내용은 크게 신경쓰지 않는 눈치입니다."	 
 	};
 
 	// 연패 피드 버튼 내용 
