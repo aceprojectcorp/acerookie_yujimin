@@ -46,7 +46,7 @@ public class HandlingFeedPowerAnalysis : MonoBehaviour
 
 	void Start () 
 	{
-		SetPdata ( PowerDataList_MyTeam 	);
+		SetPdata ( PowerDataList_MyTeam 	);	// 랜덤 전력 값들 생성 후 리스트에 추가 
 		SetPdata ( PowerDataList_FightTeam	);
 
 		OnGetChildObject ();
