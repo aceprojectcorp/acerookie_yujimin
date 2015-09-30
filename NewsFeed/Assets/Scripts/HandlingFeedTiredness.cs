@@ -3,15 +3,13 @@ using System.Collections;
 
 public class HandlingFeedTiredness : MonoBehaviour 
 {
-	UISprite sprBg ;
-	UISprite sprPortrait ; 
-	UILabel lbContentDown; 
+	private UISprite	sprBg ;
+	private UISprite	sprPortrait ; 
+	private UILabel		lbContentDown; 
 
-	GameObject goBtnSelect ;
-	
-//	List <MVPData> MvpDataList = new List<MVPData>();
+	private GameObject	goBtnSelect ;
 
-	float minusBgHeight = 20f;
+	private float		fDownScaleHeightBg = 20f;
 
 	private void OnGetChildObject()
 	{
@@ -60,7 +58,7 @@ public class HandlingFeedTiredness : MonoBehaviour
 	{
 		lbContentDown.text = GameData.Instance.AddColorText( "선수의 피로가 회복되었습니다.", "red" ) ;
 		Destroy ( goBtnSelect ); 
-		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, minusBgHeight );
+		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, fDownScaleHeightBg );
 	}
 
 }

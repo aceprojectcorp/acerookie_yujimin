@@ -1,22 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// 인터뷰 피드 출력 
 public class HandlingFeedInterview : MonoBehaviour 
 {
-	UISprite sprBg ;
-	UISprite sprPortrait ; 
-	UILabel lbRecordPlay; 
-	UILabel lbResultContent; 
-	UILabel lbResultMood;
-	UILabel lbBtnSelectUp;
-	UILabel lbBtnSelectDown;
-	UILabel lbBtnSelectCenter;
+	private UISprite 	sprBg ;
+	private UISprite 	sprPortrait ; 
+	private UILabel		lbRecordPlay; 
+	private UILabel		lbResultContent; 
+	private UILabel		lbResultMood;
+	private UILabel		lbBtnSelectUp;
+	private UILabel		lbBtnSelectDown;
+	private UILabel		lbBtnSelectCenter;
 
-	GameObject goBtnSelect ;
-	
-//	List <MVPData> MvpDataList = new List<MVPData>();
+	private GameObject 	goBtnSelect ;
 
-	float minusBgHeight = 30f;
+	private float 		fDownScaleHeightBg = 30f;
 
 	private void OnGetChildObject()
 	{
@@ -101,21 +100,20 @@ public class HandlingFeedInterview : MonoBehaviour
 	
 	}
 
-	// 버튼 누를 경우 결과 처리 
-	// mvp버튼에서 버튼 클릭시 바로 이 함수 호출되게 이어놓음 ( 코딩x ) 
+	// 버튼 누른 후 결과 처리 
 	void SetResultPressBtn()
 	{
 		// mood result 
 		int iRand0to1 = Random.Range (0, 2);
 		if( iRand0to1 == 0 )
-			lbResultMood.text = GameData.Instance.AddColorText(GameData.Instance.arrStrMsgResultInterview[0], "red") ; 
+			lbResultMood.text = GameData.Instance.AddColorText( GameData.Instance.arrStrMsgResultInterview[0], "red" ) ; 
 		else
-			lbResultMood.text = GameData.Instance.AddColorText(GameData.Instance.arrStrMsgResultInterview[1], "blue") ;
+			lbResultMood.text = GameData.Instance.AddColorText( GameData.Instance.arrStrMsgResultInterview[1], "blue" ) ;
 
 		lbResultContent.gameObject.SetActive (true);
 		lbResultMood.gameObject.SetActive (true); 
 		Destroy ( goBtnSelect ); 
-		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, minusBgHeight );
+		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, fDownScaleHeightBg );
 	}
 	 
 	public void OnClickBtnUp()
@@ -133,6 +131,4 @@ public class HandlingFeedInterview : MonoBehaviour
 		lbResultContent.text = lbBtnSelectDown.text;
 		SetResultPressBtn ();
 	}
-
-
 }

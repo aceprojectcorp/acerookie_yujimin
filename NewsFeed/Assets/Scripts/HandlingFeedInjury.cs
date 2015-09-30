@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// << 부상피드 출력 >>
 public class HandlingFeedInjury : MonoBehaviour 
 {
-	UISprite sprBg ;
-	UISprite sprPortrait ; 
-	UILabel lbContentDown; 
+	private UISprite	sprBg ;
+	private UISprite	sprPortrait ; 
+	private UILabel		lbContentDown; 
 
-	GameObject goBtnSelect ;
-	
-//	List <MVPData> MvpDataList = new List<MVPData>();
+	private GameObject goBtnSelect ;
 
-	float minusBgHeight = 20f;
+	private float fDownScaleHeightBg = 20f;
 
 	private void OnGetChildObject()
 	{
@@ -60,7 +59,7 @@ public class HandlingFeedInjury : MonoBehaviour
 	{
 		lbContentDown.text = GameData.Instance.AddColorText( "선수의 부상이 회복되었습니다.", "red") ;
 		Destroy ( goBtnSelect ); 
-		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, minusBgHeight );
+		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, fDownScaleHeightBg );
 	}
 
 }

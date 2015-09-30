@@ -6,11 +6,16 @@ using System.Collections.Generic;
 public class DrawTableAnalysis : MonoBehaviour {
 
 //	private PowerData pData;
-	private List <PowerRandData> pdList ;
+	private List <PowerRandData> PowerDataList ;
 
 	private UILabel lbTeamName;
 	private UILabel lbRecord;
-	private UILabel lbNumData;
+
+	private UILabel lbBattingAver;
+	private UILabel lbERA;
+	private UILabel lb4Balls;
+	private UILabel lbStealBase;
+	private UILabel lbHomeRun;
 
 	private UIProgressBar pgBattingAver;
 	private UIProgressBar pgERA;
@@ -36,9 +41,27 @@ public class DrawTableAnalysis : MonoBehaviour {
 				lbRecord = child.GetComponent<UILabel>();
 				break;
 
-			case "NumOfData_Label" :
-				lbNumData = child.GetComponent<UILabel>();
+
+			case "BattingAver_Label" :
+				lbBattingAver = child.GetComponent<UILabel>();
 				break;
+				
+			case "ERA_Label" :
+				lbERA = child.GetComponent<UILabel>();
+				break;
+				
+			case "4Balls_Label" :
+				lb4Balls = child.GetComponent<UILabel>();
+				break;
+				
+			case "StealBase_Label" :
+				lbStealBase = child.GetComponent<UILabel>();
+				break;
+				
+			case "HomeRun_Label" :
+				lbHomeRun = child.GetComponent<UILabel>();
+				break;
+
 
 			case "BattingAver_Pg" :
 				pgBattingAver = child.GetComponent<UIProgressBar>();
@@ -66,18 +89,18 @@ public class DrawTableAnalysis : MonoBehaviour {
 	// 전력분석 데이터를 받고 데이터를 출력.
 	public void SetData( List <PowerRandData> list, string strNameTeam ) 
 	{
-		pdList = list;
+		PowerDataList = list;
 		
 		lbTeamName.text = strNameTeam ;
-		if( strNameTeam == GameData.Instance.myTeamObj.strMyTeamName ) 
+		if( strNameTeam == GameData.Instance.infoMyTeamObj.strMyTeamName ) 
 		{
-			lbRecord.text 	= GameData.Instance.myTeamObj.listTeamRecord[ GameData.Instance.myTeamObj.iIdxFightTeam ].iMyWinCnt + "승 0무 " +
-							  GameData.Instance.myTeamObj.listTeamRecord[ GameData.Instance.myTeamObj.iIdxFightTeam ].iMyLoseCnt + "패";
+			lbRecord.text 	= GameData.Instance.infoMyTeamObj.TeamRecordList[ GameData.Instance.infoMyTeamObj.iIdxFightTeam ].iMyWinCnt + "승 0무 " +
+							  GameData.Instance.infoMyTeamObj.TeamRecordList[ GameData.Instance.infoMyTeamObj.iIdxFightTeam ].iMyLoseCnt + "패";
 		}
 		else
 		{
-			lbRecord.text 	= GameData.Instance.fightTeamObj.listTeamRecord[ GameData.Instance.fightTeamObj.iIdxFightTeam ].iMyWinCnt + "승 0무 " +
-							  GameData.Instance.fightTeamObj.listTeamRecord[ GameData.Instance.fightTeamObj.iIdxFightTeam ].iMyLoseCnt + "패";	
+			lbRecord.text 	= GameData.Instance.infoFightTeamObj.TeamRecordList[ GameData.Instance.infoFightTeamObj.iIdxFightTeam ].iMyWinCnt + "승 0무 " +
+							  GameData.Instance.infoFightTeamObj.TeamRecordList[ GameData.Instance.infoFightTeamObj.iIdxFightTeam ].iMyLoseCnt + "패";	
 		}
 		
 		SetLabel();
@@ -98,27 +121,22 @@ public class DrawTableAnalysis : MonoBehaviour {
 	void Update () 
 	{	
 	}
-	
-	// TODO: 나중에 라벨 추가해서 따로 따로 연결해주기.. 
+
 	void SetLabel()
 	{ 
-		string strTmp = null;
-		for( int i =0 ; i < pdList.Count ; i++ )
-		{
-			strTmp += pdList[i].GetRandomValue();
-			if( i != pdList.Count-1 )
-				strTmp += "\n" ;
-		}
-
-		lbNumData.text = strTmp;
+		lbBattingAver.text 	= ( PowerDataList[0].GetRandomValue() ).ToString() ;
+		lbERA.text 			= ( PowerDataList[1].GetRandomValue() ).ToString() ;
+		lb4Balls.text 		= ( PowerDataList[2].GetRandomValue() ).ToString() ;
+		lbStealBase.text 	= ( PowerDataList[3].GetRandomValue() ).ToString() ;
+		lbHomeRun.text 		= ( PowerDataList[4].GetRandomValue() ).ToString() ;
 	}
 	
 	void SetProgressBar()
 	{
-		pgBattingAver.value = pdList [0].GetRate ();
-		pgERA.value 		= pdList [1].GetRate ();
-		pg4Balls.value 		= pdList [2].GetRate ();
-		pgStealBase.value  	= pdList [3].GetRate ();
-		pgHomeRun.value 	= pdList [4].GetRate ();
+		pgBattingAver.value = PowerDataList [0].GetRate ();
+		pgERA.value 		= PowerDataList [1].GetRate ();
+		pg4Balls.value 		= PowerDataList [2].GetRate ();
+		pgStealBase.value  	= PowerDataList [3].GetRate ();
+		pgHomeRun.value 	= PowerDataList [4].GetRate ();
 	}	
 }

@@ -4,18 +4,19 @@ using System.Collections.Generic;
 
 public class HandlingFeedMVP : MonoBehaviour 
 {
-	UISprite sprBg ;
-	UISprite sprPortrait ; 
-	UILabel lbResultContent;
-	UILabel lbResultMood;
-	UILabel lbBtnSelectUp;
-	UILabel lbBtnSelectDown;
+	private UISprite	sprBg ;
+	private UISprite 	sprPortrait ; 
+	private UILabel 	lbResultContent;
+	private UILabel 	lbResultMood;
+	private UILabel 	lbBtnSelectUp;
+	private UILabel 	lbBtnSelectDown;
 
-	GameObject goBtnSelect ;
+	private float 		fDownScaleHeightBg = 20f;
+
+	private GameObject 	goBtnSelect ;
 	
-	List <MVPData> MvpDataList = new List<MVPData>();
-
-	float minusBgHeight = 20f;
+	private List <MVPData> MvpDataList = new List<MVPData>();
+	
 
 	private void OnGetChildObject()
 	{
@@ -83,7 +84,6 @@ public class HandlingFeedMVP : MonoBehaviour
 	}
 
 	// 버튼 누를 경우 결과 처리 
-	// mvp버튼에서 버튼 클릭시 바로 이 함수 호출되게 이어놓음 ( 코딩x ) 
 	void SetResultPressBtn()
 	{
 		// mood result 
@@ -96,7 +96,7 @@ public class HandlingFeedMVP : MonoBehaviour
 		lbResultContent.gameObject.SetActive (true);
 		lbResultMood.gameObject.SetActive (true);
 		Destroy ( goBtnSelect ); 
-		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, minusBgHeight );
+		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, fDownScaleHeightBg );
 	}
 	 
 	public void OnClickBtnUp()

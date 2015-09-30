@@ -18,10 +18,10 @@ public class HandlingFeedMissionToday : MonoBehaviour
 
 	private List<DrawMission> DrawMission_ScriptList = new List<DrawMission>();
 
-	string strMsgMissionClear = "축하합니다!! 오늘의 미션을 모두 완료 하였습니다." ;
+	string strMsgMissionClear  = "축하합니다!! 오늘의 미션을 모두 완료 하였습니다." ;
 	string strMsgMissionReward = "[FF6868FF]▶ 보상으로 스페셜 선수를(을) 획득하였습니다. [-]" ;
 
-	float minusBgHeight = 20f ; 
+	float fDownScaleHeightBg = 20f ; 
 
 
 	// 비활성화 상태면 못찾음. 처음에 해당 객체를 프리팹내에선 전부 활성화 시키고, start()에서 비활성화 시키기 
@@ -60,19 +60,19 @@ public class HandlingFeedMissionToday : MonoBehaviour
 			case "Mission1":
 				goMission1 = child.gameObject;
 				DrawMission_ScriptList.Add( child.GetComponent<DrawMission>() );
-				DrawMission_ScriptList [ DrawMission_ScriptList.Count-1 ].SetData ( GameData.Instance.listMission [ DrawMission_ScriptList.Count-1 ] );
+				DrawMission_ScriptList [ DrawMission_ScriptList.Count-1 ].SetData ( GameData.Instance.MissionDataList [ DrawMission_ScriptList.Count-1 ] );
 				break;
 				
 			case "Mission2":
 				goMission2 = child.gameObject;
 				DrawMission_ScriptList.Add( child.GetComponent<DrawMission>() );
-				DrawMission_ScriptList [ DrawMission_ScriptList.Count-1 ].SetData ( GameData.Instance.listMission [ DrawMission_ScriptList.Count-1 ] );
+				DrawMission_ScriptList [ DrawMission_ScriptList.Count-1 ].SetData ( GameData.Instance.MissionDataList [ DrawMission_ScriptList.Count-1 ] );
 				break;
 				
 			case "Mission3" :
 				goMission3 = child.gameObject;
 				DrawMission_ScriptList.Add( child.GetComponent<DrawMission>() );
-				DrawMission_ScriptList [ DrawMission_ScriptList.Count-1 ].SetData ( GameData.Instance.listMission [ DrawMission_ScriptList.Count-1 ] );
+				DrawMission_ScriptList [ DrawMission_ScriptList.Count-1 ].SetData ( GameData.Instance.MissionDataList [ DrawMission_ScriptList.Count-1 ] );
 				break;
 
 			}
@@ -108,7 +108,7 @@ public class HandlingFeedMissionToday : MonoBehaviour
 
 		lbTitleContentColor.gameObject.SetActive (false);
 
-		sprBackground.height = (int)( Mathf.Abs (sprPortrait.transform.localPosition.y) + sprPortrait.height + minusBgHeight );
+		sprBackground.height = (int)( Mathf.Abs (sprPortrait.transform.localPosition.y) + sprPortrait.height + fDownScaleHeightBg );
 
 		// 라벨 x위치 이동해서 재사용 
 		Vector3 tmpPos = lbTitleContentUp.transform.localPosition; 

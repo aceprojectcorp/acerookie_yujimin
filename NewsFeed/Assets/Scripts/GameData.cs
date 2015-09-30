@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// TODO : 왼쪽에 선수 이름 + 오른쪽에 내용 레이블 한줄에 가지는 애들, 오른쪽 내용 레이블 초기에 위치 재수정 해주는거 넣기 
 public enum MissionType
 {
 	MISSION_TYPE_STRAIGHT_WIN,
@@ -10,7 +9,6 @@ public enum MissionType
 	MISSION_TYPE_TOTAL_PLAY,
 }
 
-// 인덱스이름 바꾸기, 변수이름 좀 쉽게 바꾸기 허허..
 // << 플레이정보. 승패객체, 팀별 객체 >>
 public class GameData : MonoBehaviour 
 {
@@ -33,26 +31,18 @@ public class GameData : MonoBehaviour
 	//-----------------------// 
 
 	// team 
-	public string 		strNameMyTeam = "MyTeam" ;	// 우리 팀 이름 
-	public string[] 	arrStrTeamName; 			// 전체 팀 이름
-	public InfoOfTeam 	myTeamObj ;					// 내 팀 정보 객체 
-	public InfoOfTeam 	fightTeamObj;				// 현재 대결 팀 객체 (계속 바뀜. infoAllTeam안에서) 
-	public List <InfoOfTeam> listAllTeam = new List<InfoOfTeam> ();		// 전체 팀 객체
+	public string 			strNameMyTeam = "MyTeam" ;	// 우리 팀 이름 
+	public string[] 		arrStrTeamName; 			// 전체 팀 이름
+	public InformationTeam 	infoMyTeamObj ;				// 내 팀 정보 객체 
+	public InformationTeam 	infoFightTeamObj;			// 현재 대결 팀 객체 (계속 바뀜. infoAllTeam안에서) 
+	public List <InformationTeam> AllTeamList = new List<InformationTeam> ();		// 전체 팀 객체
 
 	// 미션 데이터 객체 
-	public List <MissionData> listMission = new List<MissionData>();
+	public List <MissionData> MissionDataList = new List<MissionData>();
 
+	// 라벨의 글씨색을 변경하기 위해 자주 사용하는 색들 16진수 값으로 저장. 글씨색을 변경해주는 함수인 AddColorText에서 사용.
 	public string[] arrStrTextColor = new string[]
 	{ "[FF6868FF]"/*red*/,	"[87C8FFFF]"/*blue*/,	"[C1C161FF]"/*bagie*/,	"[FFFFFFFF]"/*white*/ };
-
-	// text color (type BBCode)
-	public string strTextColorRed 		= "[FF6868FF] ";
-	public string strTextColorBlue 		= "[87C8FFFF] ";
-	public string strTextColorYellow 	= "[C1C161FF] ";
-	 
-	// 선수 기분 배열 
-	public string[] arrStrMoodLevel = new string[]
-	{ "최상", "좋음", "보통", "나쁨", "최악" };
 	 
 	// MVP피드 버튼 내용 
 	public string[] arrStrMsgBtnMvp = new string[]
@@ -81,7 +71,9 @@ public class GameData : MonoBehaviour
 
 	// 연패 피드 버튼 내용 
 	public string[] arrStrMsgBtnStraightLose = new string[]
-	{	"선수들을 격려한다.",	"호통을 친다.",	"할말이 없다고 한다."	};
+	{	"선수들을 격려한다.",	"호통을 친다.",	
+		"할말이 없다고 한다."	
+	};
 
 	// 연패 피드 결과 메세지 
 	public string[] arrStrMsgResultStraightLose = new string[]
@@ -118,23 +110,24 @@ public class GameData : MonoBehaviour
 		// 전체 팀 객체 생성
 		for(int i=0 ; i < arrStrTeamName.Length ; i++ ) 
 		{
-			listAllTeam.Add( new InfoOfTeam( arrStrTeamName[i], arrStrTeamName ) );	 
+			AllTeamList.Add( new InformationTeam( arrStrTeamName[i], arrStrTeamName ) );	 
 			if( arrStrTeamName[i] == strNameMyTeam )
-				myTeamObj = listAllTeam[i];	// 내팀 객체 연결 
+				infoMyTeamObj = AllTeamList[i];	// 내팀 객체 연결 
 		}
 
-		if ( listAllTeam [iIdxFightTeam].strMyTeamName != strNameMyTeam )
+		if ( AllTeamList [iIdxFightTeam].strMyTeamName != strNameMyTeam )
 			iIdxFightTeam = 0;
 		else
 			iIdxFightTeam++;
 
-		fightTeamObj = listAllTeam[iIdxFightTeam];
-		fightTeamObj.FindIdxOfNextFightTeam ();
-		myTeamObj.FindIdxOfNextFightTeam (fightTeamObj.strMyTeamName);
+		// 현재 대결팀을 연결해 놓음. 편리한 사용을 위해 
+		infoFightTeamObj = AllTeamList[iIdxFightTeam];
+		infoFightTeamObj.FindIdxNextTeam ( infoMyTeamObj.strMyTeamName );
+		infoMyTeamObj.FindIdxNextTeam ( infoFightTeamObj.strMyTeamName );
 
-		listMission.Add ( new MissionData ( "3 연승을 하세요.", 		1,	MissionType.MISSION_TYPE_STRAIGHT_WIN  	));
-		listMission.Add ( new MissionData ( "10 승을 하세요.", 		5, 	MissionType.MISSION_TYPE_TOTAL_WIN 		));
-		listMission.Add ( new MissionData ( "20 경기를 진행하세요 ", 	5,	MissionType.MISSION_TYPE_TOTAL_PLAY 	)); 
+		MissionDataList.Add ( new MissionData ( "3 연승을 하세요.", 		1,	MissionType.MISSION_TYPE_STRAIGHT_WIN  	));
+		MissionDataList.Add ( new MissionData ( "10 승을 하세요.", 		10, MissionType.MISSION_TYPE_TOTAL_WIN 		));
+		MissionDataList.Add ( new MissionData ( "20 경기를 진행하세요 ", 	20,	MissionType.MISSION_TYPE_TOTAL_PLAY 	)); 
 	}
 
 	// Use this for initialization

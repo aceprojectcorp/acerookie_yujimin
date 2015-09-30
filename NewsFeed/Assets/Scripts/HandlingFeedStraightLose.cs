@@ -4,18 +4,18 @@ using System.Collections.Generic;
 
 public class HandlingFeedStraightLose : MonoBehaviour 
 {
-	UISprite sprBg ;
-	UISprite sprPortrait ; 
-	UILabel lbContentUp; 
-	UILabel lbContentDown;
-	UILabel lbContentResult; 
-	UILabel lbBtnSelectUp;
-	UILabel lbBtnSelectDown;
-	UILabel lbBtnSelectCenter;
+	private UISprite	sprBg ;
+	private UISprite	sprPortrait ; 
+	private UILabel		lbContentUp; 
+	private UILabel 	lbContentDown;
+	private UILabel 	lbContentResult; 
+	private UILabel 	lbBtnSelectUp;
+	private UILabel 	lbBtnSelectDown;
+	private UILabel 	lbBtnSelectCenter;
 
-	GameObject goBtnSelect ;
+	private GameObject 	goBtnSelect ;
 
-	float minusBgHeight = 30f;
+	private float 		fDownScaleHeightBg = 30f;
 
 	private void OnGetChildObject()
 	{
@@ -100,7 +100,7 @@ public class HandlingFeedStraightLose : MonoBehaviour
 
 		lbContentResult.gameObject.SetActive (true);
 		Destroy ( goBtnSelect ); 
-		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, minusBgHeight );
+		UIFeedManager.Instance.DownSizeHeihgtBg ( sprBg, sprPortrait, fDownScaleHeightBg );
 	}
 
 }

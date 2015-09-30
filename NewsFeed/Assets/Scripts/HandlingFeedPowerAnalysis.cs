@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// TODO : 리스트 이름 다 바꿔주기[여기가 기준]!!! 변수이름, 클래스 이름도 다시 짧고 예쁘게 다듬기!!
 // << 전력분석 테이블의 랜덤 데이터 리스트 생성/관리/연결, 게임실행 버튼 연동, 상대팀 이름 라벨에 출력 및 이동 >>
 public class HandlingFeedPowerAnalysis : MonoBehaviour 
 {
 	private UILabel lbFightTeamName ;
 	private UILabel lbContentUp;
-	
+
+	// 전력 데이터 테이블을 그려주는 스크립트를 리스트로 관리.
 	private List<DrawTableAnalysis> Analysis_ScriptList = new List<DrawTableAnalysis>();
 
 	// 전력 데이터 객체 생성 
@@ -33,12 +33,12 @@ public class HandlingFeedPowerAnalysis : MonoBehaviour
 
 			case "MyTeam":
 				Analysis_ScriptList.Add( child.GetComponent<DrawTableAnalysis>() );
-				Analysis_ScriptList [ Analysis_ScriptList.Count-1 ].SetData ( PowerDataList_MyTeam, GameData.Instance.myTeamObj.strMyTeamName );
+				Analysis_ScriptList [ Analysis_ScriptList.Count-1 ].SetData ( PowerDataList_MyTeam, GameData.Instance.infoMyTeamObj.strMyTeamName );
 				break;
 				
 			case "FightTeam":
 				Analysis_ScriptList.Add( child.GetComponent<DrawTableAnalysis>() );
-				Analysis_ScriptList [ Analysis_ScriptList.Count-1 ].SetData ( PowerDataList_FightTeam, GameData.Instance.fightTeamObj.strMyTeamName );
+				Analysis_ScriptList [ Analysis_ScriptList.Count-1 ].SetData ( PowerDataList_FightTeam, GameData.Instance.infoFightTeamObj.strMyTeamName );
 				break;
 			}			
 		}
@@ -77,7 +77,7 @@ public class HandlingFeedPowerAnalysis : MonoBehaviour
  	// UILabel객체에 text값 변경(상대팀 이름 주기) 및 위치 이동(상대팀 이름 가로 크기에 따라서 뒤에 라벨 뒤로 밀림)  
 	void SetLabelTeamData()
 	{ 
-		lbFightTeamName.text 	= GameData.Instance.fightTeamObj.strMyTeamName;
+		lbFightTeamName.text 	= GameData.Instance.infoFightTeamObj.strMyTeamName;
 		
 		// 팀 이름 가로크기에 따라 lbContentUp 위치 이동 
 		Vector3 lbContentPosTmp = lbContentUp.transform.localPosition; 

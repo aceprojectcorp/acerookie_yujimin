@@ -4,10 +4,11 @@ using System.Collections;
 // << 미션 내용을 받아 그려줌 >>
 public class DrawMission : MonoBehaviour 
 {
-	private MissionData mData; 
-	private UILabel lbContent;
-	private UILabel	lbSuccMissionCnt ;
-	private UISprite sprClear;
+	private MissionData	mData; 				
+	private UILabel		lbContent;			
+	private UILabel		lbSuccMissionCnt ;
+	private UISprite	sprClear;
+
 	bool isSuccessMission = false;
 
 	// 미션 데이터를 받아서 내부 객체에 값을 분배하고, 미션 성공여부 판단함. 
@@ -15,10 +16,10 @@ public class DrawMission : MonoBehaviour
 	{
 		mData = data;
 
-		lbContent.text 		  = mData.missionContent;
-		lbSuccMissionCnt.text = mData.nowSuccVal + "/" + mData.fullSuccVal;
+		lbContent.text 		  = mData.strMissionContent;
+		lbSuccMissionCnt.text = mData.iNowSuccVal + "/" + mData.iFullSuccVal;
 
-		if( mData.fullSuccVal <= mData.nowSuccVal )
+		if( mData.iFullSuccVal <= mData.iNowSuccVal )
 		{
 			isSuccessMission = true;
 		}
@@ -28,9 +29,9 @@ public class DrawMission : MonoBehaviour
 	{
 		Transform[] transforms = gameObject.GetComponentsInChildren<Transform>();
 		
-		foreach (Transform child in transforms)
+		foreach ( Transform child in transforms )
 		{
-			switch (child.name)
+			switch ( child.name )
 			{
 			case "Content_Label":
 				lbContent = child.GetComponent<UILabel>();

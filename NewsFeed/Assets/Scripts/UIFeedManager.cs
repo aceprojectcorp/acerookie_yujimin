@@ -13,15 +13,15 @@ public class UIFeedManager : MonoBehaviour
 	public bool isSuccessAllMission	 = false;	// 오늘의 미션이 모두 클리어 되었는지 여부
 
 	// 피드 활성화 확률
-	private int iEnableRateMVP 		 = 50 ; 
-	private int iEnableRateInterview = 50 ; 
-	private int iEnableRateTiredness = 50 ; 
-	private int iEnableRateInjury 	 = 30 ; 
+	public int iEnableRateMVP 		= 50 ; 
+	public int iEnableRateInterview = 50 ; 
+	public int iEnableRateTiredness = 50 ; 
+	public int iEnableRateInjury 	= 30 ; 
 
 	float 	fSpaceYBetweenFeed 		 = 5f ;		// 피드간 세로 간격  
 	int 	iWidthBgFeed 			 = 800 ;	// 피드의 가로 크기(고정) 	
 	
-	List <GameObject> goFeedEnableList = new List<GameObject>();	// 조건에 따라 화면에 보일 피드들 저장
+	public List <GameObject> goFeedEnableList = new List<GameObject>();	// 화면에 보일 피드 리스트
 	
 	private static UIFeedManager m_instance;
 	public static UIFeedManager Instance
@@ -65,7 +65,7 @@ public class UIFeedManager : MonoBehaviour
 		// 오늘의미션 피드 
 		if( UIFeedManager.Instance.isOffFeedMission == false )
 		{ 
-			CreateInsAndAddList( "FeedMissionToday", 270, idxFeedList ); 
+			CreateInsAndAddList( "FeedMissionToday", 270, idxFeedList ); 	// 피드 인스턴스 추가 및 초기 셋팅 후, goFeedEnableList에 추가
 			idxFeedList++;
 		}
 
@@ -174,12 +174,12 @@ public class UIFeedManager : MonoBehaviour
 		goCamera03.SetActive (true); 
 	}
 
-	// 피드의 배경이미지 세로 길이 변경. 초상화 밑 위치를 기준으로 minusHeightBg만큼 배경 세로 길이가 변경됨.
+	// 피드의 배경이미지 높이 변경. 초상화 밑 위치를 기준으로 minusHeightBg만큼 배경 세로 길이가 변경됨.
 	// 배경과 초상화 이미지의 pivot이 좌측 상단일 경우에만 사용가능. 
 	// minusHeightBg를 많이 줄 경우 오히려 배경 이미지 세로 길이가 더 늘어날 수 있음. 
-	public void DownSizeHeihgtBg( UISprite sprBg, UISprite sprPort, float minusHeightBg )
+	public void DownSizeHeihgtBg( UISprite sprBg, UISprite sprPort, float fDownScaleHeightBg )
 	{
-		sprBg.height = (int)( Mathf.Abs ( sprPort.transform.localPosition.y ) + sprPort.height + minusHeightBg );
+		sprBg.height = (int)( Mathf.Abs ( sprPort.transform.localPosition.y ) + sprPort.height + fDownScaleHeightBg );
 		ResetOnlyFeedPos ();
 	}
 
@@ -188,29 +188,29 @@ public class UIFeedManager : MonoBehaviour
 	{
 		// success all todaymission cnt! 
 		int successMissionCnt = 0; 
-		
-		foreach( MissionData data in GameData.Instance.listMission ) // ( int i = 0 ; i < listMission.Count ; i++ )
+
+		foreach( MissionData mData in GameData.Instance.MissionDataList ) // ( int i = 0 ; i < MissionDataList.Count ; i++ )
 		{
-			switch( data.Type )
+			switch( mData.mType )
 			{
 			case MissionType.MISSION_TYPE_STRAIGHT_WIN : 
 				if( GameData.Instance.iStraightWinCnt >= 3 )
-					data.nowSuccVal++;
+					mData.iNowSuccVal++;
 				break;			
 			case MissionType.MISSION_TYPE_TOTAL_WIN : 
 				if( GameData.Instance.iStraightWinCnt > 0 )
-					data.nowSuccVal++;
+					mData.iNowSuccVal++;
 				break;
 			case MissionType.MISSION_TYPE_TOTAL_PLAY : 
 				if( GameData.Instance.iTotalPlayCnt > 0 )
-					data.nowSuccVal++;
+					mData.iNowSuccVal++;
 				break;
 			}
-			if( data.nowSuccVal >= data.fullSuccVal )
+			if( mData.iNowSuccVal >= mData.iFullSuccVal )
 				successMissionCnt++; 
 		}
 		
-		if ( successMissionCnt >= GameData.Instance.listMission.Count )
+		if ( successMissionCnt >= GameData.Instance.MissionDataList.Count )
 			isSuccessAllMission = true;
 	}
 	

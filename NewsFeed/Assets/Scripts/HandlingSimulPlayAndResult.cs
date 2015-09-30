@@ -4,27 +4,27 @@ using System.Collections;
 // << 시뮬레이션 팝업 내용 출력 및 결과 데이터 저장(활성화 되는 순간 저장) >>  
 public class HandlingSimulPlayAndResult : MonoBehaviour   
 {
-	public GameObject Camera03 ; 
+	public GameObject 		Camera03 ; 
+	public	float 			pgFullTime	 		= 3.0f;		// 프로그래스바 변경을 보여줄 시간(초)
 
-	private GameObject goOkBtn ; 
-	private UIProgressBar pgSimulPlayTime ; 	
-	private UILabel lbTitle ;
-	private UILabel lbContent ;
-	
-	public float pgFullTime	 = 1.0f;	// 프로그래스바 변경을 보여줄 시간(초)	// 테스트 끝나면 public 없얘기 
-	float pgAccTime 		 = 0 ; 		// 프로그래스바 현재 누적된 시간 
-	bool isEndMessageTime 	 = false;	// 팝업에서 결과 화면 띄울 타이밍으로 전환하는 스위치 
-	string strMsgContent 	 = null;
-	string strMsgTitleInit 	 = "시뮬레이션 실행중" ;	
-	string strMsgTitleResult = " << 게 임 결 과 >>" ;	
+	private GameObject 		goOkBtn ; 
+	private UIProgressBar 	pgSimulPlayTime ; 	
+	private UILabel 		lbTitle ;
+	private UILabel 		lbContent ;
+
+	private float 			pgAccTime 		 	= 0 ; 		// 프로그래스바 현재 누적된 시간 
+	private bool 			isEndMessageTime	= false;	// 팝업에서 결과 화면 띄울 타이밍으로 전환하는 스위치 
+	private string 			strMsgContent 		= null;
+	private string 			strMsgTitleInit 	= "시뮬레이션 실행중" ;	
+	private string 			strMsgTitleResult 	= " << 게 임 결 과 >>" ;	
 
 	private void OnGetChildObject()
 	{
 		Transform[] transforms = gameObject.GetComponentsInChildren<Transform>();
 		
-		foreach (Transform child in transforms)
+		foreach ( Transform child in transforms )
 		{
-			switch (child.name)
+			switch ( child.name )
 			{
 			case "Ok_Btn":
 				goOkBtn = child.gameObject;
@@ -65,7 +65,7 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 		pgSimulPlayTime.value = 0; 
 		lbTitle.text = strMsgTitleInit;
 		lbContent.text 
-			= GameData.Instance.strNameMyTeam + " vs " + GameData.Instance.fightTeamObj.strMyTeamName;
+			= GameData.Instance.strNameMyTeam + " vs " + GameData.Instance.infoFightTeamObj.strMyTeamName;
 		
 		// 승패 랜덤 결과에 따른 데이터 값 변경  
 		int rand1to100 = Random.Range (1, 101);
@@ -120,8 +120,8 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 	void HeadlingWin()
 	{
 		strMsgContent = "[ff0000]승   리[-]";
-		GameData.Instance.fightTeamObj.PlayResult(false);
-		GameData.Instance.myTeamObj.PlayResult(true);
+		GameData.Instance.infoFightTeamObj.PlayResult(false);
+		GameData.Instance.infoMyTeamObj.PlayResult(true);
 		
 		GameData.Instance.iStraightLoseCnt = 0;
 		GameData.Instance.iStraightWinCnt++;
@@ -130,8 +130,8 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 	void HeadlingLose()
 	{
 		strMsgContent = "[0000ff]패   배[-]";
-		GameData.Instance.fightTeamObj.PlayResult(true);
-		GameData.Instance.myTeamObj.PlayResult(false);
+		GameData.Instance.infoFightTeamObj.PlayResult(true);
+		GameData.Instance.infoMyTeamObj.PlayResult(false);
 		
 		GameData.Instance.iStraightWinCnt = 0;
 		GameData.Instance.iStraightLoseCnt++;
@@ -145,23 +145,19 @@ public class HandlingSimulPlayAndResult : MonoBehaviour
 	}
 	
 	void ChangeFightTeam()
-	{
-		//		Debug.Log ( GameData.Instance.nameOfNowFightTeam+ " Win : " + GameData.Instance.fightTeamObj.listTeamRecord[GameData.Instance.fightTeamObj.iIdxFightTeam].iMyWinCnt );
-		//		Debug.Log ( GameData.Instance.nameOfNowFightTeam+ " lose : " + GameData.Instance.fightTeamObj.listTeamRecord[GameData.Instance.fightTeamObj.iIdxFightTeam].iMyLoseCnt );
-		
+	{		
 		GameData.Instance.iPlayFightTeamCnt = 0; 
 		
 		GameData.Instance.iIdxFightTeam++; 
-		if( GameData.Instance.listAllTeam[ GameData.Instance.iIdxFightTeam ].strMyTeamName == GameData.Instance.strNameMyTeam )
+		if( GameData.Instance.AllTeamList[ GameData.Instance.iIdxFightTeam ].strMyTeamName == GameData.Instance.strNameMyTeam )
 			GameData.Instance.iIdxFightTeam++; 
 		
 		if ( GameData.Instance.iIdxFightTeam >= GameData.Instance.arrStrTeamName.Length )
 			GameData.Instance.iIdxFightTeam = 0;
-		
-		GameData.Instance.myTeamObj.FindIdxOfNextFightTeam ( GameData.Instance.fightTeamObj.strMyTeamName );
-		GameData.Instance.fightTeamObj = GameData.Instance.listAllTeam[ GameData.Instance.iIdxFightTeam ]; 
-		GameData.Instance.fightTeamObj.FindIdxOfNextFightTeam ( );
-		GameData.Instance.myTeamObj.FindIdxOfNextFightTeam ( GameData.Instance.fightTeamObj.strMyTeamName );
+
+		GameData.Instance.infoFightTeamObj = GameData.Instance.AllTeamList[ GameData.Instance.iIdxFightTeam ]; 
+		GameData.Instance.infoFightTeamObj.FindIdxNextTeam ( GameData.Instance.infoMyTeamObj.strMyTeamName );
+		GameData.Instance.infoMyTeamObj.FindIdxNextTeam ( GameData.Instance.infoFightTeamObj.strMyTeamName );
 	}
 
 }
